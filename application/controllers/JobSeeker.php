@@ -105,20 +105,18 @@ class JobSeeker extends CI_Controller {
         $this->db->insert('candidates', $data);
         $candidate_id = $this->db->insert_id();
 
-        // ── Round-robin assignment to data clerks only (user_type != 1) ──
+        // ── Round-robin assignment to data clerks (all users except user_type=1 admin) ──
         $fields = $this->db->list_fields('candidates');
         if (in_array('assigned_to', $fields)) {
-            // Get all non-admin users (data clerks) — user_type != 1 or NULL
-            $this->db->select('u.user_id');
-            $this->db->from('users u');
-            $this->db->join('user_login ul', 'ul.user_id = u.user_id');
-            $this->db->group_start();
-            $this->db->where('ul.user_type !=', 1);
-            $this->db->or_where('ul.user_type IS NULL', null, false);
-            $this->db->group_end();
-            $this->db->where('ul.status', 1);
-            $this->db->order_by('u.user_id', 'ASC');
-            $staff = $this->db->get()->result_array();
+            // Use raw query for reliability — get all non-admin users
+            $staff_query = $this->db->query("
+                SELECT DISTINCT u.user_id 
+                FROM users u 
+                JOIN user_login ul ON ul.user_id = u.user_id 
+                WHERE (ul.user_type IS NULL OR ul.user_type != 1)
+                ORDER BY u.user_id ASC
+            ");
+            $staff = $staff_query->result_array();
 
             if (!empty($staff)) {
                 $assigned_to = $staff[0]['user_id'];

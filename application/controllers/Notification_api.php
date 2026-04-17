@@ -14,7 +14,7 @@ class Notification_api extends CI_Controller {
             return;
         }
 
-        $is_admin = ($this->session->userdata('isAdmin') == true || $this->session->userdata('user_type') == 1);
+        $is_admin = ($this->session->userdata('isAdmin') === true || $this->session->userdata('user_type') == 1);
         $user_id  = $this->session->userdata('user_id');
 
         // Get ALL incomplete candidates for the bell count/list

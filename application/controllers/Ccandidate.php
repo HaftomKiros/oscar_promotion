@@ -133,7 +133,7 @@ public function manage_candidate()
     $candidates = $this->Candidate_model->get_all_candidates();
     $woredas = $this->Candidate_model->get_woredas_with_sex_counts();
 
-    $is_admin = ($this->session->userdata('isAdmin') == true || $this->session->userdata('user_type') == 1);
+    $is_admin = ($this->session->userdata('isAdmin') === true || $this->session->userdata('user_type') == 1);
     $user_id  = $this->session->userdata('user_id');
 
     // Get incomplete profiles — admin sees all, data clerk sees only assigned to them
