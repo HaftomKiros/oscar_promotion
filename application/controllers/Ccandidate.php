@@ -246,8 +246,8 @@ public function export_candidates_excel()
     $sex = $this->input->get('sex') ?? '';
     $candidates = $this->Candidate_model->get_all_candidates_for_export($sex);
 
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment; filename=candidates_export_' . date('Y-m-d_H-i-s') . '.xls');
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=candidates_export_' . date('Y-m-d_H-i-s') . '.csv');
 
     $output = fopen('php://output', 'w');
     fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
@@ -324,8 +324,8 @@ public function export_candidates_by_woreda()
         return;
     }
 
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment; filename=candidates_' . str_replace(' ', '_', $woreda) . '_export_' . date('Y-m-d_H-i-s') . '.xls');
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=candidates_' . str_replace(' ', '_', $woreda) . '_export_' . date('Y-m-d_H-i-s') . '.csv');
 
     $output = fopen('php://output', 'w');
     fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
