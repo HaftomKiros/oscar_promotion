@@ -328,117 +328,142 @@
 
 <!-- ── Real-time Candidate Notification System ── -->
 <style>
+/* Bell dropdown items */
+.notif-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;transition:background 0.15s;}
+.notif-item:hover{background:#f8fafc;}
+.notif-item-icon{width:36px;height:36px;border-radius:9px;background:#1a3a5c;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;color:#f5a623;}
+.notif-item-body{flex:1;min-width:0;}
+.notif-item-name{font-size:13px;font-weight:700;color:#1a3a5c;}
+.notif-item-phone{font-size:11px;color:#6b7280;}
+.notif-item-assign{font-size:11px;color:#f5a623;font-weight:600;margin-top:2px;}
+.notif-item-time{font-size:10px;color:#9ca3af;margin-top:2px;}
+/* Toast alert */
 #oscar-notif-container{position:fixed;top:70px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:340px;}
-.oscar-notif{
-  background:#fff;border-radius:12px;padding:16px 18px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.15);
-  border-left:4px solid #f5a623;
-  display:flex;align-items:flex-start;gap:12px;
-  animation:slideIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
-  cursor:pointer;
-}
+.oscar-notif{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 8px 32px rgba(0,0,0,0.15);border-left:4px solid #f5a623;display:flex;align-items:flex-start;gap:10px;animation:slideIn 0.35s cubic-bezier(0.34,1.56,0.64,1);cursor:pointer;}
 @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
 .oscar-notif.removing{animation:slideOut 0.3s ease forwards;}
-.oscar-notif-icon{width:40px;height:40px;border-radius:10px;background:#1a3a5c;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
-.oscar-notif-body{flex:1;min-width:0;}
-.oscar-notif-title{font-size:13px;font-weight:700;color:#1a3a5c;margin-bottom:3px;}
-.oscar-notif-text{font-size:12px;color:#6b7280;line-height:1.4;}
-.oscar-notif-time{font-size:11px;color:#9ca3af;margin-top:4px;}
-.oscar-notif-close{font-size:16px;color:#9ca3af;cursor:pointer;flex-shrink:0;line-height:1;padding:2px;}
-.oscar-notif-close:hover{color:#374151;}
-
-/* Call center badge on dashboard */
-.incomplete-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:#fef3c7;border:1px solid #f59e0b;
-  color:#92400e;font-size:12px;font-weight:600;
-  padding:4px 12px;border-radius:20px;
-}
+.oscar-notif-close{font-size:16px;color:#9ca3af;cursor:pointer;flex-shrink:0;line-height:1;}
 </style>
 
 <div id="oscar-notif-container"></div>
 
 <script>
 (function(){
-  var API_URL = '<?php echo base_url("Notification_api/check_new_candidates"); ?>';
+  var API_URL  = '<?php echo base_url("Notification_api/check_new_candidates"); ?>';
   var EDIT_URL = '<?php echo base_url("Ccandidate/edit/"); ?>';
-  var POLL_INTERVAL = 5000; // 5 seconds
+  var SHOWN_KEY = 'oscar_shown_notif_ids';
 
-  // Generate notification sound using Web Audio API
-  function playNotifSound(){
-    try {
-      var ctx = new (window.AudioContext || window.webkitAudioContext)();
-      var times = [0, 0.15, 0.3];
-      var freqs = [880, 1100, 1320];
-      times.forEach(function(t, i){
-        var osc = ctx.createOscillator();
-        var gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.value = freqs[i];
-        osc.type = 'sine';
-        gain.gain.setValueAtTime(0.3, ctx.currentTime + t);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.2);
-        osc.start(ctx.currentTime + t);
-        osc.stop(ctx.currentTime + t + 0.25);
+  function getShownIds(){
+    try{ return JSON.parse(localStorage.getItem(SHOWN_KEY)||'[]'); }catch(e){ return []; }
+  }
+  function markShown(id){
+    var ids = getShownIds();
+    if(ids.indexOf(id)===-1){ ids.push(id); localStorage.setItem(SHOWN_KEY, JSON.stringify(ids)); }
+  }
+
+  function playSound(){
+    try{
+      var ctx=new(window.AudioContext||window.webkitAudioContext)();
+      [[880,0],[1100,0.15],[1320,0.3]].forEach(function(f){
+        var o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.frequency.value=f[0];o.type='sine';
+        g.gain.setValueAtTime(0.3,ctx.currentTime+f[1]);
+        g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+f[1]+0.2);
+        o.start(ctx.currentTime+f[1]);o.stop(ctx.currentTime+f[1]+0.25);
       });
-    } catch(e){}
+    }catch(e){}
   }
 
   function removeNotif(el){
     el.classList.add('removing');
-    setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 300);
+    setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },300);
   }
 
-  function showNotif(candidate){
-    var container = document.getElementById('oscar-notif-container');
-    var el = document.createElement('div');
-    el.className = 'oscar-notif';
-    el.innerHTML =
-      '<div class="oscar-notif-icon">👤</div>' +
-      '<div class="oscar-notif-body">' +
-        '<div class="oscar-notif-title">New Registration!</div>' +
-        '<div class="oscar-notif-text"><strong>' + candidate.full_name + '</strong><br>' + candidate.phone_number + '</div>' +
-        '<div class="oscar-notif-time">ID: ' + candidate.seeker_id + ' &mdash; Just now</div>' +
-        '<div style="margin-top:8px;"><span style="font-size:11px;color:#f5a623;font-weight:600;">Click to complete profile →</span></div>' +
-      '</div>' +
+  function showToast(c){
+    var container=document.getElementById('oscar-notif-container');
+    var el=document.createElement('div');
+    el.className='oscar-notif';
+    el.innerHTML=
+      '<div style="font-size:22px;">👤</div>'+
+      '<div style="flex:1;min-width:0;">'+
+        '<div style="font-size:13px;font-weight:700;color:#1a3a5c;">New Registration!</div>'+
+        '<div style="font-size:12px;color:#374151;"><strong>'+c.full_name+'</strong> &mdash; '+c.phone_number+'</div>'+
+        (c.assigned_name?'<div style="font-size:11px;color:#f5a623;font-weight:600;">Assigned to: '+c.assigned_name+'</div>':'')+
+        '<div style="font-size:11px;color:#9ca3af;">ID: '+c.seeker_id+'</div>'+
+      '</div>'+
       '<div class="oscar-notif-close" title="Dismiss">&times;</div>';
-
-    // Click anywhere except close = go to edit
-    el.addEventListener('click', function(e){
-      if(!e.target.classList.contains('oscar-notif-close')){
-        window.location.href = EDIT_URL + candidate.id;
-      }
+    el.addEventListener('click',function(e){
+      if(!e.target.classList.contains('oscar-notif-close')) window.location.href=EDIT_URL+c.id;
     });
-
-    // Close button — only dismiss, don't navigate
-    el.querySelector('.oscar-notif-close').addEventListener('click', function(e){
-      e.stopPropagation();
-      removeNotif(el);
+    el.querySelector('.oscar-notif-close').addEventListener('click',function(e){
+      e.stopPropagation(); removeNotif(el);
     });
-
     container.appendChild(el);
-    // No auto-remove — stays until manually dismissed
+  }
+
+  function updateBell(data){
+    var badge=document.getElementById('notif-badge');
+    var body=document.getElementById('notif-list-body');
+    var label=document.getElementById('notif-count-label');
+
+    // Update badge count
+    if(data.total>0){
+      badge.style.display='block';
+      badge.textContent=data.total>99?'99+':data.total;
+      label.textContent='('+data.total+' pending)';
+    } else {
+      badge.style.display='none';
+      label.textContent='';
+    }
+
+    // Update dropdown list
+    if(!data.candidates||data.candidates.length===0){
+      body.innerHTML='<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px;">No pending registrations</div>';
+      return;
+    }
+    var html='';
+    data.candidates.forEach(function(c){
+      var timeAgo=c.created_at||'';
+      html+='<li><div class="notif-item" onclick="window.location.href=\''+EDIT_URL+c.id+'\'">'+
+        '<div class="notif-item-icon">👤</div>'+
+        '<div class="notif-item-body">'+
+          '<div class="notif-item-name">'+c.full_name+'</div>'+
+          '<div class="notif-item-phone">📱 '+c.phone_number+' &nbsp;|&nbsp; ID: '+c.seeker_id+'</div>'+
+          (c.assigned_name?'<div class="notif-item-assign">👤 Assigned to: '+c.assigned_name+'</div>':'')+
+          '<div class="notif-item-time">'+timeAgo+'</div>'+
+        '</div>'+
+      '</div></li>';
+    });
+    body.innerHTML=html;
   }
 
   function poll(){
-    fetch(API_URL, {credentials:'same-origin'})
-      .then(function(r){ return r.json(); })
+    fetch(API_URL,{credentials:'same-origin'})
+      .then(function(r){return r.json();})
       .then(function(data){
-        if(data.has_new && data.candidates){
-          playNotifSound();
-          data.candidates.forEach(function(c){ showNotif(c); });
+        if(data.status!=='success') return;
+        updateBell(data);
+
+        // Show toast only for NEW IDs not yet shown
+        if(data.has_new && data.new_ids && data.new_ids.length>0){
+          var shown=getShownIds();
+          var truly_new=data.new_ids.filter(function(id){ return shown.indexOf(id)===-1; });
+          if(truly_new.length>0){
+            playSound();
+            // Find candidate objects for new IDs
+            truly_new.forEach(function(id){
+              var c=data.candidates.find(function(x){ return parseInt(x.id)===parseInt(id); });
+              if(c){ showToast(c); markShown(id); }
+            });
+          }
         }
       })
       .catch(function(){});
   }
 
-  // Start polling after 3 seconds
-  setTimeout(function(){
-    poll();
-    setInterval(poll, POLL_INTERVAL);
-  }, 3000);
+  setTimeout(function(){ poll(); setInterval(poll,10000); },2000);
 })();
 </script>
  

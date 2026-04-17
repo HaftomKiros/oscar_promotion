@@ -9,51 +9,48 @@ class Notification_api extends CI_Controller {
 
     // Check for new incomplete candidate registrations
     public function check_new_candidates() {
-        // Only for logged-in users
         if (!$this->session->userdata('isLogIn')) {
             echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
             return;
         }
 
-        $is_admin  = $this->session->userdata('isAdmin');
-        $user_id   = $this->session->userdata('user_id');
+        $is_admin = $this->session->userdata('isAdmin');
+        $user_id  = $this->session->userdata('user_id');
 
-        // Get last checked timestamp from session
+        // Get ALL incomplete candidates (not time-filtered) for the bell count/list
+        $this->db->select('c.id, c.seeker_id, c.full_name, c.phone_number, c.created_at, c.assigned_to, CONCAT(u.first_name," ",u.last_name) AS assigned_name');
+        $this->db->from('candidates c');
+        $this->db->join('users u', 'u.user_id = c.assigned_to', 'left');
+        $this->db->where('c.profile_complete', 0);
+
+        if (!$is_admin) {
+            $this->db->where('c.assigned_to', $user_id);
+        }
+
+        $this->db->order_by('c.created_at', 'DESC');
+        $all_pending = $this->db->get()->result_array();
+
+        // Get only NEW ones since last check (for alert popup)
         $last_check = $this->session->userdata('last_candidate_check');
         if (!$last_check) {
-            $last_check = date('Y-m-d H:i:s', strtotime('-1 hour'));
+            $last_check = date('Y-m-d H:i:s', strtotime('-1 minute'));
         }
 
-        // Build query
-        $this->db->select('id, seeker_id, full_name, phone_number, created_at, assigned_to');
-        $this->db->from('candidates');
-        $this->db->where('profile_complete', 0);
-        $this->db->where('created_at >', $last_check);
-
-        // Admin sees all; data clerks see only their assigned candidates
-        if (!$is_admin) {
-            $this->db->where('assigned_to', $user_id);
+        $new_ids = [];
+        foreach ($all_pending as $c) {
+            if ($c['created_at'] > $last_check) {
+                $new_ids[] = $c['id'];
+            }
         }
 
-        $this->db->order_by('created_at', 'DESC');
-        $new_candidates = $this->db->get()->result_array();
-
-        // Update last check time
         $this->session->set_userdata('last_candidate_check', date('Y-m-d H:i:s'));
 
-        if (count($new_candidates) > 0) {
-            echo json_encode([
-                'status'     => 'success',
-                'has_new'    => true,
-                'count'      => count($new_candidates),
-                'candidates' => $new_candidates
-            ]);
-        } else {
-            echo json_encode([
-                'status'  => 'success',
-                'has_new' => false,
-                'count'   => 0
-            ]);
-        }
+        echo json_encode([
+            'status'      => 'success',
+            'total'       => count($all_pending),
+            'has_new'     => count($new_ids) > 0,
+            'new_ids'     => $new_ids,
+            'candidates'  => $all_pending
+        ]);
     }
 }

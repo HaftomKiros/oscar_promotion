@@ -109,7 +109,24 @@
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                  
+
+                <!-- ── Notification Bell ── -->
+                <li class="dropdown" id="notif-bell-li" style="position:relative;">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notif-bell-btn" style="position:relative;padding:15px 12px;">
+                        <i class="fa fa-bell-o" style="font-size:18px;"></i>
+                        <span id="notif-badge" style="display:none;position:absolute;top:8px;right:4px;background:#e74c3c;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;line-height:18px;text-align:center;">0</span>
+                    </a>
+                    <ul class="dropdown-menu" id="notif-dropdown" style="width:360px;max-height:420px;overflow-y:auto;right:0;left:auto;padding:0;">
+                        <li style="background:#1a3a5c;padding:10px 16px;border-radius:4px 4px 0 0;">
+                            <span style="color:#fff;font-weight:700;font-size:13px;">📋 Pending Registrations</span>
+                            <span id="notif-count-label" style="color:#f5a623;font-size:12px;margin-left:6px;"></span>
+                        </li>
+                        <li id="notif-list-body">
+                            <div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px;">No pending registrations</div>
+                        </li>
+                    </ul>
+                </li>
+
                 <!-- settings -->
                 <li class="dropdown dropdown-user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="pe-7s-settings"></i></a>
