@@ -604,37 +604,50 @@ class Admin_dashboard extends CI_Controller {
         if (!isset($statusMap[$type])) { show_404(); return; }
         list($statusCode, $label) = $statusMap[$type];
 
-        // Get all candidates with this status across all companies
+        // Get all candidates with this status across all companies - ALL FIELDS
         $this->db->select('
-            c.seeker_id, c.full_name, c.sex, c.age, c.phone_number, c.email,
-            c.education_level, c.experience, c.qualification_skills,
-            c.location_text, c.woreda, c.tabia, c.dob_ethiopian,
+            c.seeker_id, c.full_name, c.sex, c.martial_status, c.dob_ethiopian, c.age,
+            c.total_family_size, c.hh_male, c.hh_female, c.household_type,
+            c.disability_status, c.disability_male, c.disability_female,
+            c.phone_number, c.email, c.location_text, c.woreda, c.tabia,
+            e.level AS education_level, f.field AS field_of_study,
+            c.gpa, c.qualification_skills, c.graduated_year, c.experience,
+            c.resume, c.created_at,
             co.company_name, j.job_title, cr.status
         ');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->join('educational_level e', 'e.id = c.education_level', 'left');
+        $this->db->join('field_of_study f', 'f.id = c.field_of_study', 'left');
         $this->db->join('company co', 'co.id = cr.company_id', 'left');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
         $this->db->where('cr.status', $statusCode);
         $this->db->order_by('co.company_name', 'ASC');
         $candidates = $this->db->get()->result_array();
 
-        // Build xlsx using pure PHP
+        // Build xlsx with ALL candidate fields
         $rows = [[
-            'SL', 'Seeker ID', 'Full Name', 'Sex', 'Age', 'Phone', 'Email',
-            'Education', 'Experience', 'Qualification', 'Location', 'Woreda', 'Tabia',
-            'DOB (Ethiopian)', 'Company', 'Job Title', 'Status'
+            'SL', 'Seeker ID', 'Full Name', 'Sex', 'Martial Status', 'DOB (Ethiopian)', 'Age',
+            'Family Size', 'HH Male', 'HH Female', 'Household Type', 'Disability Status',
+            'Disability Male', 'Disability Female', 'Phone', 'Email', 'Location',
+            'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
+            'Graduated Year', 'Experience', 'Resume', 'Created At', 'Company', 'Job Title', 'Status'
         ]];
         $sl = 1;
         foreach ($candidates as $c) {
             $rows[] = [
-                $sl++, $c['seeker_id'], $c['full_name'], $c['sex'], $c['age'] ?? '',
-                $c['phone_number'], $c['email'] ?? '',
-                $c['education_level'] ?? '', $c['experience'] ?? '',
-                $c['qualification_skills'] ?? '', $c['location_text'] ?? '',
+                $sl++, $c['seeker_id'], $c['full_name'], $c['sex'],
+                $c['martial_status'] ?? 'Single', $c['dob_ethiopian'] ?? '', $c['age'] ?? '',
+                $c['total_family_size'] ?? '', $c['hh_male'] ?? '', $c['hh_female'] ?? '',
+                $c['household_type'] ?? '', $c['disability_status'] ?? '',
+                $c['disability_male'] ?? '', $c['disability_female'] ?? '',
+                $c['phone_number'], $c['email'] ?? '', $c['location_text'] ?? '',
                 $c['woreda'] ?? '', $c['tabia'] ?? '',
-                $c['dob_ethiopian'] ?? '', $c['company_name'] ?? '',
-                $c['job_title'] ?? '', $label
+                $c['education_level'] ?? '', $c['field_of_study'] ?? '',
+                $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
+                $c['graduated_year'] ?? '', $c['experience'] ?? '',
+                !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
+                $c['company_name'] ?? '', $c['job_title'] ?? '', $label
             ];
         }
 
