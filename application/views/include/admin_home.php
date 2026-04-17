@@ -424,7 +424,9 @@
       return;
     }
     var html='';
-    data.candidates.forEach(function(c){
+    var limit = Math.min(data.candidates.length, 5);
+    for(var i=0; i<limit; i++){
+      var c=data.candidates[i];
       var timeAgo=c.created_at||'';
       html+='<li><div class="notif-item" onclick="window.location.href=\''+EDIT_URL+c.id+'\'">'+
         '<div class="notif-item-icon">👤</div>'+
@@ -435,7 +437,10 @@
           '<div class="notif-item-time">'+timeAgo+'</div>'+
         '</div>'+
       '</div></li>';
-    });
+    }
+    if(data.candidates.length > 5){
+      html+='<li style="border-top:2px solid #e5e7eb;"><a href="<?php echo base_url("Ccandidate/manage_candidate"); ?>" style="display:block;padding:10px 14px;text-align:center;color:#1a3a5c;font-weight:600;font-size:12px;text-decoration:none;">📋 View All '+data.total+' Registrations →</a></li>';
+    }
     body.innerHTML=html;
   }
 

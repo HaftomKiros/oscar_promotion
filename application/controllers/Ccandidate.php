@@ -133,11 +133,12 @@ public function manage_candidate()
     $candidates = $this->Candidate_model->get_all_candidates();
     $woredas = $this->Candidate_model->get_woredas_with_sex_counts();
 
-    // Get incomplete profiles for call center
-    $this->db->select('id, seeker_id, full_name, sex, phone_number, education_level, experience, qualification_skills, location, created_at');
-    $this->db->from('candidates');
-    $this->db->where('profile_complete', 0);
-    $this->db->order_by('created_at', 'DESC');
+    // Get incomplete profiles for call center with assigned user name
+    $this->db->select('c.id, c.seeker_id, c.full_name, c.sex, c.phone_number, c.education_level, c.experience, c.qualification_skills, c.location, c.created_at, c.assigned_to, CONCAT(IFNULL(u.first_name,"")," ",IFNULL(u.last_name,"")) AS assigned_name');
+    $this->db->from('candidates c');
+    $this->db->join('users u', 'u.user_id = c.assigned_to', 'left');
+    $this->db->where('c.profile_complete', 0);
+    $this->db->order_by('c.created_at', 'DESC');
     $incomplete_candidates = $this->db->get()->result_array();
 
     $data = array(

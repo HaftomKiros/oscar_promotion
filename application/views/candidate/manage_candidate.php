@@ -128,6 +128,7 @@
                                     <th>Experience</th>
                                     <th>Qualification</th>
                                     <th>Location</th>
+                                    <th>Assigned To</th>
                                     <th>Registered</th>
                                     <th>Action</th>
                                 </tr>
@@ -148,6 +149,13 @@
                                     <td><?php echo $c['experience']; ?> yrs</td>
                                     <td><?php echo htmlspecialchars($c['qualification_skills']); ?></td>
                                     <td><?php echo htmlspecialchars($c['location']); ?></td>
+                                    <td style="white-space:nowrap;">
+                                        <?php if(!empty(trim($c['assigned_name']))): ?>
+                                            <span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600;">👤 <?php echo htmlspecialchars(trim($c['assigned_name'])); ?></span>
+                                        <?php else: ?>
+                                            <span style="color:#9ca3af;font-size:11px;">Unassigned</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td style="white-space:nowrap;color:#94a3b8;"><?php echo date('M j, H:i', strtotime($c['created_at'])); ?></td>
                                     <td style="white-space:nowrap;">
                                         <a href="<?php echo base_url('Ccandidate/edit/'.$c['id']); ?>" class="btn-call">
