@@ -14,7 +14,7 @@ class Notification_api extends CI_Controller {
             return;
         }
 
-        $is_admin = $this->session->userdata('isAdmin');
+        $is_admin = ($this->session->userdata('isAdmin') == true || $this->session->userdata('user_type') == 1);
         $user_id  = $this->session->userdata('user_id');
 
         // Get ALL incomplete candidates for the bell count/list
@@ -23,8 +23,8 @@ class Notification_api extends CI_Controller {
         $this->db->join('users u', 'u.user_id = c.assigned_to', 'left');
         $this->db->where('c.profile_complete', 0);
 
-        // Admin (isAdmin=1 or isAdmin='1') sees all; data clerks see only theirs
-        if (!$is_admin || $is_admin == 0 || $is_admin === '0') {
+        // Admin sees all; data clerks see only their assigned
+        if (!$is_admin) {
             $this->db->where('c.assigned_to', $user_id);
         }
 

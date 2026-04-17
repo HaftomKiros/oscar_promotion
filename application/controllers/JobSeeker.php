@@ -105,14 +105,16 @@ class JobSeeker extends CI_Controller {
         $this->db->insert('candidates', $data);
         $candidate_id = $this->db->insert_id();
 
-        // ── Round-robin assignment to data clerks / call center agents ──
-        // Only runs if the assigned_to column exists (run the migration SQL first)
+        // ── Round-robin assignment to data clerks only (user_type = 2) ──
         $fields = $this->db->list_fields('candidates');
         if (in_array('assigned_to', $fields)) {
-            $this->db->select('user_id');
-            $this->db->from('users');
-            $this->db->where('status', 1);
-            $this->db->order_by('user_id', 'ASC');
+            // Only get data clerks (user_type=2), not admins
+            $this->db->select('u.user_id');
+            $this->db->from('users u');
+            $this->db->join('user_login ul', 'ul.user_id = u.user_id');
+            $this->db->where('ul.user_type', 2);
+            $this->db->where('ul.status', 1);
+            $this->db->order_by('u.user_id', 'ASC');
             $staff = $this->db->get()->result_array();
 
             if (!empty($staff)) {
