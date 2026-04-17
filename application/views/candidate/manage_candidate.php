@@ -128,7 +128,9 @@
                                     <th>Experience</th>
                                     <th>Qualification</th>
                                     <th>Location</th>
+                                    <?php if($this->session->userdata('isAdmin') || $this->session->userdata('user_type') == 1): ?>
                                     <th>Assigned To</th>
+                                    <?php endif; ?>
                                     <th>Registered</th>
                                     <th>Action</th>
                                 </tr>
@@ -149,6 +151,7 @@
                                     <td><?php echo $c['experience']; ?> yrs</td>
                                     <td><?php echo htmlspecialchars($c['qualification_skills']); ?></td>
                                     <td><?php echo htmlspecialchars($c['location']); ?></td>
+                                    <?php if($this->session->userdata('isAdmin') || $this->session->userdata('user_type') == 1): ?>
                                     <td style="white-space:nowrap;">
                                         <?php if(!empty(trim($c['assigned_name']))): ?>
                                             <span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600;">👤 <?php echo htmlspecialchars(trim($c['assigned_name'])); ?></span>
@@ -156,6 +159,7 @@
                                             <span style="color:#9ca3af;font-size:11px;">Unassigned</span>
                                         <?php endif; ?>
                                     </td>
+                                    <?php endif; ?>
                                     <td style="white-space:nowrap;color:#94a3b8;"><?php echo date('M j, H:i', strtotime($c['created_at'])); ?></td>
                                     <td style="white-space:nowrap;">
                                         <a href="<?php echo base_url('Ccandidate/edit/'.$c['id']); ?>" class="btn-call">
