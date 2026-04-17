@@ -1,0 +1,13 @@
+# CI sessions and cache
+application/ci_sessions/
+application/cache/
+
+# Logs
+application/logs/
+
+# Export files
+*.sql
+
+# OS files
+.DS_Store
+Thumbs.db
