@@ -586,8 +586,100 @@ class Admin_dashboard extends CI_Controller {
         $CI->load->library('lreport');
         $content = $CI->lreport->hired_report();
         $this->template->full_admin_html_view($content);
-
     }
+
+    // Export all candidates for a given status across all companies
+    public function export_report_all($type = 'hired') {
+        $this->auth->check_admin_auth();
+        $this->load->model('Reports');
+
+        $statusMap = [
+            'hired'       => [5, 'Hired'],
+            'shortlisted' => [3, 'Shortlisted'],
+            'interviewed' => [4, 'Interviewed'],
+            'rejected'    => [6, 'Rejected'],
+            'applied'     => [2, 'Applied'],
+        ];
+
+        if (!isset($statusMap[$type])) { show_404(); return; }
+        list($statusCode, $label) = $statusMap[$type];
+
+        // Get all candidates with this status across all companies
+        $this->db->select('
+            c.seeker_id, c.full_name, c.sex, c.age, c.phone_number, c.email,
+            c.education_level, c.experience, c.qualification_skills,
+            c.location_text, c.woreda, c.tabia, c.dob_ethiopian,
+            co.company_name, j.job_title, cr.status
+        ');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->join('company co', 'co.id = cr.company_id', 'left');
+        $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
+        $this->db->where('cr.status', $statusCode);
+        $this->db->order_by('co.company_name', 'ASC');
+        $candidates = $this->db->get()->result_array();
+
+        // Build xlsx using pure PHP
+        $rows = [[
+            'SL', 'Seeker ID', 'Full Name', 'Sex', 'Age', 'Phone', 'Email',
+            'Education', 'Experience', 'Qualification', 'Location', 'Woreda', 'Tabia',
+            'DOB (Ethiopian)', 'Company', 'Job Title', 'Status'
+        ]];
+        $sl = 1;
+        foreach ($candidates as $c) {
+            $rows[] = [
+                $sl++, $c['seeker_id'], $c['full_name'], $c['sex'], $c['age'] ?? '',
+                $c['phone_number'], $c['email'] ?? '',
+                $c['education_level'] ?? '', $c['experience'] ?? '',
+                $c['qualification_skills'] ?? '', $c['location_text'] ?? '',
+                $c['woreda'] ?? '', $c['tabia'] ?? '',
+                $c['dob_ethiopian'] ?? '', $c['company_name'] ?? '',
+                $c['job_title'] ?? '', $label
+            ];
+        }
+
+        $tmp = $this->_build_xlsx($rows);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename=' . $type . '_report_all_' . date('Y-m-d') . '.xlsx');
+        header('Content-Length: ' . filesize($tmp));
+        header('Cache-Control: max-age=0');
+        readfile($tmp);
+        unlink($tmp);
+        exit;
+    }
+
+    // Pure PHP xlsx builder (no dependencies)
+    private function _build_xlsx($rows) {
+        $sheetXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+            . '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>';
+        foreach ($rows as $ri => $row) {
+            $sheetXml .= '<row r="' . ($ri + 1) . '">';
+            foreach ($row as $ci => $val) {
+                $col = ''; $n = $ci;
+                do { $col = chr(65 + ($n % 26)) . $col; $n = intval($n / 26) - 1; } while ($n >= 0);
+                $cell = $col . ($ri + 1);
+                $safe = htmlspecialchars((string)$val, ENT_XML1, 'UTF-8');
+                $sheetXml .= '<c r="' . $cell . '" t="inlineStr"><is><t>' . $safe . '</t></is></c>';
+            }
+            $sheetXml .= '</row>';
+        }
+        $sheetXml .= '</sheetData></worksheet>';
+        $rels = '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>';
+        $workbook = '<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Sheet1" sheetId="1" r:id="rId1"/></sheets></workbook>';
+        $ct = '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>';
+        $pkgRels = '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+        $tmp = tempnam(sys_get_temp_dir(), 'xlsx');
+        $zip = new ZipArchive();
+        $zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        $zip->addFromString('[Content_Types].xml', $ct);
+        $zip->addFromString('_rels/.rels', $pkgRels);
+        $zip->addFromString('xl/workbook.xml', $workbook);
+        $zip->addFromString('xl/_rels/workbook.xml.rels', $rels);
+        $zip->addFromString('xl/worksheets/sheet1.xml', $sheetXml);
+        $zip->close();
+        return $tmp;
+    }
+
      public function rejected_report(){
         $CI =& get_instance();
         $this->auth->check_admin_auth();

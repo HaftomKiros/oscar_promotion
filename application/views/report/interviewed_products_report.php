@@ -33,7 +33,12 @@
             <div class="col-sm-12">
                 <div class="panel panel-bd lobidrag">
                     <div class="panel-heading">
-                        <div class="panel-title"><h4><?php echo display('interviewed_report'); ?></h4></div>
+                        <div class="panel-title">
+                            <h4><?php echo display('interviewed_report'); ?></h4>
+                            <a href="<?php echo base_url('Admin_dashboard/export_report_all/interviewed'); ?>" class="btn btn-success btn-sm" style="margin-top:8px;">
+                                <i class="fa fa-download"></i> Export All Candidates (xlsx)
+                            </a>
+                        </div>
                     </div>
                     <div class="panel-body panel-body-scroll">
                         <table id="interviewedList" class="table table-striped table-bordered" cellspacing="0" width="100%">
