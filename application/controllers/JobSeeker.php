@@ -29,7 +29,8 @@ class JobSeeker extends CI_Controller {
     public function submit() {
 
         // ── reCAPTCHA verification ──
-        $recaptcha_secret = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ_4Z6n3N';
+        $is_local = (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false));
+        $recaptcha_secret = $is_local ? '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ_4Z6n3N' : '6Le167ssAAAAAERx-4ZHi8V0ZSMVEggQDi4licjY';
         $recaptcha_response = $this->input->post('g-recaptcha-response');
 
         if (empty($recaptcha_response)) {

@@ -573,7 +573,7 @@ select.inp{padding-left:14px;}
             <!-- reCAPTCHA -->
             <div class="recaptcha-wrap">
               <div class="g-recaptcha"
-                data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                data-sitekey="<?php echo (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false) ? '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' : '6Le167ssAAAAAFTHhewA7ssuy_rF6TKVD_-_3RkN'; ?>"
                 data-theme="light"
                 data-size="normal">
               </div>
