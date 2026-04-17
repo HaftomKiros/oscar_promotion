@@ -61,7 +61,7 @@ class JobSeeker extends CI_Controller {
         $this->form_validation->set_rules('dob_ethiopian','Date of Birth','required|trim');
         $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim|is_unique[candidates.phone_number]');
         $this->form_validation->set_rules('education_level','Education Level','required');
-        $this->form_validation->set_rules('experience',   'Years of Experience','required|trim');
+        $this->form_validation->set_rules('experience',   'Years of Experience','trim');
         $this->form_validation->set_rules('qualification_skills','Qualification / Profession','required|trim');
         $this->form_validation->set_rules('location',     'Location',     'required|trim');
 
@@ -84,7 +84,7 @@ class JobSeeker extends CI_Controller {
             'age'                 => $this->input->post('age'),
             'phone_number'        => $this->input->post('phone_number'),
             'education_level'     => $this->input->post('education_level'),
-            'experience'          => $this->input->post('experience'),
+            'experience'          => $this->input->post('experience') ?: 0,
             'qualification_skills'=> $this->input->post('qualification_skills'),
             'location'            => 0,
             'location_text'       => $this->input->post('location'),

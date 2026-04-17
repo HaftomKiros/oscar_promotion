@@ -17,13 +17,14 @@ class Notification_api extends CI_Controller {
         $is_admin = $this->session->userdata('isAdmin');
         $user_id  = $this->session->userdata('user_id');
 
-        // Get ALL incomplete candidates (not time-filtered) for the bell count/list
-        $this->db->select('c.id, c.seeker_id, c.full_name, c.phone_number, c.created_at, c.assigned_to, CONCAT(u.first_name," ",u.last_name) AS assigned_name');
+        // Get ALL incomplete candidates for the bell count/list
+        $this->db->select('c.id, c.seeker_id, c.full_name, c.phone_number, c.created_at, c.assigned_to, CONCAT(IFNULL(u.first_name,"")," ",IFNULL(u.last_name,"")) AS assigned_name');
         $this->db->from('candidates c');
         $this->db->join('users u', 'u.user_id = c.assigned_to', 'left');
         $this->db->where('c.profile_complete', 0);
 
-        if (!$is_admin) {
+        // Admin (isAdmin=1 or isAdmin='1') sees all; data clerks see only theirs
+        if (!$is_admin || $is_admin == 0 || $is_admin === '0') {
             $this->db->where('c.assigned_to', $user_id);
         }
 
@@ -39,18 +40,18 @@ class Notification_api extends CI_Controller {
         $new_ids = [];
         foreach ($all_pending as $c) {
             if ($c['created_at'] > $last_check) {
-                $new_ids[] = $c['id'];
+                $new_ids[] = (int)$c['id'];
             }
         }
 
         $this->session->set_userdata('last_candidate_check', date('Y-m-d H:i:s'));
 
         echo json_encode([
-            'status'      => 'success',
-            'total'       => count($all_pending),
-            'has_new'     => count($new_ids) > 0,
-            'new_ids'     => $new_ids,
-            'candidates'  => $all_pending
+            'status'     => 'success',
+            'total'      => count($all_pending),
+            'has_new'    => count($new_ids) > 0,
+            'new_ids'    => $new_ids,
+            'candidates' => $all_pending
         ]);
     }
 }
