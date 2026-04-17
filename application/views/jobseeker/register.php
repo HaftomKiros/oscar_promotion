@@ -16,12 +16,41 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 const T={
-  en:{heroTitle:"Find Your Next\nOpportunity",heroDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",formTitle:"Job Seeker Registration",formDesc:"All fields marked * are required.",personalDetails:"Personal Details",fullName:"Full Name",fullNamePh:"Enter your full name",dob:"Date of Birth (Ethiopian)",phone:"Phone Number",phonePh:"e.g. 0912345678",sex:"Sex",male:"Male",female:"Female",education:"Education & Experience",eduLevel:"Education Level",experience:"Years of Experience",qualification:"Job Looking For",qualificationPh:"e.g. Accountant, Nurse, Driver",location:"Location",locationLabel:"Location / Address",locationPh:"City, Sub-city or Woreda",submit:"Submit Registration",consent:"By submitting, you confirm your details are accurate.",day:"Day",month:"Month",year:"Year",meskerem:"Meskerem",tikemet:"Tikemet",hidar:"Hidar",tahsas:"Tahsas",tir:"Tir",yekatit:"Yekatit",megabit:"Megabit",miyazia:"Miyazia",ginbot:"Ginbot",sene:"Sene",hamle:"Hamle",nehase:"Nehase"},
-  ti:{heroTitle:"ናይ ስራሕ ፈለይ\nምዝገባ",heroDesc:"ብቐሊሉ ምምዝጋብ።",formTitle:"ምዝገባ ፎርም",formDesc:"ኩሎም * ምልክት ዘለዎም ዘድልዩ እዮም።",personalDetails:"ነገራት ብዓልቲ",fullName:"ምሉእ ስም",fullNamePh:"ምሉእ ስምካ",dob:"ዕለት ልደት",phone:"ቁጽሪ ስልኪ",phonePh:"0912345678",sex:"ጾታ",male:"ወዲ",female:"ጓል",education:"ትምህርትን ተሞኩሮን",eduLevel:"ደረጃ ትምህርት",experience:"ዓመታት ስራሕ",qualification:"ስራሕ ዝደሊ",qualificationPh:"ምሳሌ: ኣካውንታንት",location:"ቦታ",locationLabel:"ቦታ / ኣድራሻ",locationPh:"ከተማ",submit:"ምዝገባ ምቕራብ",consent:"ዝሃብካዮ ሓቂ ምዃኑ ተቐበሎ።",day:"ቀን",month:"ወርሒ",year:"ዓመት",meskerem:"መስከረም",tikemet:"ጥቅምቲ",hidar:"ሕዳር",tahsas:"ታሕሳስ",tir:"ጥር",yekatit:"የካቲት",megabit:"መጋቢት",miyazia:"ሚያዚያ",ginbot:"ግንቦት",sene:"ሰነ",hamle:"ሓምለ",nehase:"ነሓሰ"}
+  en:{heroTitle:"Find Your Next\nOpportunity",heroDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",formTitle:"Job Seeker Registration",formDesc:"All fields marked * are required.",personalDetails:"Personal Details",fullName:"Full Name",fullNamePh:"Enter your full name",dob:"Date of Birth (Ethiopian)",phone:"Phone Number",phonePh:"e.g. 0912345678",sex:"Sex",male:"Male",female:"Female",education:"Education & Experience",eduLevel:"Education Level",experience:"Years of Experience",qualification:"Job Looking For",qualificationPh:"e.g. Accountant, Nurse, Driver",location:"Location",locationLabel:"Location / Address",locationPh:"City, Sub-city or Woreda",submit:"Submit Registration",consent:"By submitting, you confirm your details are accurate.",day:"Day",month:"Month",year:"Year",meskerem:"Meskerem",tikemet:"Tikemet",hidar:"Hidar",tahsas:"Tahsas",tir:"Tir",yekatit:"Yekatit",megabit:"Megabit",miyazia:"Miyazia",ginbot:"Ginbot",sene:"Sene",hamle:"Hamle",nehase:"Nehase",
+    step1Title:"Register Once",step1Sub:"Fill your profile once. We keep searching for you.",
+    step2Title:"We Find the Job",step2Sub:"Oscar matches your skills to verified employer vacancies.",
+    step3Title:"We Call You",step3Sub:"When there's a match, Oscar Promotion contacts you directly.",
+    step4Title:"Always Free",step4Sub:"No fees. No commissions. Just opportunities.",
+    featDesc:"Oscar Promotion finds the right job for you. Register your details, and when a matching employer posts a vacancy — we contact you directly. No searching. No waiting alone.",
+    statReg:"Register",statRegSub:"Your Profile",statMatch:"We Match",statMatchSub:"Your Skills",statHire:"Get Hired",statHireSub:"We Call You",
+    splashTitle:"Your Career\nStarts Here",splashDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",
+    trust1:"Your data is secure & encrypted",trust2:"Real information required",trust3:"Never shared without consent",
+    splashBtn:"Register Now"},
+  ti:{heroTitle:"ናይ ስራሕ ዕድል\nምርካብ",heroDesc:"ሓበሬታኻ ምላእ እሞ ምስ ስራሕ ሃብቲ ብቕልጡፍ ተራኸብ። ምስ ዝምዝገብካ፡ ንዝያዳ ሓበሬታ ክንረኽበካ ኢና።",formTitle:"ናይ ስራሕ ፈላጢ ምዝገባ",formDesc:"ብ * ዝተመልከቱ ኩሎም ዓምድታት ክምልኡ ኣለዎም።",personalDetails:"ውልቃዊ ሓበሬታ",fullName:"ምሉእ ስም",fullNamePh:"ምሉእ ስምኻ ኣእቱ",dob:"ዕለተ ልደት (ኢትዮጵያዊ)",phone:"ቁጽሪ ተሌፎን",phonePh:"ኣብነት 0912345678",sex:"ጾታ",male:"ተባዕታይ",female:"ኣንስተይቲ",education:"ትምህርትን ተመክሮን",eduLevel:"ደረጃ ትምህርቲ",experience:"ዓመታት ተመክሮ",qualification:"እትደልዮ ስራሕ",qualificationPh:"ኣብነት: ሒሳብኛ፡ ነርስ፡ ሹፌር",location:"ቦታ",locationLabel:"ቦታ / ኣድራሻ",locationPh:"ከተማ፡ ክፍለ ከተማ ወይ ወረዳ",submit:"ምዝገባ ምቕራብ",consent:"ብምቕራብካ፡ ዝሃብካዮ ሓበሬታ ቅኑዕ ምዃኑ ትርጉም።",day:"መዓልቲ",month:"ወርሒ",year:"ዓመት",meskerem:"መስከረም",tikemet:"ጥቅምቲ",hidar:"ሕዳር",tahsas:"ታሕሳስ",tir:"ጥሪ",yekatit:"የካቲት",megabit:"መጋቢት",miyazia:"ሚያዝያ",ginbot:"ግንቦት",sene:"ሰነ",hamle:"ሓምለ",nehase:"ነሓሰ",
+    step1Title:"ሓንሳብ ምዝገባ",step1Sub:"ሓበሬታኻ ሓንሳብ ምላእ። ንሕና ስራሕ ክንደሊ ኢና።",
+    step2Title:"ስራሕ ንደሊ",step2Sub:"ኦስካር ፕሮሞሽን ክእለትካ ምስ ናይ ስራሕ ሃብቲ ኣዛሚዱ ይሰርሕ።",
+    step3Title:"ክንረኽበካ ኢና",step3Sub:"ምስ ዝሰማማዕ ስራሕ ምስ ተረኽበ፡ ኦስካር ፕሮሞሽን ብቐጥታ ክረኽበካ እዩ።",
+    step4Title:"ብነጻ እዩ",step4Sub:"ዋጋ የለን። ኮሚሽን የለን። ዕድላት ጥራሕ።",
+    featDesc:"ኦስካር ፕሮሞሽን ንዓኻ ዝሰማማዕ ስራሕ ይደሊ። ሓበሬታኻ ምዝገባ፡ ምስ ዝሰማማዕ ስራሕ ሃብቲ ምስ ዘቕርብ — ብቐጥታ ክንረኽበካ ኢና።",
+    statReg:"ምዝገባ",statRegSub:"ሓበሬታኻ",statMatch:"ምዝማድ",statMatchSub:"ክእለትካ",statHire:"ምቅጻር",statHireSub:"ክንረኽበካ",
+    splashTitle:"ናይ ስራሕ ዕድልካ\nኣብዚ ይጅምር",splashDesc:"ሓበሬታኻ ምላእ እሞ ምስ ስራሕ ሃብቲ ብቕልጡፍ ተራኸብ። ምስ ዝምዝገብካ፡ ንዝያዳ ሓበሬታ ክንረኽበካ ኢና።",
+    trust1:"ሓበሬታኻ ብድሕንነት ይሕዘሉ",trust2:"ቅኑዕ ሓበሬታ ኣድላዪ እዩ",trust3:"ብዘይ ፍቓድካ ኣይካፈልን",
+    splashBtn:"ሕጂ ምዝገባ"}
 };
 function t(lang){
   if(!T[lang])return;
-  document.querySelectorAll('[data-k]').forEach(el=>{var k=el.getAttribute('data-k');if(T[lang][k]!==undefined)el.textContent=T[lang][k]});
+  document.querySelectorAll('[data-k]').forEach(el=>{
+    var k=el.getAttribute('data-k');
+    if(T[lang][k]!==undefined){
+      if(k==='splashTitle'){
+        el.innerHTML=T[lang][k].replace('\n','<br>').replace('<span>','').replace('</span>','');
+        var parts=T[lang][k].split('\n');
+        if(parts.length>1) el.innerHTML=parts[0]+'<br><span>'+parts[1]+'</span>';
+      }else{
+        el.textContent=T[lang][k];
+      }
+    }
+  });
   document.querySelectorAll('[data-kp]').forEach(el=>{var k=el.getAttribute('data-kp');if(T[lang][k])el.placeholder=T[lang][k]});
   var h=document.getElementById('hero-title');if(h)h.innerHTML=T[lang].heroTitle.replace('\n','<br>');
   localStorage.setItem('lang',lang);
@@ -321,8 +350,8 @@ select.inp{padding-left:14px;}
     <div class="sp-brand-name">Oscar Promotion</div>
 
     <!-- Headline -->
-    <div class="sp-title">Your Career<br><span>Starts Here</span></div>
-    <p class="sp-desc">Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.</p>
+    <div class="sp-title" data-k="splashTitle">Your Career<br><span>Starts Here</span></div>
+    <p class="sp-desc" data-k="splashDesc">Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.</p>
 
     <!-- Journey steps -->
     <div class="sp-steps">
@@ -330,31 +359,31 @@ select.inp{padding-left:14px;}
         <div class="sp-step-ico sp-ico-1"><i class="bi bi-pencil-square"></i></div>
         <div class="sp-step-line"></div>
         <div class="sp-step-body">
-          <div class="sp-step-title">Register Once</div>
-          <div class="sp-step-sub">Fill your profile once. We keep searching for you.</div>
+          <div class="sp-step-title" data-k="step1Title">Register Once</div>
+          <div class="sp-step-sub" data-k="step1Sub">Fill your profile once. We keep searching for you.</div>
         </div>
       </div>
       <div class="sp-step">
         <div class="sp-step-ico sp-ico-2"><i class="bi bi-briefcase-fill"></i></div>
         <div class="sp-step-line"></div>
         <div class="sp-step-body">
-          <div class="sp-step-title">We Find the Job</div>
-          <div class="sp-step-sub">Oscar matches your skills to verified employer vacancies.</div>
+          <div class="sp-step-title" data-k="step2Title">We Find the Job</div>
+          <div class="sp-step-sub" data-k="step2Sub">Oscar matches your skills to verified employer vacancies.</div>
         </div>
       </div>
       <div class="sp-step">
         <div class="sp-step-ico sp-ico-3"><i class="bi bi-telephone-outbound-fill"></i></div>
         <div class="sp-step-line"></div>
         <div class="sp-step-body">
-          <div class="sp-step-title">We Call You</div>
-          <div class="sp-step-sub">When there's a match, Oscar Promotion contacts you directly.</div>
+          <div class="sp-step-title" data-k="step3Title">We Call You</div>
+          <div class="sp-step-sub" data-k="step3Sub">When there's a match, Oscar Promotion contacts you directly.</div>
         </div>
       </div>
       <div class="sp-step sp-step-last">
         <div class="sp-step-ico sp-ico-4"><i class="bi bi-gift-fill"></i></div>
         <div class="sp-step-body">
-          <div class="sp-step-title">Always Free</div>
-          <div class="sp-step-sub">No fees. No commissions. Just opportunities.</div>
+          <div class="sp-step-title" data-k="step4Title">Always Free</div>
+          <div class="sp-step-sub" data-k="step4Sub">No fees. No commissions. Just opportunities.</div>
         </div>
       </div>
     </div>
@@ -370,14 +399,14 @@ select.inp{padding-left:14px;}
 
     <!-- Security trust pills -->
     <div class="sp-trust">
-      <div class="sp-trust-pill"><i class="bi bi-shield-lock-fill"></i> Your data is secure &amp; encrypted</div>
-      <div class="sp-trust-pill"><i class="bi bi-person-check-fill"></i> Real information required</div>
-      <div class="sp-trust-pill"><i class="bi bi-eye-slash-fill"></i> Never shared without consent</div>
+      <div class="sp-trust-pill"><i class="bi bi-shield-lock-fill"></i> <span data-k="trust1">Your data is secure &amp; encrypted</span></div>
+      <div class="sp-trust-pill"><i class="bi bi-person-check-fill"></i> <span data-k="trust2">Real information required</span></div>
+      <div class="sp-trust-pill"><i class="bi bi-eye-slash-fill"></i> <span data-k="trust3">Never shared without consent</span></div>
     </div>
 
     <!-- CTA -->
     <button class="sp-cta" id="splashBtn">
-      <i class="bi bi-pencil-square"></i> Register Now <i class="bi bi-arrow-right"></i>
+      <i class="bi bi-pencil-square"></i> <span data-k="splashBtn">Register Now</span> <i class="bi bi-arrow-right"></i>
     </button>
     <div class="sp-foot">Developed &amp; operated by <strong>Oscar Promotion</strong></div>
   </div>
@@ -396,17 +425,17 @@ select.inp{padding-left:14px;}
         <div class="brand-text"><div class="name">Oscar Promotion</div><div class="tag">Recruitment &amp; Placement Agency</div></div>
       </div>
       <h1 class="lp-headline" id="hero-title">Your Career<br>Starts <span>Here</span></h1>
-      <p class="lp-desc" data-k="heroDesc">Oscar Promotion finds the right job for you. Register your details, and when a matching employer posts a vacancy — we contact you directly. No searching. No waiting alone.</p>
+      <p class="lp-desc" data-k="featDesc">Oscar Promotion finds the right job for you. Register your details, and when a matching employer posts a vacancy — we contact you directly. No searching. No waiting alone.</p>
       <div class="feature-list">
-        <div class="feat"><div class="feat-icon"><i class="bi bi-pencil-square"></i></div><div class="feat-body"><div class="ftitle">Register Once</div><div class="fdesc">Fill your profile once. We keep searching for you.</div></div></div>
-        <div class="feat"><div class="feat-icon"><i class="bi bi-briefcase-fill"></i></div><div class="feat-body"><div class="ftitle">We Find the Job</div><div class="fdesc">Oscar matches your skills to verified employer vacancies.</div></div></div>
-        <div class="feat"><div class="feat-icon"><i class="bi bi-telephone-outbound-fill"></i></div><div class="feat-body"><div class="ftitle">We Call You</div><div class="fdesc">When there's a match, Oscar Promotion contacts you directly.</div></div></div>
-        <div class="feat"><div class="feat-icon"><i class="bi bi-shield-lock-fill"></i></div><div class="feat-body"><div class="ftitle">Always Free</div><div class="fdesc">No fees. No commissions. Just opportunities.</div></div></div>
+        <div class="feat"><div class="feat-icon"><i class="bi bi-pencil-square"></i></div><div class="feat-body"><div class="ftitle" data-k="step1Title">Register Once</div><div class="fdesc" data-k="step1Sub">Fill your profile once. We keep searching for you.</div></div></div>
+        <div class="feat"><div class="feat-icon"><i class="bi bi-briefcase-fill"></i></div><div class="feat-body"><div class="ftitle" data-k="step2Title">We Find the Job</div><div class="fdesc" data-k="step2Sub">Oscar matches your skills to verified employer vacancies.</div></div></div>
+        <div class="feat"><div class="feat-icon"><i class="bi bi-telephone-outbound-fill"></i></div><div class="feat-body"><div class="ftitle" data-k="step3Title">We Call You</div><div class="fdesc" data-k="step3Sub">When there's a match, Oscar Promotion contacts you directly.</div></div></div>
+        <div class="feat"><div class="feat-icon"><i class="bi bi-shield-lock-fill"></i></div><div class="feat-body"><div class="ftitle" data-k="step4Title">Always Free</div><div class="fdesc" data-k="step4Sub">No fees. No commissions. Just opportunities.</div></div></div>
       </div>
       <div class="stats-row">
-        <div class="stat"><span class="n" style="font-size:12px;letter-spacing:0;">Register</span><span class="l">Your Profile</span></div>
-        <div class="stat"><span class="n" style="font-size:12px;letter-spacing:0;">We Match</span><span class="l">Your Skills</span></div>
-        <div class="stat"><span class="n" style="font-size:12px;letter-spacing:0;">Get Hired</span><span class="l">We Call You</span></div>
+        <div class="stat"><span class="n" style="font-size:12px;letter-spacing:0;" data-k="statReg">Register</span><span class="l" data-k="statRegSub">Your Profile</span></div>
+        <div class="stat"><span class="n" style="font-size:12px;letter-spacing:0;" data-k="statMatch">We Match</span><span class="l" data-k="statMatchSub">Your Skills</span></div>
+        <div class="stat"><span class="n" style="font-size:12px;letter-spacing:0;" data-k="statHire">Get Hired</span><span class="l" data-k="statHireSub">We Call You</span></div>
       </div>
     </div>
     <div class="lp-bottom"><div class="lp-footer">&copy; <?php echo date('Y'); ?> Oscar Promotion &middot; All rights reserved</div></div>
