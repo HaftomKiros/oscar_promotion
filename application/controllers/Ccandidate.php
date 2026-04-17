@@ -242,10 +242,6 @@ public function get_candidates_datatable()
  */
 public function export_candidates_excel()
 {
-    // Temporary: show errors for debugging
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
-
     $this->load->model('Candidate_model');
     $sex = $this->input->get('sex') ?? '';
     $candidates = $this->Candidate_model->get_all_candidates_for_export($sex);
