@@ -373,7 +373,7 @@ public function export_candidates_by_woreda()
     $this->db->join('zone z', 'z.id = c.location', 'left');
     $this->db->join('educational_level e', 'e.id = c.education_level', 'left');
     $this->db->join('field_of_study f', 'f.id = c.field_of_study', 'left');
-    $this->db->where('c.woreda', $woreda);
+    $this->db->where('LOWER(c.woreda) = LOWER(' . $this->db->escape($woreda) . ')', null, false);
     if (!empty($sex)) $this->db->where('c.sex', $sex);
     $this->db->order_by('c.id', 'DESC');
     $candidates = $this->db->get()->result_array();

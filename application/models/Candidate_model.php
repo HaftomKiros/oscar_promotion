@@ -227,39 +227,24 @@ class Candidate_model extends CI_Model {
      */
     public function get_woredas_with_sex_counts()
     {
-        // Get male counts per woreda
+        // Use LOWER() to group case-insensitively (semen = Semen = SEMEN)
         $this->db->reset_query();
-        $this->db->select('woreda, COUNT(*) as count');
+        $this->db->select('LOWER(woreda) as woreda, SUM(sex="Male") as male_count, SUM(sex="Female") as female_count, COUNT(*) as total', false);
         $this->db->where('woreda IS NOT NULL', null, false);
         $this->db->where('woreda !=', '');
-        $this->db->where('sex', 'Male');
-        $this->db->group_by('woreda');
-        $male_result = $this->db->get('candidates')->result_array();
+        $this->db->group_by('LOWER(woreda)');
+        $this->db->order_by('LOWER(woreda)', 'ASC');
+        $result = $this->db->get('candidates')->result_array();
 
         $woreda_data = [];
-        foreach ($male_result as $row) {
-            $woreda_data[$row['woreda']] = ['Male' => (int)$row['count'], 'Female' => 0];
-        }
-
-        // Get female counts per woreda
-        $this->db->reset_query();
-        $this->db->select('woreda, COUNT(*) as count');
-        $this->db->where('woreda IS NOT NULL', null, false);
-        $this->db->where('woreda !=', '');
-        $this->db->where('sex', 'Female');
-        $this->db->group_by('woreda');
-        $female_result = $this->db->get('candidates')->result_array();
-
-        foreach ($female_result as $row) {
-            if (!isset($woreda_data[$row['woreda']])) {
-                $woreda_data[$row['woreda']] = ['Male' => 0, 'Female' => 0];
-            }
-            $woreda_data[$row['woreda']]['Female'] = (int)$row['count'];
-        }
-
-        // Total = Male + Female
-        foreach ($woreda_data as $w => $d) {
-            $woreda_data[$w]['total'] = $d['Male'] + $d['Female'];
+        foreach ($result as $row) {
+            // Capitalize first letter for display
+            $display = ucfirst($row['woreda']);
+            $woreda_data[$display] = [
+                'Male'   => (int)$row['male_count'],
+                'Female' => (int)$row['female_count'],
+                'total'  => (int)$row['male_count'] + (int)$row['female_count']
+            ];
         }
 
         ksort($woreda_data);
@@ -274,13 +259,13 @@ class Candidate_model extends CI_Model {
         $this->db->select('candidates.*, zone.zone_name as location', FALSE);
         $this->db->from('candidates');
         $this->db->join('zone', 'zone.id = candidates.location', 'left');
-        $this->db->where('woreda', $woreda);
-        
-        // Sex filter
+        // Case-insensitive woreda match
+        $this->db->where('LOWER(woreda) = LOWER(' . $this->db->escape($woreda) . ')', null, false);
+
         if (!empty($sex)) {
             $this->db->where('sex', $sex);
         }
-        
+
         $this->db->order_by('id', 'DESC');
         return $this->db->get()->result_array();
     }
