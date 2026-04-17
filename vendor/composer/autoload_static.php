@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3
 {
+    public static $files = array (
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'Z' => 
         array (
@@ -14,6 +18,8 @@ class ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
         ),
         'M' => 
@@ -22,7 +28,6 @@ class ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3
         ),
         'C' => 
         array (
-            'Composer\\Pcre\\' => 14,
             'Complex\\' => 8,
         ),
     );
@@ -36,6 +41,15 @@ class ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
@@ -44,13 +58,19 @@ class ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
-        'Composer\\Pcre\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/composer/pcre/src',
-        ),
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'H' => 
+        array (
+            'HTMLPurifier' => 
+            array (
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
+            ),
         ),
     );
 
@@ -63,6 +83,7 @@ class ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit8d23c9fc4293289eeea34c52e59f1bc3::$classMap;
 
         }, null, ClassLoader::class);
