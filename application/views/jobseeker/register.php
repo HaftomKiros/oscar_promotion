@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -16,26 +16,26 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 const T={
-  en:{heroTitle:"Find Your Next\nOpportunity",heroDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",formTitle:"Job Seeker Registration",formDesc:"All fields marked * are required.",personalDetails:"Personal Details",fullName:"Full Name",fullNamePh:"Enter your full name",dob:"Date of Birth (Ethiopian)",phone:"Phone Number",phonePh:"e.g. 0912345678",sex:"Sex",male:"Male",female:"Female",education:"Education & Experience",eduLevel:"Education Level",experience:"Years of Experience",qualification:"Job Looking For",qualificationPh:"e.g. Accountant, Nurse, Driver",location:"Location",locationLabel:"Location / Address",locationPh:"Zoba, Woreda, Tabia",submit:"Submit Registration",consent:"By submitting, you confirm your details are accurate.",day:"Day",month:"Month",year:"Year",meskerem:"Meskerem",tikemet:"Tikemet",hidar:"Hidar",tahsas:"Tahsas",tir:"Tir",yekatit:"Yekatit",megabit:"Megabit",miyazia:"Miyazia",ginbot:"Ginbot",sene:"Sene",hamle:"Hamle",nehase:"Nehase",
+  en:{heroTitle:"Find Your Next\nOpportunity",heroDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",formTitle:"Job Seeker Registration",formDesc:"All fields marked * are required.",personalDetails:"Personal Details",fullName:"Full Name",fullNamePh:"Enter your full name",dob:"Date of Birth (Ethiopian)",phone:"Phone Number",phonePh:"e.g. 0912345678",sex:"Sex",male:"Male",female:"Female",education:"Education & Experience",eduLevel:"Education Level",experience:"Years of Experience",qualification:"Skills / Qualifications",qualificationPh:"e.g. Accountant, Nurse, Driver",location:"Location",locationLabel:"Location / Address",locationPh:"Zoba, Woreda, Tabia",submit:"Submit Registration",consent:"By submitting, you confirm your details are accurate.",day:"Day",month:"Month",year:"Year",meskerem:"Meskerem",tikemet:"Tikemet",hidar:"Hidar",tahsas:"Tahsas",tir:"Tir",yekatit:"Yekatit",megabit:"Megabit",miyazia:"Miyazia",ginbot:"Ginbot",sene:"Sene",hamle:"Hamle",nehase:"Nehase",
     step1Title:"Register Once",step1Sub:"Fill your profile once. We keep searching for you.",
     step2Title:"We Find the Job",step2Sub:"Oscar matches your skills to verified employer vacancies.",
     step3Title:"We Call You",step3Sub:"When there's a match, Oscar Promotion contacts you directly.",
     step4Title:"Always Free",step4Sub:"No fees. No commissions. Just opportunities.",
-    featDesc:"Oscar Promotion finds the right job for you. Register your details, and when a matching employer posts a vacancy — we contact you directly. No searching. No waiting alone.",
+    featDesc:"Oscar Promotion finds the right job for you. Register your details, and when a matching employer posts a vacancy � we contact you directly. No searching. No waiting alone.",
     statReg:"Register",statRegSub:"Your Profile",statMatch:"We Match",statMatchSub:"Your Skills",statHire:"Get Hired",statHireSub:"We Call You",
     splashTitle:"Your Career\nStarts Here",splashDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",
     trust1:"Your data is secure & encrypted",trust2:"Real information required",trust3:"Never shared without consent",
     splashBtn:"Register Now"},
-  ti:{heroTitle:"ናይ ስራሕ ዕድል\nምርካብ",heroDesc:"ሓበሬታኻ ምላእ እሞ ምስ ስራሕ ሃብቲ ብቕልጡፍ ተራኸብ። ምስ ዝምዝገብካ፡ ንዝያዳ ሓበሬታ ክንረኽበካ ኢና።",formTitle:"ናይ ስራሕ ፈላጢ ምዝገባ",formDesc:"ብ * ዝተመልከቱ ኩሎም ዓምድታት ክምልኡ ኣለዎም።",personalDetails:"ውልቃዊ ሓበሬታ",fullName:"ምሉእ ስም",fullNamePh:"ምሉእ ስምኻ ኣእቱ",dob:"ዕለተ ልደት (ኢትዮጵያዊ)",phone:"ቁጽሪ ተሌፎን",phonePh:"ኣብነት 0912345678",sex:"ጾታ",male:"ተባዕታይ",female:"ኣንስተይቲ",education:"ትምህርትን ተመክሮን",eduLevel:"ደረጃ ትምህርቲ",experience:"ዓመታት ተመክሮ",qualification:"እትደልዮ ስራሕ",qualificationPh:"ኣብነት: ሒሳብኛ፡ ነርስ፡ ሹፌር",location:"ቦታ",locationLabel:"ቦታ / ኣድራሻ",locationPh:"ዞባ፡ ወረዳ፡ ጣብያ",submit:"ምዝገባ ምቕራብ",consent:"ብምቕራብካ፡ ዝሃብካዮ ሓበሬታ ቅኑዕ ምዃኑ ትርጉም።",day:"መዓልቲ",month:"ወርሒ",year:"ዓመት",meskerem:"መስከረም",tikemet:"ጥቅምቲ",hidar:"ሕዳር",tahsas:"ታሕሳስ",tir:"ጥሪ",yekatit:"የካቲት",megabit:"መጋቢት",miyazia:"ሚያዝያ",ginbot:"ግንቦት",sene:"ሰነ",hamle:"ሓምለ",nehase:"ነሓሰ",
-    step1Title:"ሓንሳብ ምዝገባ",step1Sub:"ሓበሬታኻ ሓንሳብ ምላእ። ንሕና ስራሕ ክንደሊ ኢና።",
-    step2Title:"ስራሕ ንደሊ",step2Sub:"ኦስካር ፕሮሞሽን ክእለትካ ምስ ናይ ስራሕ ሃብቲ ኣዛሚዱ ይሰርሕ።",
-    step3Title:"ክንረኽበካ ኢና",step3Sub:"ምስ ዝሰማማዕ ስራሕ ምስ ተረኽበ፡ ኦስካር ፕሮሞሽን ብቐጥታ ክረኽበካ እዩ።",
-    step4Title:"ብነጻ እዩ",step4Sub:"ዋጋ የለን። ኮሚሽን የለን። ዕድላት ጥራሕ።",
-    featDesc:"ኦስካር ፕሮሞሽን ንዓኻ ዝሰማማዕ ስራሕ ይደሊ። ሓበሬታኻ ምዝገባ፡ ምስ ዝሰማማዕ ስራሕ ሃብቲ ምስ ዘቕርብ — ብቐጥታ ክንረኽበካ ኢና።",
-    statReg:"ምዝገባ",statRegSub:"ሓበሬታኻ",statMatch:"ምዝማድ",statMatchSub:"ክእለትካ",statHire:"ምቅጻር",statHireSub:"ክንረኽበካ",
-    splashTitle:"ናይ ስራሕ ዕድልካ\nኣብዚ ይጅምር",splashDesc:"ሓበሬታኻ ምላእ እሞ ምስ ስራሕ ሃብቲ ብቕልጡፍ ተራኸብ። ምስ ዝምዝገብካ፡ ንዝያዳ ሓበሬታ ክንረኽበካ ኢና።",
-    trust1:"ሓበሬታኻ ብድሕንነት ይሕዘሉ",trust2:"ቅኑዕ ሓበሬታ ኣድላዪ እዩ",trust3:"ብዘይ ፍቓድካ ኣይካፈልን",
-    splashBtn:"ሕጂ ምዝገባ"}
+  ti:{heroTitle:"?? ??? ???\n????",heroDesc:"????? ??? ?? ?? ??? ??? ????? ????? ?? ??????? ???? ???? ?????? ???",formTitle:"?? ??? ??? ????",formDesc:"? * ?????? ??? ????? ???? ?????",personalDetails:"???? ????",fullName:"??? ??",fullNamePh:"??? ??? ???",dob:"??? ??? (??????)",phone:"??? ????",phonePh:"???? 0912345678",sex:"??",male:"?????",female:"??????",education:"?????? ?????",eduLevel:"??? ?????",experience:"???? ????",qualification:"????? ???",qualificationPh:"????: ????? ???? ???",location:"??",locationLabel:"?? / ????",locationPh:"??? ???? ???",submit:"???? ????",consent:"??????? ????? ???? ??? ??? ?????",day:"????",month:"???",year:"???",meskerem:"?????",tikemet:"????",hidar:"???",tahsas:"????",tir:"??",yekatit:"????",megabit:"????",miyazia:"????",ginbot:"????",sene:"??",hamle:"???",nehase:"???",
+    step1Title:"???? ????",step1Sub:"????? ???? ???? ??? ??? ???? ???",
+    step2Title:"??? ???",step2Sub:"???? ????? ????? ?? ?? ??? ??? ???? ?????",
+    step3Title:"?????? ??",step3Sub:"?? ????? ??? ?? ????? ???? ????? ???? ????? ???",
+    step4Title:"??? ??",step4Sub:"?? ???? ???? ???? ???? ????",
+    featDesc:"???? ????? ??? ????? ??? ???? ????? ????? ?? ????? ??? ??? ?? ???? � ???? ?????? ???",
+    statReg:"????",statRegSub:"?????",statMatch:"????",statMatchSub:"?????",statHire:"????",statHireSub:"??????",
+    splashTitle:"?? ??? ????\n??? ????",splashDesc:"????? ??? ?? ?? ??? ??? ????? ????? ?? ??????? ???? ???? ?????? ???",
+    trust1:"????? ?????? ????",trust2:"??? ???? ???? ??",trust3:"??? ???? ??????",
+    splashBtn:"?? ????"}
 };
 function t(lang){
   if(!T[lang])return;
@@ -55,7 +55,7 @@ function t(lang){
   var h=document.getElementById('hero-title');if(h)h.innerHTML=T[lang].heroTitle.replace('\n','<br>');
   localStorage.setItem('lang',lang);
   document.getElementById('langBtn').setAttribute('data-lang',lang);
-  document.getElementById('langBtn').innerHTML=lang==='en'?'<i class="bi bi-translate"></i> ትግርኛ':'<i class="bi bi-translate"></i> English';
+  document.getElementById('langBtn').innerHTML=lang==='en'?'<i class="bi bi-translate"></i> ????':'<i class="bi bi-translate"></i> English';
   var ms=['meskerem','tikemet','hidar','tahsas','tir','yekatit','megabit','miyazia','ginbot','sene','hamle','nehase'];
   Array.from(document.getElementById('dob_month').options).forEach((o,i)=>{if(i>0&&ms[i-1]&&T[lang][ms[i-1]])o.textContent=T[lang][ms[i-1]]});
 }
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 html,body{height:100%;font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased;}
 body{background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* ── SPLASH ── */
+/* -- SPLASH -- */
 #splash{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:60px 20px 28px;text-align:center;background:linear-gradient(160deg,var(--p) 0%,var(--pm) 50%,var(--pl) 100%);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
 #splash::before{content:'';position:absolute;top:-80px;right:-80px;width:260px;height:260px;border-radius:50%;border:55px solid rgba(255,255,255,0.04);pointer-events:none;z-index:0;}
 #splash::after{content:'';position:absolute;bottom:-90px;left:5%;width:280px;height:280px;border-radius:50%;border:55px solid rgba(245,166,35,0.06);pointer-events:none;z-index:0;}
@@ -116,10 +116,10 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
   .sp-desc{margin-bottom:14px;}
 }
 
-/* ── MAIN LAYOUT ── */
+/* -- MAIN LAYOUT -- */
 .page-shell{display:flex;min-height:100vh;}
 
-/* ── LEFT PANEL ── */
+/* -- LEFT PANEL -- */
 .left-panel{width:400px;flex-shrink:0;background:linear-gradient(160deg,var(--p) 0%,var(--pm) 45%,var(--pl) 100%);position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:40px 34px;}
 .left-panel::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 40% at 80% 10%,rgba(245,166,35,0.08) 0%,transparent 70%),radial-gradient(ellipse 50% 50% at 10% 90%,rgba(59,108,183,0.15) 0%,transparent 70%);}
 .left-panel::after{content:'';position:absolute;bottom:-80px;right:-80px;width:320px;height:320px;border-radius:50%;border:60px solid rgba(255,255,255,0.03);pointer-events:none;}
@@ -144,7 +144,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 .lp-bottom{position:relative;z-index:1;}
 .lp-footer{font-size:11px;color:rgba(255,255,255,0.3);}
 
-/* ── RIGHT PANEL ── */
+/* -- RIGHT PANEL -- */
 .right-panel{flex:1;overflow-y:auto;display:flex;flex-direction:column;min-width:0;}
 .rp-topbar{height:56px;padding:0 36px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--white);position:sticky;top:0;z-index:10;box-shadow:0 1px 6px rgba(13,33,55,0.06);}
 .rp-topbar-left{font-size:13px;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -153,7 +153,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 .lang-btn:hover{background:var(--pm);color:#fff;border-color:var(--pm);}
 .rp-content{flex:1;padding:32px 36px 0;}
 
-/* ── FORM CARD ── */
+/* -- FORM CARD -- */
 .form-card{background:var(--white);border-radius:20px;box-shadow:0 12px 48px rgba(13,33,55,0.10),0 2px 8px rgba(13,33,55,0.04);border:1px solid rgba(221,227,236,0.8);overflow:hidden;width:100%;}
 .fc-banner{background:linear-gradient(135deg,var(--p) 0%,var(--pm) 50%,var(--pl) 100%);padding:28px 36px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .fc-banner::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;border:50px solid rgba(255,255,255,0.05);pointer-events:none;}
@@ -172,7 +172,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 .step-label{font-size:11px;font-weight:600;color:rgba(255,255,255,0.45);white-space:nowrap;}
 .fc-step.done .step-label{color:rgba(255,255,255,0.9);}
 
-/* ── SECTIONS ── */
+/* -- SECTIONS -- */
 .form-section{padding:30px 36px;position:relative;}
 .form-section:not(:last-of-type){border-bottom:2px solid var(--border);}
 .form-section.s1{background:linear-gradient(135deg,#f8fafd,#f2f6fb);}
@@ -184,7 +184,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;}
 .sec-info p{font-size:12px;color:var(--muted);margin:0;}
 .sec-pill{margin-left:auto;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);color:var(--a);padding:3px 10px;border-radius:20px;white-space:nowrap;}
 
-/* ── FIELDS ── */
+/* -- FIELDS -- */
 .fld{position:relative;margin-bottom:0;}
 .fld>label{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:0.9px;}
 .fld>label .req{color:var(--red);}
@@ -208,7 +208,7 @@ select.inp{padding-left:14px;}
 .inp-wrap .ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none;}
 .inp-wrap select.inp{padding-left:40px;}
 
-/* ── RADIO ── */
+/* -- RADIO -- */
 .rcards{display:flex;gap:10px;}
 .rc{flex:1;}
 .rc input{display:none;}
@@ -217,7 +217,7 @@ select.inp{padding-left:14px;}
 .rc input:checked+label{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 6px 16px rgba(13,33,55,0.2);}
 .rc input:checked+label i{color:var(--al);}
 
-/* ── SUBMIT ── */
+/* -- SUBMIT -- */
 .form-submit{padding:28px 36px;background:linear-gradient(135deg,#f0f4f9,#e8eef6);border-top:2px solid var(--border);}
 .submit-btn{width:100%;padding:17px;background:linear-gradient(135deg,var(--a),#d97a08);color:#fff;border:none;border-radius:13px;font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all 0.25s;box-shadow:0 8px 26px rgba(245,166,35,0.45);font-family:inherit;position:relative;overflow:hidden;}
 .submit-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,0.1),transparent);pointer-events:none;}
@@ -227,10 +227,10 @@ select.inp{padding-left:14px;}
 .consent i{color:var(--green);font-size:14px;}
 .error-box{background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:13px 15px;margin:20px 36px 0;color:var(--red);font-size:13px;display:flex;gap:8px;align-items:flex-start;}
 
-/* ── SELECT2 ── */
+/* -- SELECT2 -- */
 .select2-container--bootstrap-5 .select2-selection{height:48px;padding:12px 14px;border-radius:12px;border-width:1.5px;}
 
-/* ── PARTNERS ── */
+/* -- PARTNERS -- */
 .partners-wrap{padding:32px 36px 44px;}
 .partners-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
 .partners-head::before,.partners-head::after{content:'';flex:1;height:1px;background:var(--border);}
@@ -255,7 +255,7 @@ select.inp{padding-left:14px;}
 .collab-x{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:13px;flex-shrink:0;}
 .rp-footer{text-align:center;padding:0 36px 28px;font-size:12px;color:var(--muted);}
 
-/* ── TRUST + RECAPTCHA ── */
+/* -- TRUST + RECAPTCHA -- */
 .trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
 .trust-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted);background:#f0f9f4;border:1px solid #c6f0db;border-radius:20px;padding:5px 12px;}
 .trust-item i{color:var(--green);font-size:13px;}
@@ -268,7 +268,7 @@ select.inp{padding-left:14px;}
   .recaptcha-wrap .g-recaptcha{transform:scale(0.88);}
 }
 
-/* ── ACTION STRIP (call center + play store) ── */
+/* -- ACTION STRIP (call center + play store) -- */
 .action-strip{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
 .action-btn{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:14px;text-decoration:none;transition:all 0.2s;border:1.5px solid var(--border);background:var(--white);box-shadow:0 2px 8px rgba(13,33,55,0.06);}
 .action-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,33,55,0.12);}
@@ -283,7 +283,7 @@ select.inp{padding-left:14px;}
 .action-arr{font-size:16px;color:var(--muted);flex-shrink:0;transition:transform 0.2s;}
 .action-btn:hover .action-arr{transform:translateX(3px);}
 
-/* ── RESPONSIVE ── */
+/* -- RESPONSIVE -- */
 @media(max-width:1100px){
   .left-panel{width:340px;padding:32px 26px;}
   .rp-content{padding:24px 24px 0;}
@@ -339,9 +339,9 @@ select.inp{padding-left:14px;}
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     ONBOARDING SPLASH — shows every load
-═══════════════════════════════════════ -->
+<!-- ---------------------------------------
+     ONBOARDING SPLASH � shows every load
+--------------------------------------- -->
 <div id="splash">
   <div class="sp-inner">
 
@@ -412,9 +412,9 @@ select.inp{padding-left:14px;}
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
+<!-- ---------------------------------------
      MAIN PAGE
-═══════════════════════════════════════ -->
+--------------------------------------- -->
 <div class="page-shell">
 
   <!-- LEFT PANEL (desktop) -->
@@ -425,7 +425,7 @@ select.inp{padding-left:14px;}
         <div class="brand-text"><div class="name">Oscar Promotion</div><div class="tag">Recruitment &amp; Placement Agency</div></div>
       </div>
       <h1 class="lp-headline" id="hero-title">Your Career<br>Starts <span>Here</span></h1>
-      <p class="lp-desc" data-k="featDesc">Oscar Promotion finds the right job for you. Register your details, and when a matching employer posts a vacancy — we contact you directly. No searching. No waiting alone.</p>
+      <p class="lp-desc" data-k="featDesc">Oscar Promotion finds the right job for you. Register your details, and when a matching employer posts a vacancy � we contact you directly. No searching. No waiting alone.</p>
       <div class="feature-list">
         <div class="feat"><div class="feat-icon"><i class="bi bi-pencil-square"></i></div><div class="feat-body"><div class="ftitle" data-k="step1Title">Register Once</div><div class="fdesc" data-k="step1Sub">Fill your profile once. We keep searching for you.</div></div></div>
         <div class="feat"><div class="feat-icon"><i class="bi bi-briefcase-fill"></i></div><div class="feat-body"><div class="ftitle" data-k="step2Title">We Find the Job</div><div class="fdesc" data-k="step2Sub">Oscar matches your skills to verified employer vacancies.</div></div></div>
@@ -445,7 +445,7 @@ select.inp{padding-left:14px;}
   <main class="right-panel">
     <div class="rp-topbar">
       <div class="rp-topbar-left">Welcome &mdash; <span>Start your journey today</span></div>
-      <button class="lang-btn" id="langBtn" data-lang="en"><i class="bi bi-translate"></i> ትግርኛ</button>
+      <button class="lang-btn" id="langBtn" data-lang="en"><i class="bi bi-translate"></i> ????</button>
     </div>
     <div class="rp-content">
       <div class="form-card">
@@ -506,12 +506,12 @@ select.inp{padding-left:14px;}
                     <span class="dob-sep">/</span>
                     <select class="inp dob-sel" id="dob_month" required>
                       <option value="" selected disabled>MM</option>
-                      <option value="1">01 — Meskerem</option><option value="2">02 — Tikemet</option>
-                      <option value="3">03 — Hidar</option><option value="4">04 — Tahsas</option>
-                      <option value="5">05 — Tir</option><option value="6">06 — Yekatit</option>
-                      <option value="7">07 — Megabit</option><option value="8">08 — Miyazia</option>
-                      <option value="9">09 — Ginbot</option><option value="10">10 — Sene</option>
-                      <option value="11">11 — Hamle</option><option value="12">12 — Nehase</option>
+                      <option value="1">01 � Meskerem</option><option value="2">02 � Tikemet</option>
+                      <option value="3">03 � Hidar</option><option value="4">04 � Tahsas</option>
+                      <option value="5">05 � Tir</option><option value="6">06 � Yekatit</option>
+                      <option value="7">07 � Megabit</option><option value="8">08 � Miyazia</option>
+                      <option value="9">09 � Ginbot</option><option value="10">10 � Sene</option>
+                      <option value="11">11 � Hamle</option><option value="12">12 � Nehase</option>
                     </select>
                     <span class="dob-sep">/</span>
                     <select class="inp dob-sel" id="dob_year" required>
@@ -566,7 +566,7 @@ select.inp{padding-left:14px;}
               </div>
               <div class="col-12">
                 <div class="fld">
-                  <label><i class="bi bi-search"></i><span data-k="qualification">Job You're Looking For</span><span class="req">*</span></label>
+                  <label><i class="bi bi-search"></i><span data-k="qualification">Skills / Qualifications</span><span class="req">*</span></label>
                   <input type="text" class="inp" name="qualification_skills" value="<?php echo set_value('qualification_skills'); ?>" data-kp="qualificationPh" placeholder="e.g. Accountant, Nurse, Driver" required>
                   <i class="bi bi-search ico"></i>
                 </div>
@@ -628,7 +628,7 @@ select.inp{padding-left:14px;}
           <div class="collab-inner">
             <div class="collab-label"><i class="bi bi-patch-check-fill"></i> Platform Partnership</div>
             <h3 class="collab-heading">Built for impact.<br>Backed by trust.</h3>
-            <p class="collab-text">This platform is developed and operated by <strong>Oscar Promotion</strong> in collaboration with <strong>Mercy Corps</strong> — dedicated to creating inclusive employment opportunities and connecting job seekers with real employers across Ethiopia.</p>
+            <p class="collab-text">This platform is developed and operated by <strong>Oscar Promotion</strong> in collaboration with <strong>Mercy Corps</strong> � dedicated to creating inclusive employment opportunities and connecting job seekers with real employers across Ethiopia.</p>
             <div class="collab-divider"></div>
             <div class="collab-logos">
               <div class="collab-logo mercycorps">
@@ -682,7 +682,7 @@ $('#dob_day,#dob_month,#dob_year').on('change',function(){
   }
 });
 
-// Onboarding splash — mobile only, shows every page load
+// Onboarding splash � mobile only, shows every page load
 (function(){
   if(window.innerWidth > 768) return;
   var splash = document.getElementById('splash');
