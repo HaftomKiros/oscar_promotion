@@ -238,7 +238,64 @@ public function get_candidates_datatable()
 }
 
 /**
- * Export all candidates to CSV (faster than Excel)
+ * Build a minimal xlsx file from a 2D array — no dependencies, works on PHP 7+
+ */
+private function _build_xlsx($rows)
+{
+    // sheet XML
+    $sheetXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        . '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+        . '<sheetData>';
+    foreach ($rows as $ri => $row) {
+        $sheetXml .= '<row r="' . ($ri + 1) . '">';
+        foreach ($row as $ci => $val) {
+            $col = '';
+            $n = $ci;
+            do { $col = chr(65 + ($n % 26)) . $col; $n = intval($n / 26) - 1; } while ($n >= 0);
+            $cell = $col . ($ri + 1);
+            $safe = htmlspecialchars((string)$val, ENT_XML1, 'UTF-8');
+            $sheetXml .= '<c r="' . $cell . '" t="inlineStr"><is><t>' . $safe . '</t></is></c>';
+        }
+        $sheetXml .= '</row>';
+    }
+    $sheetXml .= '</sheetData></worksheet>';
+
+    $rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        . '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        . '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'
+        . '</Relationships>';
+
+    $workbook = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        . '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+        . '<sheets><sheet name="Sheet1" sheetId="1" r:id="rId1"/></sheets></workbook>';
+
+    $ct = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        . '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+        . '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+        . '<Default Extension="xml" ContentType="application/xml"/>'
+        . '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
+        . '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
+        . '</Types>';
+
+    $pkgRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        . '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        . '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'
+        . '</Relationships>';
+
+    $tmp = tempnam(sys_get_temp_dir(), 'xlsx');
+    $zip = new ZipArchive();
+    $zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+    $zip->addFromString('[Content_Types].xml', $ct);
+    $zip->addFromString('_rels/.rels', $pkgRels);
+    $zip->addFromString('xl/workbook.xml', $workbook);
+    $zip->addFromString('xl/_rels/workbook.xml.rels', $rels);
+    $zip->addFromString('xl/worksheets/sheet1.xml', $sheetXml);
+    $zip->close();
+    return $tmp;
+}
+
+/**
+ * Export all candidates to Excel
  */
 public function export_candidates_excel()
 {
@@ -246,23 +303,17 @@ public function export_candidates_excel()
     $sex = $this->input->get('sex') ?? '';
     $candidates = $this->Candidate_model->get_all_candidates_for_export($sex);
 
-    require_once FCPATH . 'vendor/autoload.php';
-    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-
-    $headers = [
-        'SL', 'Seeker ID', 'Full Name', 'Sex', 'Martial Status', 'DOB (Ethiopian)', 'Age',
-        'Family Size', 'HH Male', 'HH Female', 'Household Type', 'Disability Status',
-        'Disability Male', 'Disability Female', 'Phone', 'Email', 'Location',
-        'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
-        'Graduated Year', 'Experience', 'Resume', 'Created At', 'Status'
-    ];
-    $sheet->fromArray($headers, NULL, 'A1');
-
-    $sl = 1; $row = 2;
     $statusLabels = [0=>'Job Seeker',1=>'Fetched',2=>'Applied',3=>'Shortlisted',4=>'Interview',5=>'Hired',6=>'Rejected'];
+    $rows = [[
+        'SL','Seeker ID','Full Name','Sex','Martial Status','DOB (Ethiopian)','Age',
+        'Family Size','HH Male','HH Female','Household Type','Disability Status',
+        'Disability Male','Disability Female','Phone','Email','Location',
+        'Woreda','Tabia','Education Level','Field of Study','GPA','Qualification/Skills',
+        'Graduated Year','Experience','Resume','Created At','Status'
+    ]];
+    $sl = 1;
     foreach ($candidates as $c) {
-        $sheet->fromArray([
+        $rows[] = [
             $sl++, $c['seeker_id'], $c['full_name'], $c['sex'],
             $c['martial_status'] ?? 'Single', $c['dob_ethiopian'] ?? '', $c['age'] ?? '',
             $c['total_family_size'] ?? '', $c['hh_male'] ?? '', $c['hh_female'] ?? '',
@@ -275,14 +326,16 @@ public function export_candidates_excel()
             $c['graduated_year'] ?? '', $c['experience'] ?? '',
             !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
             $statusLabels[$c['status']] ?? 'Unknown'
-        ], NULL, 'A'.$row++);
+        ];
     }
 
+    $tmp = $this->_build_xlsx($rows);
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment; filename=candidates_export_' . date('Y-m-d_H-i-s') . '.xlsx');
+    header('Content-Length: ' . filesize($tmp));
     header('Cache-Control: max-age=0');
-    $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-    $writer->save('php://output');
+    readfile($tmp);
+    unlink($tmp);
     exit;
 }
 
@@ -324,23 +377,17 @@ public function export_candidates_by_woreda()
         return;
     }
 
-    require_once FCPATH . 'vendor/autoload.php';
-    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-
-    $headers = [
-        'SL', 'Seeker ID', 'Full Name', 'Sex', 'Martial Status', 'DOB (Ethiopian)', 'Age',
-        'Family Size', 'HH Male', 'HH Female', 'Household Type', 'Disability Status',
-        'Disability Male', 'Disability Female', 'Phone', 'Email', 'Location',
-        'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
-        'Graduated Year', 'Experience', 'Resume', 'Created At', 'Status'
-    ];
-    $sheet->fromArray($headers, NULL, 'A1');
-
-    $sl = 1; $rowNum = 2;
     $statusLabels = [0=>'Job Seeker',1=>'Fetched',2=>'Applied',3=>'Shortlisted',4=>'Interview',5=>'Hired',6=>'Rejected'];
+    $rows = [[
+        'SL','Seeker ID','Full Name','Sex','Martial Status','DOB (Ethiopian)','Age',
+        'Family Size','HH Male','HH Female','Household Type','Disability Status',
+        'Disability Male','Disability Female','Phone','Email','Location',
+        'Woreda','Tabia','Education Level','Field of Study','GPA','Qualification/Skills',
+        'Graduated Year','Experience','Resume','Created At','Status'
+    ]];
+    $sl = 1;
     foreach ($candidates as $c) {
-        $sheet->fromArray([
+        $rows[] = [
             $sl++, $c['seeker_id'], $c['full_name'], $c['sex'],
             $c['martial_status'] ?? 'Single', $c['dob_ethiopian'] ?? '', $c['age'] ?? '',
             $c['total_family_size'] ?? '', $c['hh_male'] ?? '', $c['hh_female'] ?? '',
@@ -354,14 +401,16 @@ public function export_candidates_by_woreda()
             $c['graduated_year'] ?? '', $c['experience'] ?? '',
             !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
             $statusLabels[$c['status']] ?? 'Unknown'
-        ], NULL, 'A'.$rowNum++);
+        ];
     }
 
+    $tmp = $this->_build_xlsx($rows);
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment; filename=candidates_' . str_replace(' ', '_', $woreda) . '_export_' . date('Y-m-d_H-i-s') . '.xlsx');
+    header('Content-Length: ' . filesize($tmp));
     header('Cache-Control: max-age=0');
-    $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-    $writer->save('php://output');
+    readfile($tmp);
+    unlink($tmp);
     exit;
 }
 
