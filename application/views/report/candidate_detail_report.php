@@ -97,9 +97,17 @@
                             <thead>
                                 <tr>
                                     <th><?php echo display('sno'); ?></th>
+                                    <th>Seeker ID</th>
                                     <th>Candidate Name</th>
-                                    <th>Email</th>
+                                    <th>Sex</th>
+                                    <th>Age</th>
                                     <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Education</th>
+                                    <th>Experience</th>
+                                    <th>Qualification</th>
+                                    <th>Location</th>
+                                    <th>Woreda</th>
                                     <th>Job Title</th>
                                     <th>Status</th>
                                 </tr>
@@ -120,9 +128,17 @@
     ?>
         <tr>
             <td><?php echo $sl++; ?></td>
+            <td><?php echo html_escape($data['seeker_id'] ?? ''); ?></td>
             <td><?php echo html_escape($data['full_name']); ?></td>
-            <td><?php echo html_escape($data['email']); ?></td>
+            <td><?php echo html_escape($data['sex'] ?? ''); ?></td>
+            <td><?php echo html_escape($data['age'] ?? ''); ?></td>
             <td><?php echo html_escape($data['phone_number']); ?></td>
+            <td><?php echo html_escape($data['email']); ?></td>
+            <td><?php echo html_escape($data['education_level'] ?? ''); ?></td>
+            <td><?php echo html_escape($data['experience'] ?? ''); ?></td>
+            <td><?php echo html_escape($data['qualification_skills'] ?? ''); ?></td>
+            <td><?php echo html_escape($data['location_text'] ?? ''); ?></td>
+            <td><?php echo html_escape($data['woreda'] ?? ''); ?></td>
             <td><?php echo html_escape($data['job_title']); ?></td>
             <td><?php echo isset($status_labels[$data['application_status']]) ? $status_labels[$data['application_status']] : 'Unknown'; ?></td>
         </tr>
@@ -148,23 +164,23 @@ $(document).ready(function() {
             {
                 extend: 'excelHtml5',
                 title: '<?php echo $title; ?>',
-                exportOptions: { columns: [0, 1, 2, 3, 4, 5] }
+                exportOptions: { columns: ':visible' }
             },
             {
                 extend: 'csvHtml5',
                 title: '<?php echo $title; ?>',
-                exportOptions: { columns: [0, 1, 2, 3, 4, 5] }
+                exportOptions: { columns: ':visible' }
             },
             {
                 extend: 'pdfHtml5',
-                orientation: 'portrait',
+                orientation: 'landscape',
                 title: '<?php echo $title; ?>',
-                exportOptions: { columns: [0, 1, 2, 3, 4, 5] }
+                exportOptions: { columns: ':visible' }
             },
             {
                 extend: 'print',
                 title: '<?php echo $title; ?>',
-                exportOptions: { columns: [0, 1, 2, 3, 4, 5] }
+                exportOptions: { columns: ':visible' }
             }
         ],
         pageLength: 10,

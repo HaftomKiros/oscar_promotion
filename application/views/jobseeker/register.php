@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Register | Oscar Promotion</title>
 <link rel="icon" type="image/png" href="<?php echo base_url('my-assets/image/logo/oscar_logo1.png'); ?>">
-<!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
@@ -570,8 +570,7 @@ select.inp{padding-left:14px;}
               <div class="trust-item"><i class="bi bi-eye-slash-fill"></i><span>Never shared without consent</span></div>
             </div>
 
-            <!-- reCAPTCHA (temporarily hidden - uncomment before hosting) -->
-            <!--
+            <!-- reCAPTCHA -->
             <div class="recaptcha-wrap">
               <div class="g-recaptcha"
                 data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
@@ -582,7 +581,6 @@ select.inp{padding-left:14px;}
               <div class="recaptcha-err"><i class="bi bi-exclamation-triangle-fill"></i> <?php echo $recaptcha_error; ?></div>
               <?php endif; ?>
             </div>
-            -->
 
             <button type="submit" class="submit-btn">
               <i class="bi bi-send-check-fill"></i>

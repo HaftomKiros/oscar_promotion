@@ -28,9 +28,8 @@ class JobSeeker extends CI_Controller {
     // Handle form submission
     public function submit() {
 
-        // ── reCAPTCHA verification (temporarily disabled - re-enable before hosting) ──
-        /*
-        $recaptcha_secret = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ_4Z6n3N'; // replace with your secret key
+        // ── reCAPTCHA verification ──
+        $recaptcha_secret = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ_4Z6n3N';
         $recaptcha_response = $this->input->post('g-recaptcha-response');
 
         if (empty($recaptcha_response)) {
@@ -55,7 +54,6 @@ class JobSeeker extends CI_Controller {
             $this->load->view('jobseeker/register', $data);
             return;
         }
-        */
 
         $this->form_validation->set_rules('full_name',    'Full Name',    'required|trim');
         $this->form_validation->set_rules('sex',          'Sex',          'required');

@@ -159,6 +159,15 @@ public function mark_complete($id) {
     redirect('Ccandidate/manage_candidate');
 }
 
+// Delete an incomplete profile
+public function delete_incomplete($id) {
+    $this->db->where('id', $id);
+    $this->db->where('profile_complete', 0); // safety: only delete incomplete
+    $this->db->delete('candidates');
+    $this->session->set_flashdata('message', 'Incomplete profile deleted.');
+    redirect('Ccandidate/manage_candidate');
+}
+
 /**
  * DataTables server-side processing for candidates
  */
@@ -236,156 +245,123 @@ public function export_candidates_excel()
     $this->load->model('Candidate_model');
     $sex = $this->input->get('sex') ?? '';
     $candidates = $this->Candidate_model->get_all_candidates_for_export($sex);
-    
-    // Set headers for CSV download
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=candidates_export_' . date('Y-m-d_H-i-s') . '.csv');
-    
-    // Create output handle
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename=candidates_export_' . date('Y-m-d_H-i-s') . '.xls');
+
     $output = fopen('php://output', 'w');
-    
-    // UTF-8 BOM for Excel
     fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-    
-    // Headers
+
     $headers = [
         'SL', 'Seeker ID', 'Full Name', 'Sex', 'Martial Status', 'DOB (Ethiopian)', 'Age',
         'Family Size', 'HH Male', 'HH Female', 'Household Type', 'Disability Status',
         'Disability Male', 'Disability Female', 'Phone', 'Email', 'Location',
-        'Woreda', 'Tabia', 'Education', 'Field of Study', 'GPA', 'Qualification/Skills',
+        'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
         'Graduated Year', 'Experience', 'Resume', 'Created At', 'Status'
     ];
     fputcsv($output, $headers);
-    
-    // Data
+
     $sl = 1;
-    $statusLabels = [0 => 'Job Seeker', 1 => 'Fetched', 2 => 'Applied', 3 => 'Shortlisted', 
-                   4 => 'Interview', 5 => 'Hired', 6 => 'Rejected'];
-    
+    $statusLabels = [0 => 'Job Seeker', 1 => 'Fetched', 2 => 'Applied', 3 => 'Shortlisted',
+                     4 => 'Interview', 5 => 'Hired', 6 => 'Rejected'];
+
     foreach ($candidates as $c) {
         $status = isset($statusLabels[$c['status']]) ? $statusLabels[$c['status']] : 'Unknown';
-        
         $row = [
-            $sl++,
-            $c['seeker_id'],
-            $c['full_name'],
-            $c['sex'],
-            $c['martial_status'] ?? 'Single',
-            $c['dob_ethiopian'] ?? '',
-            $c['age'] ?? '',
-            $c['total_family_size'] ?? '',
-            $c['hh_male'] ?? '',
-            $c['hh_female'] ?? '',
-            $c['household_type'] ?? '',
-            $c['disability_status'] ?? '',
-            $c['disability_male'] ?? '',
-            $c['disability_female'] ?? '',
-            $c['phone_number'],
-            $c['email'] ?? '',
-            $c['location'] ?? '',
-            $c['woreda'] ?? '',
-            $c['tabia'] ?? '',
-            $c['education_level'] ?? '',
-            $c['field_of_study'] ?? '',
-            $c['gpa'] ?? '',
-            $c['qualification_skills'] ?? '',
-            $c['graduated_year'] ?? '',
-            $c['experience'] ?? '',
-            !empty($c['resume']) ? 'Yes' : 'No',
-            $c['created_at'],
-            $status
+            $sl++, $c['seeker_id'], $c['full_name'], $c['sex'],
+            $c['martial_status'] ?? 'Single', $c['dob_ethiopian'] ?? '', $c['age'] ?? '',
+            $c['total_family_size'] ?? '', $c['hh_male'] ?? '', $c['hh_female'] ?? '',
+            $c['household_type'] ?? '', $c['disability_status'] ?? '',
+            $c['disability_male'] ?? '', $c['disability_female'] ?? '',
+            $c['phone_number'], $c['email'] ?? '', $c['location'] ?? '',
+            $c['woreda'] ?? '', $c['tabia'] ?? '',
+            $c['education_level'] ?? '',   // already joined name from model
+            $c['field_of_study'] ?? '',    // already joined name from model
+            $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
+            $c['graduated_year'] ?? '', $c['experience'] ?? '',
+            !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'], $status
         ];
         fputcsv($output, $row);
     }
-    
     fclose($output);
 }
 
 /**
- * Export candidates by woreda to CSV
+ * Export candidates by woreda to Excel
  */
 public function export_candidates_by_woreda()
 {
     $this->load->model('Candidate_model');
-    
+
     $woreda = $this->input->get('woreda') ?? '';
-    $sex = $this->input->get('sex') ?? '';
-    
+    $sex    = $this->input->get('sex') ?? '';
+
     if (empty($woreda)) {
         $this->session->set_flashdata('error_message', 'Please select a woreda');
         redirect('Ccandidate/manage_candidate');
         return;
     }
-    
-    $candidates = $this->Candidate_model->get_candidates_by_woreda($woreda, $sex);
-    
+
+    // Use joined query so education/field names come as text not IDs
+    $this->db->select('
+        c.*,
+        z.zone_name AS location_name,
+        e.level AS education_name,
+        f.field AS field_name
+    ');
+    $this->db->from('candidates c');
+    $this->db->join('zone z', 'z.id = c.location', 'left');
+    $this->db->join('educational_level e', 'e.id = c.education_level', 'left');
+    $this->db->join('field_of_study f', 'f.id = c.field_of_study', 'left');
+    $this->db->where('c.woreda', $woreda);
+    if (!empty($sex)) $this->db->where('c.sex', $sex);
+    $this->db->order_by('c.id', 'DESC');
+    $candidates = $this->db->get()->result_array();
+
     if (empty($candidates)) {
         $this->session->set_flashdata('error_message', 'No candidates found for the selected woreda');
         redirect('Ccandidate/manage_candidate');
         return;
     }
-    
-    // Set headers for CSV download
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=candidates_' . str_replace(' ', '_', $woreda) . '_export_' . date('Y-m-d_H-i-s') . '.csv');
-    
-    // Create output handle
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename=candidates_' . str_replace(' ', '_', $woreda) . '_export_' . date('Y-m-d_H-i-s') . '.xls');
+
     $output = fopen('php://output', 'w');
-    
-    // UTF-8 BOM for Excel
     fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-    
-    // Headers
+
     $headers = [
         'SL', 'Seeker ID', 'Full Name', 'Sex', 'Martial Status', 'DOB (Ethiopian)', 'Age',
         'Family Size', 'HH Male', 'HH Female', 'Household Type', 'Disability Status',
         'Disability Male', 'Disability Female', 'Phone', 'Email', 'Location',
-        'Woreda', 'Tabia', 'Education', 'Field of Study', 'GPA', 'Qualification/Skills',
+        'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
         'Graduated Year', 'Experience', 'Resume', 'Created At', 'Status'
     ];
     fputcsv($output, $headers);
-    
-    // Data
+
     $sl = 1;
-    $statusLabels = [0 => 'Job Seeker', 1 => 'Fetched', 2 => 'Applied', 3 => 'Shortlisted', 
-                   4 => 'Interview', 5 => 'Hired', 6 => 'Rejected'];
-    
+    $statusLabels = [0 => 'Job Seeker', 1 => 'Fetched', 2 => 'Applied', 3 => 'Shortlisted',
+                     4 => 'Interview', 5 => 'Hired', 6 => 'Rejected'];
+
     foreach ($candidates as $c) {
         $status = isset($statusLabels[$c['status']]) ? $statusLabels[$c['status']] : 'Unknown';
-        
         $row = [
-            $sl++,
-            $c['seeker_id'],
-            $c['full_name'],
-            $c['sex'],
-            $c['martial_status'] ?? 'Single',
-            $c['dob_ethiopian'] ?? '',
-            $c['age'] ?? '',
-            $c['total_family_size'] ?? '',
-            $c['hh_male'] ?? '',
-            $c['hh_female'] ?? '',
-            $c['household_type'] ?? '',
-            $c['disability_status'] ?? '',
-            $c['disability_male'] ?? '',
-            $c['disability_female'] ?? '',
-            $c['phone_number'],
-            $c['email'] ?? '',
-            $c['location'] ?? '',
-            $c['woreda'] ?? '',
-            $c['tabia'] ?? '',
-            $c['education_level'] ?? '',
-            $c['field_of_study'] ?? '',
-            $c['gpa'] ?? '',
-            $c['qualification_skills'] ?? '',
-            $c['graduated_year'] ?? '',
-            $c['experience'] ?? '',
-            !empty($c['resume']) ? 'Yes' : 'No',
-            $c['created_at'],
-            $status
+            $sl++, $c['seeker_id'], $c['full_name'], $c['sex'],
+            $c['martial_status'] ?? 'Single', $c['dob_ethiopian'] ?? '', $c['age'] ?? '',
+            $c['total_family_size'] ?? '', $c['hh_male'] ?? '', $c['hh_female'] ?? '',
+            $c['household_type'] ?? '', $c['disability_status'] ?? '',
+            $c['disability_male'] ?? '', $c['disability_female'] ?? '',
+            $c['phone_number'], $c['email'] ?? '',
+            $c['location_name'] ?? $c['location'] ?? '',  // zone name
+            $c['woreda'] ?? '', $c['tabia'] ?? '',
+            $c['education_name'] ?? '',   // education level name not ID
+            $c['field_name'] ?? '',       // field of study name not ID
+            $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
+            $c['graduated_year'] ?? '', $c['experience'] ?? '',
+            !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'], $status
         ];
         fputcsv($output, $row);
     }
-    
     fclose($output);
 }
 

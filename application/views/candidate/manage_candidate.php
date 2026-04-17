@@ -21,6 +21,8 @@
 .btn-call:hover{background:#f5a623;color:#1a3a5c;}
 .btn-call-complete{display:inline-flex;align-items:center;gap:5px;background:#10b981;color:#fff;border:none;padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;text-decoration:none;transition:all 0.2s;margin-left:6px;}
 .btn-call-complete:hover{background:#059669;color:#fff;}
+.btn-call-delete{display:inline-flex;align-items:center;gap:5px;background:#ef4444;color:#fff;border:none;padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;text-decoration:none;transition:all 0.2s;margin-left:6px;}
+.btn-call-delete:hover{background:#dc2626;color:#fff;}
 .no-incomplete{padding:24px;text-align:center;color:#94a3b8;font-size:14px;}
 </style>
 
@@ -153,6 +155,9 @@
                                         </a>
                                         <a href="<?php echo base_url('Ccandidate/mark_complete/'.$c['id']); ?>" class="btn-call-complete" onclick="return confirm('Mark this profile as complete?')">
                                             ✓ Mark Done
+                                        </a>
+                                        <a href="<?php echo base_url('Ccandidate/delete_incomplete/'.$c['id']); ?>" class="btn-call-delete" onclick="return confirm('Delete this incomplete profile? This cannot be undone.')">
+                                            🗑 Delete
                                         </a>
                                     </td>
                                 </tr>
