@@ -352,7 +352,8 @@
 (function(){
   var API_URL  = '<?php echo base_url("Notification_api/check_new_candidates"); ?>';
   var EDIT_URL = '<?php echo base_url("Ccandidate/edit/"); ?>';
-  var SHOWN_KEY = 'oscar_shown_notif_ids';
+  // Key is unique per user — admin and data clerk each track their own shown alerts
+  var SHOWN_KEY = 'oscar_shown_notif_ids_user_<?php echo $this->session->userdata("user_id"); ?>';
 
   function getShownIds(){
     try{ return JSON.parse(localStorage.getItem(SHOWN_KEY)||'[]'); }catch(e){ return []; }
