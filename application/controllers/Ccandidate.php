@@ -246,7 +246,7 @@ public function export_candidates_excel()
     $sex = $this->input->get('sex') ?? '';
     $candidates = $this->Candidate_model->get_all_candidates_for_export($sex);
 
-    require_once APPPATH . '../vendor/autoload.php';
+    require_once FCPATH . 'vendor/autoload.php';
     $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
@@ -324,7 +324,7 @@ public function export_candidates_by_woreda()
         return;
     }
 
-    require_once APPPATH . '../vendor/autoload.php';
+    require_once FCPATH . 'vendor/autoload.php';
     $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
