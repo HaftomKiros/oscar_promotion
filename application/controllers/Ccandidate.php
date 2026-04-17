@@ -246,11 +246,9 @@ public function export_candidates_excel()
     $sex = $this->input->get('sex') ?? '';
     $candidates = $this->Candidate_model->get_all_candidates_for_export($sex);
 
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=candidates_export_' . date('Y-m-d_H-i-s') . '.csv');
-
-    $output = fopen('php://output', 'w');
-    fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+    require_once APPPATH . '../vendor/autoload.php';
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
 
     $headers = [
         'SL', 'Seeker ID', 'Full Name', 'Sex', 'Martial Status', 'DOB (Ethiopian)', 'Age',
@@ -259,15 +257,12 @@ public function export_candidates_excel()
         'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
         'Graduated Year', 'Experience', 'Resume', 'Created At', 'Status'
     ];
-    fputcsv($output, $headers);
+    $sheet->fromArray($headers, NULL, 'A1');
 
-    $sl = 1;
-    $statusLabels = [0 => 'Job Seeker', 1 => 'Fetched', 2 => 'Applied', 3 => 'Shortlisted',
-                     4 => 'Interview', 5 => 'Hired', 6 => 'Rejected'];
-
+    $sl = 1; $row = 2;
+    $statusLabels = [0=>'Job Seeker',1=>'Fetched',2=>'Applied',3=>'Shortlisted',4=>'Interview',5=>'Hired',6=>'Rejected'];
     foreach ($candidates as $c) {
-        $status = isset($statusLabels[$c['status']]) ? $statusLabels[$c['status']] : 'Unknown';
-        $row = [
+        $sheet->fromArray([
             $sl++, $c['seeker_id'], $c['full_name'], $c['sex'],
             $c['martial_status'] ?? 'Single', $c['dob_ethiopian'] ?? '', $c['age'] ?? '',
             $c['total_family_size'] ?? '', $c['hh_male'] ?? '', $c['hh_female'] ?? '',
@@ -275,15 +270,20 @@ public function export_candidates_excel()
             $c['disability_male'] ?? '', $c['disability_female'] ?? '',
             $c['phone_number'], $c['email'] ?? '', $c['location'] ?? '',
             $c['woreda'] ?? '', $c['tabia'] ?? '',
-            $c['education_level'] ?? '',   // already joined name from model
-            $c['field_of_study'] ?? '',    // already joined name from model
+            $c['education_level'] ?? '', $c['field_of_study'] ?? '',
             $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
             $c['graduated_year'] ?? '', $c['experience'] ?? '',
-            !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'], $status
-        ];
-        fputcsv($output, $row);
+            !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
+            $statusLabels[$c['status']] ?? 'Unknown'
+        ], NULL, 'A'.$row++);
     }
-    fclose($output);
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename=candidates_export_' . date('Y-m-d_H-i-s') . '.xlsx');
+    header('Cache-Control: max-age=0');
+    $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    $writer->save('php://output');
+    exit;
 }
 
 /**
@@ -324,11 +324,9 @@ public function export_candidates_by_woreda()
         return;
     }
 
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=candidates_' . str_replace(' ', '_', $woreda) . '_export_' . date('Y-m-d_H-i-s') . '.csv');
-
-    $output = fopen('php://output', 'w');
-    fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+    require_once APPPATH . '../vendor/autoload.php';
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
 
     $headers = [
         'SL', 'Seeker ID', 'Full Name', 'Sex', 'Martial Status', 'DOB (Ethiopian)', 'Age',
@@ -337,32 +335,34 @@ public function export_candidates_by_woreda()
         'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
         'Graduated Year', 'Experience', 'Resume', 'Created At', 'Status'
     ];
-    fputcsv($output, $headers);
+    $sheet->fromArray($headers, NULL, 'A1');
 
-    $sl = 1;
-    $statusLabels = [0 => 'Job Seeker', 1 => 'Fetched', 2 => 'Applied', 3 => 'Shortlisted',
-                     4 => 'Interview', 5 => 'Hired', 6 => 'Rejected'];
-
+    $sl = 1; $rowNum = 2;
+    $statusLabels = [0=>'Job Seeker',1=>'Fetched',2=>'Applied',3=>'Shortlisted',4=>'Interview',5=>'Hired',6=>'Rejected'];
     foreach ($candidates as $c) {
-        $status = isset($statusLabels[$c['status']]) ? $statusLabels[$c['status']] : 'Unknown';
-        $row = [
+        $sheet->fromArray([
             $sl++, $c['seeker_id'], $c['full_name'], $c['sex'],
             $c['martial_status'] ?? 'Single', $c['dob_ethiopian'] ?? '', $c['age'] ?? '',
             $c['total_family_size'] ?? '', $c['hh_male'] ?? '', $c['hh_female'] ?? '',
             $c['household_type'] ?? '', $c['disability_status'] ?? '',
             $c['disability_male'] ?? '', $c['disability_female'] ?? '',
             $c['phone_number'], $c['email'] ?? '',
-            $c['location_name'] ?? $c['location'] ?? '',  // zone name
+            $c['location_name'] ?? $c['location'] ?? '',
             $c['woreda'] ?? '', $c['tabia'] ?? '',
-            $c['education_name'] ?? '',   // education level name not ID
-            $c['field_name'] ?? '',       // field of study name not ID
+            $c['education_name'] ?? '', $c['field_name'] ?? '',
             $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
             $c['graduated_year'] ?? '', $c['experience'] ?? '',
-            !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'], $status
-        ];
-        fputcsv($output, $row);
+            !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
+            $statusLabels[$c['status']] ?? 'Unknown'
+        ], NULL, 'A'.$rowNum++);
     }
-    fclose($output);
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename=candidates_' . str_replace(' ', '_', $woreda) . '_export_' . date('Y-m-d_H-i-s') . '.xlsx');
+    header('Cache-Control: max-age=0');
+    $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    $writer->save('php://output');
+    exit;
 }
 
 public function download_resume($id)
