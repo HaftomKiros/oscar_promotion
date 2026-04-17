@@ -16,7 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 const T={
-  en:{heroTitle:"Find Your Next\nOpportunity",heroDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",formTitle:"Job Seeker Registration",formDesc:"All fields marked * are required.",personalDetails:"Personal Details",fullName:"Full Name",fullNamePh:"Enter your full name",dob:"Date of Birth (Ethiopian)",phone:"Phone Number",phonePh:"e.g. 0912345678",sex:"Sex",male:"Male",female:"Female",education:"Education & Experience",eduLevel:"Education Level",experience:"Years of Experience",qualification:"Job Looking For",qualificationPh:"e.g. Accountant, Nurse, Driver",location:"Location",locationLabel:"Location / Address",locationPh:"City, Sub-city or Woreda",submit:"Submit Registration",consent:"By submitting, you confirm your details are accurate.",day:"Day",month:"Month",year:"Year",meskerem:"Meskerem",tikemet:"Tikemet",hidar:"Hidar",tahsas:"Tahsas",tir:"Tir",yekatit:"Yekatit",megabit:"Megabit",miyazia:"Miyazia",ginbot:"Ginbot",sene:"Sene",hamle:"Hamle",nehase:"Nehase",
+  en:{heroTitle:"Find Your Next\nOpportunity",heroDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",formTitle:"Job Seeker Registration",formDesc:"All fields marked * are required.",personalDetails:"Personal Details",fullName:"Full Name",fullNamePh:"Enter your full name",dob:"Date of Birth (Ethiopian)",phone:"Phone Number",phonePh:"e.g. 0912345678",sex:"Sex",male:"Male",female:"Female",education:"Education & Experience",eduLevel:"Education Level",experience:"Years of Experience",qualification:"Job Looking For",qualificationPh:"e.g. Accountant, Nurse, Driver",location:"Location",locationLabel:"Location / Address",locationPh:"Zoba, Woreda, Tabia",submit:"Submit Registration",consent:"By submitting, you confirm your details are accurate.",day:"Day",month:"Month",year:"Year",meskerem:"Meskerem",tikemet:"Tikemet",hidar:"Hidar",tahsas:"Tahsas",tir:"Tir",yekatit:"Yekatit",megabit:"Megabit",miyazia:"Miyazia",ginbot:"Ginbot",sene:"Sene",hamle:"Hamle",nehase:"Nehase",
     step1Title:"Register Once",step1Sub:"Fill your profile once. We keep searching for you.",
     step2Title:"We Find the Job",step2Sub:"Oscar matches your skills to verified employer vacancies.",
     step3Title:"We Call You",step3Sub:"When there's a match, Oscar Promotion contacts you directly.",
@@ -26,7 +26,7 @@ const T={
     splashTitle:"Your Career\nStarts Here",splashDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",
     trust1:"Your data is secure & encrypted",trust2:"Real information required",trust3:"Never shared without consent",
     splashBtn:"Register Now"},
-  ti:{heroTitle:"ናይ ስራሕ ዕድል\nምርካብ",heroDesc:"ሓበሬታኻ ምላእ እሞ ምስ ስራሕ ሃብቲ ብቕልጡፍ ተራኸብ። ምስ ዝምዝገብካ፡ ንዝያዳ ሓበሬታ ክንረኽበካ ኢና።",formTitle:"ናይ ስራሕ ፈላጢ ምዝገባ",formDesc:"ብ * ዝተመልከቱ ኩሎም ዓምድታት ክምልኡ ኣለዎም።",personalDetails:"ውልቃዊ ሓበሬታ",fullName:"ምሉእ ስም",fullNamePh:"ምሉእ ስምኻ ኣእቱ",dob:"ዕለተ ልደት (ኢትዮጵያዊ)",phone:"ቁጽሪ ተሌፎን",phonePh:"ኣብነት 0912345678",sex:"ጾታ",male:"ተባዕታይ",female:"ኣንስተይቲ",education:"ትምህርትን ተመክሮን",eduLevel:"ደረጃ ትምህርቲ",experience:"ዓመታት ተመክሮ",qualification:"እትደልዮ ስራሕ",qualificationPh:"ኣብነት: ሒሳብኛ፡ ነርስ፡ ሹፌር",location:"ቦታ",locationLabel:"ቦታ / ኣድራሻ",locationPh:"ከተማ፡ ክፍለ ከተማ ወይ ወረዳ",submit:"ምዝገባ ምቕራብ",consent:"ብምቕራብካ፡ ዝሃብካዮ ሓበሬታ ቅኑዕ ምዃኑ ትርጉም።",day:"መዓልቲ",month:"ወርሒ",year:"ዓመት",meskerem:"መስከረም",tikemet:"ጥቅምቲ",hidar:"ሕዳር",tahsas:"ታሕሳስ",tir:"ጥሪ",yekatit:"የካቲት",megabit:"መጋቢት",miyazia:"ሚያዝያ",ginbot:"ግንቦት",sene:"ሰነ",hamle:"ሓምለ",nehase:"ነሓሰ",
+  ti:{heroTitle:"ናይ ስራሕ ዕድል\nምርካብ",heroDesc:"ሓበሬታኻ ምላእ እሞ ምስ ስራሕ ሃብቲ ብቕልጡፍ ተራኸብ። ምስ ዝምዝገብካ፡ ንዝያዳ ሓበሬታ ክንረኽበካ ኢና።",formTitle:"ናይ ስራሕ ፈላጢ ምዝገባ",formDesc:"ብ * ዝተመልከቱ ኩሎም ዓምድታት ክምልኡ ኣለዎም።",personalDetails:"ውልቃዊ ሓበሬታ",fullName:"ምሉእ ስም",fullNamePh:"ምሉእ ስምኻ ኣእቱ",dob:"ዕለተ ልደት (ኢትዮጵያዊ)",phone:"ቁጽሪ ተሌፎን",phonePh:"ኣብነት 0912345678",sex:"ጾታ",male:"ተባዕታይ",female:"ኣንስተይቲ",education:"ትምህርትን ተመክሮን",eduLevel:"ደረጃ ትምህርቲ",experience:"ዓመታት ተመክሮ",qualification:"እትደልዮ ስራሕ",qualificationPh:"ኣብነት: ሒሳብኛ፡ ነርስ፡ ሹፌር",location:"ቦታ",locationLabel:"ቦታ / ኣድራሻ",locationPh:"ዞባ፡ ወረዳ፡ ጣብያ",submit:"ምዝገባ ምቕራብ",consent:"ብምቕራብካ፡ ዝሃብካዮ ሓበሬታ ቅኑዕ ምዃኑ ትርጉም።",day:"መዓልቲ",month:"ወርሒ",year:"ዓመት",meskerem:"መስከረም",tikemet:"ጥቅምቲ",hidar:"ሕዳር",tahsas:"ታሕሳስ",tir:"ጥሪ",yekatit:"የካቲት",megabit:"መጋቢት",miyazia:"ሚያዝያ",ginbot:"ግንቦት",sene:"ሰነ",hamle:"ሓምለ",nehase:"ነሓሰ",
     step1Title:"ሓንሳብ ምዝገባ",step1Sub:"ሓበሬታኻ ሓንሳብ ምላእ። ንሕና ስራሕ ክንደሊ ኢና።",
     step2Title:"ስራሕ ንደሊ",step2Sub:"ኦስካር ፕሮሞሽን ክእለትካ ምስ ናይ ስራሕ ሃብቲ ኣዛሚዱ ይሰርሕ።",
     step3Title:"ክንረኽበካ ኢና",step3Sub:"ምስ ዝሰማማዕ ስራሕ ምስ ተረኽበ፡ ኦስካር ፕሮሞሽን ብቐጥታ ክረኽበካ እዩ።",
@@ -559,8 +559,8 @@ select.inp{padding-left:14px;}
               </div>
               <div class="col-md-6">
                 <div class="fld">
-                  <label><i class="bi bi-briefcase-fill"></i><span data-k="experience">Years of Experience</span><span class="req">*</span></label>
-                  <input type="number" class="inp" name="experience" value="<?php echo set_value('experience'); ?>" min="0" max="50" placeholder="0" required>
+                  <label><i class="bi bi-briefcase-fill"></i><span data-k="experience">Years of Experience</span></label>
+                  <input type="number" class="inp" name="experience" value="<?php echo set_value('experience', '0'); ?>" min="0" max="50" placeholder="0">
                   <i class="bi bi-briefcase ico"></i>
                 </div>
               </div>
@@ -583,7 +583,7 @@ select.inp{padding-left:14px;}
             </div>
             <div class="fld">
               <label><i class="bi bi-geo-alt-fill"></i><span data-k="locationLabel">Location / Address</span><span class="req">*</span></label>
-              <textarea class="inp" name="location" data-kp="locationPh" placeholder="City, Sub-city or Woreda" required><?php echo set_value('location'); ?></textarea>
+              <textarea class="inp" name="location" data-kp="locationPh" placeholder="Zoba, Woreda, Tabia" required><?php echo set_value('location'); ?></textarea>
               <i class="bi bi-geo-alt ico top"></i>
             </div>
           </div>
