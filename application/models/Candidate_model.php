@@ -227,23 +227,6 @@ class Candidate_model extends CI_Model {
      */
     public function get_woredas_with_sex_counts()
     {
-        // First get total counts per woreda
-        $this->db->select('woreda, COUNT(*) as total');
-        $this->db->where('woreda IS NOT NULL', null, false);
-        $this->db->where('woreda !=', '');
-        $this->db->group_by('woreda');
-        $this->db->order_by('woreda', 'ASC');
-        $result = $this->db->get('candidates')->result_array();
-        
-        $woreda_data = [];
-        foreach ($result as $row) {
-            $woreda_data[$row['woreda']] = [
-                'total' => $row['total'],
-                'Male' => 0,
-                'Female' => 0
-            ];
-        }
-        
         // Get male counts per woreda
         $this->db->reset_query();
         $this->db->select('woreda, COUNT(*) as count');
@@ -252,13 +235,12 @@ class Candidate_model extends CI_Model {
         $this->db->where('sex', 'Male');
         $this->db->group_by('woreda');
         $male_result = $this->db->get('candidates')->result_array();
-        
+
+        $woreda_data = [];
         foreach ($male_result as $row) {
-            if (isset($woreda_data[$row['woreda']])) {
-                $woreda_data[$row['woreda']]['Male'] = $row['count'];
-            }
+            $woreda_data[$row['woreda']] = ['Male' => (int)$row['count'], 'Female' => 0];
         }
-        
+
         // Get female counts per woreda
         $this->db->reset_query();
         $this->db->select('woreda, COUNT(*) as count');
@@ -267,13 +249,20 @@ class Candidate_model extends CI_Model {
         $this->db->where('sex', 'Female');
         $this->db->group_by('woreda');
         $female_result = $this->db->get('candidates')->result_array();
-        
+
         foreach ($female_result as $row) {
-            if (isset($woreda_data[$row['woreda']])) {
-                $woreda_data[$row['woreda']]['Female'] = $row['count'];
+            if (!isset($woreda_data[$row['woreda']])) {
+                $woreda_data[$row['woreda']] = ['Male' => 0, 'Female' => 0];
             }
+            $woreda_data[$row['woreda']]['Female'] = (int)$row['count'];
         }
-        
+
+        // Total = Male + Female
+        foreach ($woreda_data as $w => $d) {
+            $woreda_data[$w]['total'] = $d['Male'] + $d['Female'];
+        }
+
+        ksort($woreda_data);
         return $woreda_data;
     }
     
