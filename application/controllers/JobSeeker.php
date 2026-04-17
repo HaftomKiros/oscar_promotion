@@ -16,6 +16,11 @@ class JobSeeker extends CI_Controller {
 
     // Public registration form
     public function register() {
+        // If user is already logged in, redirect to admin dashboard
+        if ($this->session->userdata('isLogIn')) {
+            redirect('Admin_dashboard');
+            return;
+        }
         $data['educational_levels'] = $this->Candidate_model->getEducationalLevels();
         $this->load->view('jobseeker/register', $data);
     }
