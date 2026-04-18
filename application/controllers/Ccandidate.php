@@ -114,7 +114,8 @@ class Ccandidate extends CI_Controller {
          'experience'         => $this->input->post('experience'),
          'resume'             => $resume_file,
          'created_at'         => date("Y-m-d H:i:s"),
-         'status'             => 1, // default active
+         'status'             => 1,
+         'profile_complete'   => 1, // admin/clerk registered = fully complete
      );
 
      if (!$this->db->insert('candidates', $data)) {
