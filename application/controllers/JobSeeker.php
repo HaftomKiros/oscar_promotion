@@ -123,7 +123,6 @@ class JobSeeker extends CI_Controller {
                          ->update('candidates', ['resume' => $file_data['file_name']]);
             }
         }
-        $candidate_id = $this->db->insert_id();
 
         // ── Round-robin assignment to data clerks (all users except user_type=1 admin) ──
         $fields = $this->db->list_fields('candidates');
