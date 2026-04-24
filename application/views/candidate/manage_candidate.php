@@ -107,6 +107,31 @@
         <?php if (!empty($incomplete_candidates)): ?>
         <div class="row">
             <div class="col-sm-12">
+
+                <!-- ── Per-clerk stats cards (admin only) ── -->
+                <?php if(!empty($is_admin) && !empty($clerk_stats)): ?>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+                    <?php
+                    $colors = ['#1a3a5c','#0369a1','#065f46','#7c3aed','#b45309','#be123c'];
+                    foreach($clerk_stats as $i => $cs):
+                        $color = $colors[$i % count($colors)];
+                        $name = trim($cs['clerk_name']) ?: 'Unassigned';
+                    ?>
+                    <div style="background:#fff;border-radius:12px;padding:14px 20px;min-width:160px;flex:1;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-left:4px solid <?php echo $color; ?>;">
+                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#64748b;margin-bottom:6px;">👤 <?php echo htmlspecialchars($name); ?></div>
+                        <div style="font-size:28px;font-weight:900;color:<?php echo $color; ?>;"><?php echo $cs['total']; ?></div>
+                        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">pending profiles</div>
+                    </div>
+                    <?php endforeach; ?>
+                    <!-- Total card -->
+                    <div style="background:linear-gradient(135deg,#1a3a5c,#2d5282);border-radius:12px;padding:14px 20px;min-width:160px;flex:1;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:rgba(255,255,255,0.6);margin-bottom:6px;">📋 Total Pending</div>
+                        <div style="font-size:28px;font-weight:900;color:#f5a623;"><?php echo count($incomplete_candidates); ?></div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">all data clerks</div>
+                    </div>
+                </div>
+                <?php endif; ?>
+
                 <div class="incomplete-panel">
                     <div class="incomplete-panel-header">
                         <h4>
@@ -149,7 +174,7 @@
                                     </td>
                                     <td><?php echo $c['education_level']; ?></td>
                                     <td><?php echo $c['experience']; ?> yrs</td>
-                                    <td><?php echo htmlspecialchars($c['qualification_skills']); ?></td>
+                                    <td title="<?php echo htmlspecialchars($c['qualification_skills']); ?>"><?php echo htmlspecialchars(mb_strlen($c['qualification_skills']) > 25 ? mb_substr($c['qualification_skills'], 0, 25).'...' : $c['qualification_skills']); ?></td>
                                     <td><?php echo htmlspecialchars($c['location']); ?></td>
                                     <?php if($this->session->userdata('isAdmin') || $this->session->userdata('user_type') == 1): ?>
                                     <td style="white-space:nowrap;">

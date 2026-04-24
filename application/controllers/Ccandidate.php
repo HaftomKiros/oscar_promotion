@@ -148,11 +148,29 @@ public function manage_candidate()
     $this->db->order_by('c.created_at', 'DESC');
     $incomplete_candidates = $this->db->get()->result_array();
 
+    // Per-clerk stats (admin only)
+    $clerk_stats = [];
+    if ($is_admin) {
+        $stats_query = $this->db->query("
+            SELECT u.user_id, CONCAT(IFNULL(u.first_name,''),' ',IFNULL(u.last_name,'')) AS clerk_name,
+                   COUNT(c.id) AS total
+            FROM users u
+            JOIN user_login ul ON ul.user_id = u.user_id
+            LEFT JOIN candidates c ON c.assigned_to = u.user_id AND c.profile_complete = 0
+            WHERE (ul.user_type IS NULL OR ul.user_type != 1)
+            GROUP BY u.user_id
+            ORDER BY total DESC
+        ");
+        $clerk_stats = $stats_query->result_array();
+    }
+
     $data = array(
         'title'                => 'manage_candidate',
         'candidates'           => $candidates,
         'woredas'              => $woredas,
-        'incomplete_candidates'=> $incomplete_candidates
+        'incomplete_candidates'=> $incomplete_candidates,
+        'clerk_stats'          => $clerk_stats,
+        'is_admin'             => $is_admin,
     );
 
     $content = $this->parser->parse('candidate/manage_candidate', $data, true);
