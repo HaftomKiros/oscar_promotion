@@ -66,6 +66,18 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('langBtn').addEventListener('click',function(){t(this.getAttribute('data-lang')==='en'?'ti':'en')});
   jQuery('#education_level').select2({theme:'bootstrap-5',placeholder:'Select level...',allowClear:true});
 
+  // Phone number validation — must start with 09 or 07, exactly 10 digits
+  var phoneInput = document.getElementById('phone_number');
+  var phoneErr = document.getElementById('phone-err');
+  if(phoneInput){
+    phoneInput.addEventListener('input', function(){
+      var v = this.value;
+      var valid = /^0[79][0-9]{8}$/.test(v);
+      phoneErr.style.display = (v.length > 0 && !valid) ? 'block' : 'none';
+      this.setCustomValidity(valid || v.length===0 ? '' : 'Must start with 09 or 07 and be exactly 10 digits');
+    });
+  }
+
   // CV Upload interaction
   var cvInput = document.getElementById('cvFileInput');
   var cvChosen = document.getElementById('cvFileChosen');
@@ -540,8 +552,9 @@ select.inp{padding-left:14px;}
               <div class="col-md-6">
                 <div class="fld">
                   <label><i class="bi bi-telephone-fill"></i><span data-k="phone">Phone Number</span><span class="req">*</span></label>
-                  <input type="tel" class="inp" name="phone_number" value="<?php echo set_value('phone_number'); ?>" data-kp="phonePh" placeholder="e.g. 0912345678" required>
+                  <input type="tel" class="inp" name="phone_number" id="phone_number" value="<?php echo set_value('phone_number'); ?>" data-kp="phonePh" placeholder="e.g. 0912345678" pattern="0[79][0-9]{8}" maxlength="10" required>
                   <i class="bi bi-telephone ico"></i>
+                  <div id="phone-err" style="display:none;font-size:11px;color:#ef4444;margin-top:4px;font-weight:600;">⚠ Must start with 09 or 07 and be exactly 10 digits</div>
                 </div>
               </div>
               <div class="col-md-8">

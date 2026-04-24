@@ -59,7 +59,8 @@ class JobSeeker extends CI_Controller {
         $this->form_validation->set_rules('full_name',    'Full Name',    'required|trim');
         $this->form_validation->set_rules('sex',          'Sex',          'required');
         $this->form_validation->set_rules('dob_ethiopian','Date of Birth','required|trim');
-        $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim|is_unique[candidates.phone_number]');
+        $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim|is_unique[candidates.phone_number]|regex_match[/^0[79][0-9]{8}$/]');
+        $this->form_validation->set_message('regex_match', 'Phone number must start with 09 or 07 and be exactly 10 digits.');
         $this->form_validation->set_rules('education_level','Education Level','required');
         $this->form_validation->set_rules('experience',   'Years of Experience','trim');
         $this->form_validation->set_rules('qualification_skills','Qualification / Profession','required|trim');
