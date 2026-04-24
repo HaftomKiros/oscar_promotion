@@ -25,6 +25,7 @@ const T={
     statReg:"Register",statRegSub:"Your Profile",statMatch:"We Match",statMatchSub:"Your Skills",statHire:"Get Hired",statHireSub:"We Call You",
     splashTitle:"Your Career\nStarts Here",splashDesc:"Fill in your information and connect with employers fast. Once registered, we will contact you for more detail information.",
     trust1:"Your data is secure & encrypted",trust2:"Real information required",trust3:"Never shared without consent",
+    cvLabel:"Attach CV / Resume",cvSub:"Optional — PDF or Word, max 5MB",cvBtn:"Choose File",cvNone:"No file chosen",
     splashBtn:"Register Now"},
   ti:{heroTitle:"ናይ ስራሕ ዕድል\nምርካብ",heroDesc:"ሓበሬታኻ ምላእ እሞ ምስ ስራሕ ሃብቲ ብቕልጡፍ ተራኸብ። ምስ ዝምዝገብካ፡ ንዝያዳ ሓበሬታ ክንረኽበካ ኢና።",formTitle:"ናይ ስራሕ ፈላጢ ምዝገባ",formDesc:"ብ * ዝተመልከቱ ኩሎም ዓምድታት ክምልኡ ኣለዎም።",personalDetails:"ውልቃዊ ሓበሬታ",fullName:"ምሉእ ስም",fullNamePh:"ምሉእ ስምኻ ኣእቱ",dob:"ዕለተ ልደት (ኢትዮጵያዊ)",phone:"ቁጽሪ ተሌፎን",phonePh:"ኣብነት 0912345678",sex:"ጾታ",male:"ተባዕታይ",female:"ኣንስተይቲ",education:"ትምህርትን ተመክሮን",eduLevel:"ደረጃ ትምህርቲ",experience:"ዓመታት ተመክሮ",qualification:"ክእለት / ብቕዓት",qualificationPh:"ኣብነት: ሒሳብኛ፡ ነርስ፡ ሹፌር",location:"ቦታ",locationLabel:"ቦታ / ኣድራሻ",locationPh:"ዞባ፡ ወረዳ፡ ጣብያ",submit:"ምዝገባ ምቕራብ",consent:"ብምቕራብካ፡ ዝሃብካዮ ሓበሬታ ቅኑዕ ምዃኑ ትርጉም።",day:"መዓልቲ",month:"ወርሒ",year:"ዓመት",meskerem:"መስከረም",tikemet:"ጥቅምቲ",hidar:"ሕዳር",tahsas:"ታሕሳስ",tir:"ጥሪ",yekatit:"የካቲት",megabit:"መጋቢት",miyazia:"ሚያዝያ",ginbot:"ግንቦት",sene:"ሰነ",hamle:"ሓምለ",nehase:"ነሓሰ",
     step1Title:"ሓንሳብ ምዝገባ",step1Sub:"ሓበሬታኻ ሓንሳብ ምላእ። ንሕና ስራሕ ክንደሊ ኢና።",
@@ -35,6 +36,7 @@ const T={
     statReg:"ምዝገባ",statRegSub:"ሓበሬታኻ",statMatch:"ምዝማድ",statMatchSub:"ክእለትካ",statHire:"ምቅጻር",statHireSub:"ክንረኽበካ",
     splashTitle:"ናይ ስራሕ ዕድልካ\nኣብዚ ይጅምር",splashDesc:"ሓበሬታኻ ምላእ እሞ ምስ ስራሕ ሃብቲ ብቕልጡፍ ተራኸብ። ምስ ዝምዝገብካ፡ ንዝያዳ ሓበሬታ ክንረኽበካ ኢና።",
     trust1:"ሓበሬታኻ ብድሕንነት ይሕዘሉ",trust2:"ቅኑዕ ሓበሬታ ኣድላዪ እዩ",trust3:"ብዘይ ፍቓድካ ኣይካፈልን",
+    cvLabel:"CV / ናይ ስራሕ ታሪኽ ምጽንባር",cvSub:"ኣማራጺ — PDF ወይ Word፡ ዝለዓለ 5MB",cvBtn:"ፋይል ምምራጽ",cvNone:"ፋይል ኣይተመርጸን",
     splashBtn:"ሕጂ ምዝገባ"}
 };
 function t(lang){
@@ -63,6 +65,39 @@ document.addEventListener('DOMContentLoaded',()=>{
   var l=localStorage.getItem('lang')||'en'; t(l);
   document.getElementById('langBtn').addEventListener('click',function(){t(this.getAttribute('data-lang')==='en'?'ti':'en')});
   jQuery('#education_level').select2({theme:'bootstrap-5',placeholder:'Select level...',allowClear:true});
+
+  // CV Upload interaction
+  var cvInput = document.getElementById('cvFileInput');
+  var cvChosen = document.getElementById('cvFileChosen');
+  var cvFileName = document.getElementById('cvFileName');
+  var cvRemove = document.getElementById('cvFileRemove');
+  var cvZone = document.getElementById('cvDropZone');
+
+  cvInput.addEventListener('change', function(){
+    if(this.files && this.files[0]){
+      var f = this.files[0];
+      if(f.size > 5*1024*1024){ alert('File too large. Max 5MB.'); this.value=''; return; }
+      cvFileName.textContent = f.name;
+      cvChosen.style.display = 'flex';
+      cvZone.style.display = 'none';
+    }
+  });
+  cvRemove.addEventListener('click', function(){
+    cvInput.value = '';
+    cvChosen.style.display = 'none';
+    cvZone.style.display = 'block';
+  });
+  ['dragover','dragleave','drop'].forEach(function(ev){
+    cvZone.addEventListener(ev, function(e){
+      e.preventDefault();
+      if(ev==='dragover') cvZone.classList.add('dragover');
+      else cvZone.classList.remove('dragover');
+      if(ev==='drop' && e.dataTransfer.files[0]){
+        cvInput.files = e.dataTransfer.files;
+        cvInput.dispatchEvent(new Event('change'));
+      }
+    });
+  });
 });
 </script><style>
 :root{--p:#0d2137;--pm:#1a3a5c;--pl:#2d5282;--a:#f5a623;--al:#fbbf24;--bg:#eef2f7;--white:#fff;--text:#1e293b;--muted:#64748b;--border:#dde3ec;--green:#10b981;--red:#ef4444;}
@@ -254,6 +289,20 @@ select.inp{padding-left:14px;}
 .clogo-role{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;}
 .collab-x{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:13px;flex-shrink:0;}
 .rp-footer{text-align:center;padding:0 36px 28px;font-size:12px;color:var(--muted);}
+
+/* ── CV UPLOAD ── */
+.cv-upload-box{border:2px dashed var(--border);border-radius:14px;padding:22px 20px;text-align:center;background:#f8fafc;transition:all 0.2s;cursor:pointer;position:relative;}
+.cv-upload-box:hover,.cv-upload-box.dragover{border-color:var(--pm);background:#f0f4f9;}
+.cv-upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.cv-upload-icon{font-size:32px;margin-bottom:8px;color:var(--pm);}
+.cv-upload-label{font-size:13px;font-weight:700;color:var(--p);margin-bottom:4px;}
+.cv-upload-sub{font-size:11px;color:var(--muted);}
+.cv-upload-btn{display:inline-flex;align-items:center;gap:6px;background:var(--pm);color:#fff;padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;margin-top:10px;pointer-events:none;}
+.cv-file-chosen{display:flex;align-items:center;gap:10px;background:#e0f2fe;border:1px solid #7dd3fc;border-radius:10px;padding:10px 14px;margin-top:10px;}
+.cv-file-chosen i{color:#0369a1;font-size:18px;}
+.cv-file-name{font-size:12px;font-weight:600;color:#0369a1;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cv-file-remove{font-size:16px;color:#9ca3af;cursor:pointer;flex-shrink:0;}
+.cv-file-remove:hover{color:#ef4444;}
 
 /* ── TRUST + RECAPTCHA ── */
 .trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
@@ -470,7 +519,7 @@ select.inp{padding-left:14px;}
         <div class="error-box"><i class="bi bi-exclamation-circle-fill"></i><span><?php echo $errors; ?></span></div>
         <?php endif; ?>
 
-        <form action="<?php echo base_url('JobSeeker/submit'); ?>" method="post">
+        <form action="<?php echo base_url('JobSeeker/submit'); ?>" method="post" enctype="multipart/form-data">
           <?php echo form_hidden($this->security->get_csrf_token_name(), $this->security->get_csrf_hash()); ?>
 
           <!-- SECTION 1 -->
@@ -585,6 +634,27 @@ select.inp{padding-left:14px;}
               <label><i class="bi bi-geo-alt-fill"></i><span data-k="locationLabel">Location / Address</span><span class="req">*</span></label>
               <textarea class="inp" name="location" data-kp="locationPh" placeholder="Zoba, Woreda, Tabia" required><?php echo set_value('location'); ?></textarea>
               <i class="bi bi-geo-alt ico top"></i>
+            </div>
+          </div>
+
+          <!-- SECTION 4 — CV Upload -->
+          <div class="form-section s3">
+            <div class="sec-head">
+              <div class="sec-num">4</div>
+              <div class="sec-info"><h3 data-k="cvLabel">Attach CV / Resume</h3><p data-k="cvSub">Optional — PDF or Word, max 5MB</p></div>
+              <div class="sec-pill" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.3);color:#065f46;">Optional</div>
+            </div>
+            <div class="cv-upload-box" id="cvDropZone">
+              <input type="file" name="cv_file" id="cvFileInput" accept=".pdf,.doc,.docx">
+              <div class="cv-upload-icon">📄</div>
+              <div class="cv-upload-label" data-k="cvLabel">Attach CV / Resume</div>
+              <div class="cv-upload-sub" data-k="cvSub">Optional — PDF or Word, max 5MB</div>
+              <div class="cv-upload-btn"><i class="bi bi-upload"></i> <span data-k="cvBtn">Choose File</span></div>
+            </div>
+            <div class="cv-file-chosen" id="cvFileChosen" style="display:none;">
+              <i class="bi bi-file-earmark-text-fill"></i>
+              <span class="cv-file-name" id="cvFileName"></span>
+              <span class="cv-file-remove" id="cvFileRemove" title="Remove">✕</span>
             </div>
           </div>
 

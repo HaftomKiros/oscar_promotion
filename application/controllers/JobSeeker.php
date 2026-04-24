@@ -105,6 +105,26 @@ class JobSeeker extends CI_Controller {
         $this->db->insert('candidates', $data);
         $candidate_id = $this->db->insert_id();
 
+        // ── Handle CV upload if provided ──
+        if (!empty($_FILES['cv_file']['name'])) {
+            $upload_path = FCPATH . 'uploads/candidate_resumes/';
+            if (!is_dir($upload_path)) mkdir($upload_path, 0777, true);
+
+            $cv_config = [
+                'upload_path'   => $upload_path,
+                'allowed_types' => 'pdf|doc|docx',
+                'max_size'      => 5120,
+                'encrypt_name'  => true,
+            ];
+            $this->load->library('upload', $cv_config);
+            if ($this->upload->do_upload('cv_file')) {
+                $file_data = $this->upload->data();
+                $this->db->where('id', $candidate_id)
+                         ->update('candidates', ['resume' => $file_data['file_name']]);
+            }
+        }
+        $candidate_id = $this->db->insert_id();
+
         // ── Round-robin assignment to data clerks (all users except user_type=1 admin) ──
         $fields = $this->db->list_fields('candidates');
         if (in_array('assigned_to', $fields)) {
