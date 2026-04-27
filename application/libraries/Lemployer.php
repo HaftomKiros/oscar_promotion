@@ -16,15 +16,15 @@ class Lemployer {
         $CI =& get_instance();
         $CI->load->model('Company_model');
 
-        // Get all employers
         $employers = $CI->Company_model->get_all_employers();
 
         $data = array(
-            'title' => 'Manage Employers',
+            'title'         => 'Manage Employers',
             'employer_list' => $employers
         );
 
-        return $CI->parser->parse('employer/employer_list', $data, true);
+        // Use load->view instead of parser to ensure $this->permission1 works correctly
+        return $CI->load->view('employer/employer_list', $data, true);
     }
 
 
