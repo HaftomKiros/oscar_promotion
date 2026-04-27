@@ -23,7 +23,7 @@ class Lemployer {
             'employer_list' => $employers
         );
 
-        // Use load->view instead of parser to ensure $this->permission1 works correctly
+        // Must use load->view (not parser->parse) because view contains PHP logic
         return $CI->load->view('employer/employer_list', $data, true);
     }
 

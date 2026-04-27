@@ -87,15 +87,8 @@ class Cemployer extends CI_Controller {
 
 public function manage_employer()
 {
-    $CI =& get_instance();
-    $this->auth->check_admin_auth();
-
-    $CI->load->library('lemployer');  
-    $CI->load->model('Company_model'); 
-
-    // Load employer list page
-    $content = $CI->lemployer->employer_list();
-
+    $this->load->model('Company_model');
+    $content = $this->lemployer->employer_list();
     $this->template->full_admin_html_view($content);
 }
 public function delete($id)
