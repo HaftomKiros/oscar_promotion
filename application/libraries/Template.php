@@ -73,6 +73,7 @@ class Template {
 				'msg_content' => $message,
 				'company_info' => $company_info
 			);
-		$content = $CI->parser->parse('admin_html_template',$data);
+		// Use load->view instead of parser to prevent {..} in content being parsed as template vars
+		$CI->load->view('admin_html_template', $data);
 	}
 }

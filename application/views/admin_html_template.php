@@ -76,7 +76,7 @@
             }
             ?>
 
-                {content}
+                <?php echo $content; ?>
                 
             <?php
             if ($url != "login") {
