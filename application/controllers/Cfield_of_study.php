@@ -84,7 +84,8 @@ public function edit($id)
         'field' => $field,
     );
 
-    $content = $this->parser->parse('education/edit_field_of_study', $data, true);
+    // Use load->view directly — parser can't handle object variables
+    $content = $this->load->view('education/edit_field_of_study', $data, true);
     $this->template->full_admin_html_view($content);
 }
 
