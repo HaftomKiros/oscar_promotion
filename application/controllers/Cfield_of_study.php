@@ -72,7 +72,6 @@ public function edit($id)
 {
     $this->load->model('Educations');
 
-    // Fetch the field record
     $field = $this->Educations->get_field_by_id($id);
 
     if (!$field) {
@@ -80,10 +79,9 @@ public function edit($id)
         redirect('Cfield_of_study/manage_field_of_study');
     }
 
-    // Pass correct data to view
     $data = array(
         'title' => 'Edit Field of Study',
-        'field' => $field,   // <---- VERY IMPORTANT
+        'field' => $field,
     );
 
     $content = $this->parser->parse('education/edit_field_of_study', $data, true);

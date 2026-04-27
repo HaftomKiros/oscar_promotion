@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <?php if ($this->permission1->method('edit_field_of_study','update')->access()) { ?>
+        <?php if ($this->permission1->method('manage_field_of_study','update')->access()) { ?>
 
         <div class="row">
             <div class="col-sm-12">
