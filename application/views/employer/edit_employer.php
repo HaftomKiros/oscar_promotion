@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <?php if($this->permission1->method('edit_employer','update')->access()) { ?>
+        <?php if($this->permission1->method('manage_employer','update')->access()) { ?>
 
         <div class="row">
             <div class="col-sm-12">
