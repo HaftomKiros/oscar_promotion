@@ -107,9 +107,7 @@ public function edit($id)
 {
     $this->load->model('Company_model');
 
-    $data['title'] = display('edit_employer'); // Multi-language title
-
-    // Fetch employer data
+    $data['title']    = display('edit_employer');
     $data['employer'] = $this->Company_model->get_employer_by_id($id);
 
     if (!$data['employer']) {
@@ -117,8 +115,7 @@ public function edit($id)
         redirect('Cemployer/manage_employer');
     }
 
-    // Load edit view
-    $content = $this->parser->parse('employer/edit_employer', $data, true);
+    $content = $this->load->view('employer/edit_employer', $data, true);
     $this->template->full_admin_html_view($content);
 }
 public function update_employer($id)
