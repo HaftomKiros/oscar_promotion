@@ -796,44 +796,52 @@ class Admin_dashboard extends CI_Controller {
         $this->template->full_admin_html_view($content);
     }
 
-    // Delete a candidate_report entry (removes candidate feedback cycle so candidate returns to the pool)
-    public function delete_report($report_id = null) {
+    // Delete a report entry for a candidate (match by seeker_id → candidates.id, then candidate_report)
+    // Supported types: shortlisted=3, interviewed=4, hired=5, rejected=6
+    public function delete_report($seeker_id = null, $type = null) {
         $CI =& get_instance();
         $this->auth->check_admin_auth();
         $CI->load->model('Reports');
         $CI->load->model('Candidate_model');
 
-        if ($report_id === null) {
-            show_404();
-            return;
-        }
+        if ($seeker_id === null) { show_404(); return; }
 
-        // Fetch report row to get candidate_id and company_id before deletion
-        $report = $CI->Reports->get_report_by_id($report_id);
-        if (empty($report)) {
-            show_404();
-            return;
-        }
+        // Step 1 – select id from candidates based on seeker_id
+        $candidate = $CI->db->select('id, full_name')
+                            ->from('candidates')
+                            ->where('seeker_id', $seeker_id)
+                            ->get()
+                            ->row_array();
+        if (empty($candidate)) { show_404(); return; }
 
-        $candidate_id = $report['candidate_id'];
-        $company_id   = $report['company_id'];
+        $candidate_id = $candidate['id'];
 
-        // Delete the candidate_report entry
-        $CI->db->where('id', $report_id)->delete('candidate_report');
-
-        // Also delete all other status records for the same candidate-company pair
+        // Step 2 – delete from candidate_report where candidate_id=id and status matches type
+        $statusMap = [
+            'shortlisted' => 3,
+            'interviewed' => 4,
+            'hired'       => 5,
+            'rejected'    => 6,
+        ];
+        $status = isset($statusMap[$type]) ? $statusMap[$type] : 5; // default to hired
         $CI->db->where('candidate_id', $candidate_id)
-               ->where('company_id', $company_id)
+               ->where('status', $status)
                ->delete('candidate_report');
 
-        // Reset candidate profile so they appear as a fresh application everywhere
-        $CI->db->where('id', $candidate_id)->update('candidates', array(
-            'profile_complete' => 0,
-            'assigned_to'      => NULL,
-        ));
+        // Step 3 – set candidates.status back to job-seeker (status=1)
+        $CI->db->where('id', $candidate_id)
+               ->update('candidates', [
+                   'status'          => 1,   // job seeker / available again
+                   'profile_complete'=> 0,
+                   'assigned_to'     => NULL,
+               ]);
 
         $this->session->set_userdata(array('message' => display('successfully_deleted')));
-        redirect(base_url('Admin_dashboard/hired_by_company/' . $company_id));
+        // Redirect back to the appropriate listing page
+        $redirect = $type && isset($statusMap[$type])
+            ? base_url("Admin_dashboard/{$type}_by_company/0")  // company_id 0 = overview list
+            : base_url('Admin_dashboard/hired_by_company/0');
+        redirect($redirect);
     }
     
 }

@@ -159,11 +159,11 @@
             <td><?php echo html_escape($data['job_title']); ?></td>
             <td><?php echo isset($status_labels[$data['application_status']]) ? $status_labels[$data['application_status']] : 'Unknown'; ?></td>
             <td>
-                <a href="<?php echo base_url('candidate_report/delete/' . ($data['report_id'] ?? $data['id'])); ?>"
+                <a href="<?php echo base_url('candidate_report/delete/' . html_escape($data['seeker_id']) . '/' . html_escape($report_type)); ?>"
                    class="delete-btn"
                    title="Delete"
-                   onclick="return confirm('Are you sure you want to remove this candidate from this report? Their profile will be reset and returned to the pool.');">
-                     <i class="fa fa-trash-o"></i>
+                   onclick="return confirm('Are you sure? This candidate will be returned to the job-seeker pool.');">
+                    <i class="fa fa-trash-o"></i>
                 </a>
             </td>
         </tr>

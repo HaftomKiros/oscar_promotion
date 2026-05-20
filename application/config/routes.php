@@ -61,5 +61,6 @@ $route['register/submit'] = 'JobSeeker/submit';
 $route['login']  = 'Admin_dashboard/login';
 $route['logout'] = 'Admin_dashboard/logout';
 
-// Delete candidate report entry (used by all status detail views)
-$route['candidate_report/delete/(:num)'] = 'Admin_dashboard/delete_report/$1';
+// Delete report entry for a candidate (seeker_id identifies the candidate, type identifies the report list)
+$route['candidate_report/delete/(:num)/(:any)'] = 'Admin_dashboard/delete_report/$1/$2';
+$route['candidate_report/delete/(:num)']        = 'Admin_dashboard/delete_report/$1/hired';
