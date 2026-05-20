@@ -60,3 +60,6 @@ $route['register/submit'] = 'JobSeeker/submit';
 // Admin login shortcut
 $route['login']  = 'Admin_dashboard/login';
 $route['logout'] = 'Admin_dashboard/logout';
+
+// Delete candidate report entry (used by all status detail views)
+$route['candidate_report/delete/(:num)'] = 'Admin_dashboard/delete_report/$1';

@@ -1850,7 +1850,7 @@ public function total_short_list() {
 
     // Get shortlisted candidates by company and optionally by job
     public function get_shortlisted_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, cr.id as report_id, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1865,7 +1865,7 @@ public function total_short_list() {
 
     // Get interviewed candidates by company and optionally by job
     public function get_interviewed_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, cr.id as report_id, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1880,7 +1880,7 @@ public function total_short_list() {
 
     // Get hired candidates by company and optionally by job
     public function get_hired_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, cr.id as report_id, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1895,7 +1895,7 @@ public function total_short_list() {
 
     // Get rejected candidates by company and optionally by job
     public function get_rejected_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, cr.id as report_id, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1928,7 +1928,7 @@ public function total_short_list() {
 
     // Get applied candidates by company and optionally by job
     public function get_applied_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, cr.id as report_id, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1941,5 +1941,13 @@ public function total_short_list() {
         return $query->result_array();
     }
 
+    // Fetch a single candidate_report row by its primary key
+    public function get_report_by_id($report_id) {
+        $this->db->select('cr.id, cr.candidate_id, cr.company_id');
+        $this->db->from('candidate_report cr');
+        $this->db->where('cr.id', (int)$report_id);
+        $query = $this->db->get();
+        return $query->num_rows() > 0 ? $query->row_array() : [];
+    }
 
 }

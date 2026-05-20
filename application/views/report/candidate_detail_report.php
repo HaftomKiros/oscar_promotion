@@ -9,6 +9,21 @@
     .dropdown-menu > li > a {
         color: #fff;
     }
+    .delete-btn {
+        color: #dd4b39;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid #dd4b39;
+        background: transparent;
+        font-size: 13px;
+        line-height: 1.4;
+        transition: background 0.2s, color 0.2s;
+    }
+    .delete-btn:hover {
+        background: #dd4b39;
+        color: #fff;
+    }
     @media (max-width: 768px) {
         .panel-body-scroll {
             overflow-x: auto;
@@ -93,6 +108,7 @@
                     </div>
 
                     <div class="panel-body panel-body-scroll">
+                        <div class="table-responsive">
                         <table id="candidateList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
@@ -110,6 +126,7 @@
                                     <th>Woreda</th>
                                     <th>Job Title</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -141,6 +158,14 @@
             <td><?php echo html_escape($data['woreda'] ?? ''); ?></td>
             <td><?php echo html_escape($data['job_title']); ?></td>
             <td><?php echo isset($status_labels[$data['application_status']]) ? $status_labels[$data['application_status']] : 'Unknown'; ?></td>
+            <td>
+                <a href="<?php echo base_url('candidate_report/delete/' . ($data['report_id'] ?? $data['id'])); ?>"
+                   class="delete-btn"
+                   title="Delete"
+                   onclick="return confirm('Are you sure you want to remove this candidate from this report? Their profile will be reset and returned to the pool.');">
+                     <i class="fa fa-trash-o"></i>
+                </a>
+            </td>
         </tr>
     <?php 
         }
@@ -148,6 +173,7 @@
     ?>
 </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>
