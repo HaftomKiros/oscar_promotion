@@ -94,6 +94,19 @@ class Candidate_model extends CI_Model {
     {
         return $this->db->count_all('candidates');
     }
+
+    public function count_candidate_gender()
+    {
+        $query = $this->db->query("SELECT sex, COUNT(*) as count FROM candidates WHERE sex IN ('Male', 'Female') GROUP BY sex");
+        $result = ['Male' => 0, 'Female' => 0];
+        foreach ($query->result_array() as $row) {
+            $sex = ucfirst(strtolower($row['sex']));
+            if (isset($result[$sex])) {
+                $result[$sex] = (int)$row['count'];
+            }
+        }
+        return $result;
+    }
     
     /**
      * Get candidates with pagination (server-side)
