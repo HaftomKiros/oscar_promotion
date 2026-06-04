@@ -36,10 +36,14 @@ class Admin_dashboard extends CI_Controller {
     //$total_employers      = $CI->Customers->count_customer();
     $total_product       = $CI->Products->count_product();
     // report
-    $total_short_list       = $CI->Reports->total_short_list();
-    $total_interview_list       = $CI->Reports->total_interview_list();
-    $total_hired_list       = $CI->Reports->total_hired_list();
-    $total_rejected_list       = $CI->Reports->total_rejected_list();
+    $total_short_list = $CI->Reports->total_short_list();
+    $total_short_list_gender = $CI->Reports->total_short_list_gender();
+    $total_interview_list = $CI->Reports->total_interview_list();
+    $total_interview_list_gender = $CI->Reports->total_interview_list_gender();
+    $total_hired_list = $CI->Reports->total_hired_list();
+    $total_hired_list_gender = $CI->Reports->total_hired_list_gender();
+    $total_rejected_list = $CI->Reports->total_rejected_list();
+    $total_rejected_list_gender = $CI->Reports->total_rejected_list_gender();
     //report
     $total_manufacturers = $CI->Manufacturers->count_manufacturer();
     $total_sales         = $CI->Invoices->count_invoice();
@@ -58,9 +62,17 @@ class Admin_dashboard extends CI_Controller {
         'total_product'         => $total_product,
         'total_manufacturers'   => $total_manufacturers,
     'total_short_list'=>$total_short_list,
+    'total_short_list_male'=>$total_short_list_gender['Male'],
+    'total_short_list_female'=>$total_short_list_gender['Female'],
     'total_interview_list'=>$total_interview_list,
+    'total_interview_list_male'=>$total_interview_list_gender['Male'],
+    'total_interview_list_female'=>$total_interview_list_gender['Female'],
     'total_hired_list'=>$total_hired_list,
+    'total_hired_list_male'=>$total_hired_list_gender['Male'],
+    'total_hired_list_female'=>$total_hired_list_gender['Female'],
     'total_rejected_list'=>$total_rejected_list,
+    'total_rejected_list_male'=>$total_rejected_list_gender['Male'],
+    'total_rejected_list_female'=>$total_rejected_list_gender['Female'],
         'total_sales'           => $total_sales,
         'total_candidate'       => $total_candidate,
         'total_employer'           => $total_employer,

@@ -58,21 +58,34 @@
                </div>
             <?php } ?>
 
-             <?php
-             if($this->permission1->method('manage_candidate','read')->access()) { ?>
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2">
-                 <div class="panel panel-bd">
-                    <div class="panel-body">
-                        <div class="statistic-box">
-                              <a href="<?php echo base_url('Ccandidate/manage_candidate')?>" style="color:#000">
-                            <h2><span class="count-number"><?php echo $total_candidate ?></span> <span class="slight"><i class="fa fa-play fa-rotate-270 text-warning"> </i> </span></h2></a>
-                            <div class="small"><?php echo display('total_candidate')?></div>
-                            <div class="sparkline2 text-center"></div>
-                        </div>
-                    </div>
+              <?php
+              if($this->permission1->method('manage_candidate','read')->access()) { ?>
+                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2">
+                  <div class="panel panel-bd">
+                     <div class="panel-body">
+                         <div class="statistic-box">
+                               <a href="<?php echo base_url('Ccandidate/manage_candidate')?>" style="color:#000">
+                             <h2><span class="count-number"><?php echo $total_candidate ?></span> <span class="slight"><i class="fa fa-play fa-rotate-270 text-warning"> </i> </span></h2></a>
+                             <div class="small"><?php echo display('total_candidate')?></div>
+                             <div class="sparkline2 text-center" style="font-size:12px; line-height:18px;">
+                                 <?php echo display('male')?> : <strong><?php
+                                     $male_count = 0;
+                                     $this->db->where('sex', 'Male');
+                                     $male_count = $this->db->count_all_results('candidates');
+                                     echo $male_count;
+                                 ?></strong> &nbsp;|&nbsp;
+                                 <?php echo display('female')?> : <strong><?php
+                                     $this->db->reset_query();
+                                     $this->db->where('sex', 'Female');
+                                     $female_count = $this->db->count_all_results('candidates');
+                                     echo $female_count;
+                                 ?></strong>
+                             </div>
+                         </div>
+                     </div>
+                  </div>
                  </div>
-                </div>
-             <?php } ?>
+              <?php } ?>
 
             <?php
             if($this->permission1->method('shortlisted_report','read')->access()){ ?>
@@ -83,7 +96,9 @@
                               <a href="<?php echo base_url('Admin_dashboard/shortlisted_report')?>" style="color:#000">
                             <h2><span class="count-number"><?php echo $total_short_list?></span> <span class="slight"><i class="fa fa-play fa-rotate-270 text-warning"> </i></span></h2></a>
                             <div class="small"><?php echo display('total_shortlisted')?></div>
-                            <div class="sparkline4 text-center"></div>
+                            <div class="sparkline4 text-center" style="font-size:12px; line-height:18px;">
+                                Male : <strong><?php echo $total_short_list_male ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_short_list_female ?></strong>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,7 +116,9 @@
                             <a href="<?php echo base_url('Admin_dashboard/interviewed_report')?>" style="color:#000">
                             <h2><span class="count-number"><?php echo $total_interview_list; ?></span><span class="slight"> <i class="fa fa-play fa-rotate-270 text-warning"> </i> </span></h2></a>
                             <div class="small"><?php echo display('total_interviewed')?></div>
-                            <div class="sparkline2 text-center"></div>
+                            <div class="sparkline2 text-center" style="font-size:12px; line-height:18px;">
+                                Male : <strong><?php echo $total_interview_list_male ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_interview_list_female ?></strong>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,7 +133,9 @@
                             <a href="<?php echo base_url('Admin_dashboard/hired_report')?>" style="color:#000">
                             <h2><span class="count-number"><?php echo $total_hired_list ?></span><span class="slight"> <i class="fa fa-play fa-rotate-270 text-warning"> </i> </span></h2></a>
                             <div class="small"><?php echo display('total_hired')?></div>
-                            <div class="sparkline4 text-center"></div>
+                            <div class="sparkline4 text-center" style="font-size:12px; line-height:18px;">
+                                Male : <strong><?php echo $total_hired_list_male ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_hired_list_female ?></strong>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -131,7 +150,9 @@
                             <a href="<?php echo base_url('Admin_dashboard/rejected_report')?>" style="color:#000">
                             <h2><span class="count-number"><?php echo $total_rejected_list ?></span><span class="slight"> <i class="fa fa-play fa-rotate-270 text-warning"> </i> </span></h2></a>
                             <div class="small"><?php echo display('total_rejected')?></div>
-                            <div class="sparkline4 text-center"></div>
+                            <div class="sparkline4 text-center" style="font-size:12px; line-height:18px;">
+                                Male : <strong><?php echo $total_rejected_list_male ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_rejected_list_female ?></strong>
+                            </div>
                         </div>
                     </div>
                 </div>

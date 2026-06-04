@@ -1813,30 +1813,95 @@ public function get_rejected_products_report() {
     }
 }
 public function total_short_list() {
-        $this->db->where('status', 3); // Filter for shortlisted candidates (status = 3)
-        $query = $this->db->get('candidate_report'); // Query the candidate_report table
-        return $query->num_rows(); // Return the total count
+        $this->db->where('status', 3);
+        $query = $this->db->get('candidate_report');
+        return $query->num_rows();
     }
 
-    // Method to get the total interviewed candidates (status = 4)
+    public function total_short_list_gender() {
+        $this->db->select('c.sex, COUNT(*) as count');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->where('cr.status', 3);
+        $this->db->group_by('c.sex');
+        $query = $this->db->get();
+        $result = ['Male' => 0, 'Female' => 0];
+        foreach ($query->result_array() as $row) {
+            $sex = ucfirst(strtolower($row['sex']));
+            if (isset($result[$sex])) {
+                $result[$sex] = (int)$row['count'];
+            }
+        }
+        return $result;
+    }
+
     public function total_interview_list() {
-        $this->db->where('status', 4); // Filter for interviewed candidates (status = 4)
+        $this->db->where('status', 4);
         $query = $this->db->get('candidate_report');
-        return $query->num_rows(); // Return the total count
+        return $query->num_rows();
     }
 
-    // Method to get the total hired candidates (status = 5)
+    public function total_interview_list_gender() {
+        $this->db->select('c.sex, COUNT(*) as count');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->where('cr.status', 4);
+        $this->db->group_by('c.sex');
+        $query = $this->db->get();
+        $result = ['Male' => 0, 'Female' => 0];
+        foreach ($query->result_array() as $row) {
+            $sex = ucfirst(strtolower($row['sex']));
+            if (isset($result[$sex])) {
+                $result[$sex] = (int)$row['count'];
+            }
+        }
+        return $result;
+    }
+
     public function total_hired_list() {
-        $this->db->where('status', 5); // Filter for hired candidates (status = 5)
+        $this->db->where('status', 5);
         $query = $this->db->get('candidate_report');
-        return $query->num_rows(); // Return the total count
+        return $query->num_rows();
     }
 
-    // Method to get the total rejected candidates (status = 6)
+    public function total_hired_list_gender() {
+        $this->db->select('c.sex, COUNT(*) as count');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->where('cr.status', 5);
+        $this->db->group_by('c.sex');
+        $query = $this->db->get();
+        $result = ['Male' => 0, 'Female' => 0];
+        foreach ($query->result_array() as $row) {
+            $sex = ucfirst(strtolower($row['sex']));
+            if (isset($result[$sex])) {
+                $result[$sex] = (int)$row['count'];
+            }
+        }
+        return $result;
+    }
+
     public function total_rejected_list() {
-        $this->db->where('status', 6); // Filter for rejected candidates (status = 6)
+        $this->db->where('status', 6);
         $query = $this->db->get('candidate_report');
-        return $query->num_rows(); // Return the total count
+        return $query->num_rows();
+    }
+
+    public function total_rejected_list_gender() {
+        $this->db->select('c.sex, COUNT(*) as count');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->where('cr.status', 6);
+        $this->db->group_by('c.sex');
+        $query = $this->db->get();
+        $result = ['Male' => 0, 'Female' => 0];
+        foreach ($query->result_array() as $row) {
+            $sex = ucfirst(strtolower($row['sex']));
+            if (isset($result[$sex])) {
+                $result[$sex] = (int)$row['count'];
+            }
+        }
+        return $result;
     }
 
     // Get jobs posted by a company
