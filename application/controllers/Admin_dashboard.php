@@ -624,7 +624,7 @@ class Admin_dashboard extends CI_Controller {
             c.seeker_id, c.full_name, c.sex, c.martial_status, c.dob_ethiopian, c.age,
             c.total_family_size, c.hh_male, c.hh_female, c.household_type,
             c.disability_status, c.disability_male, c.disability_female,
-            c.phone_number, c.email, c.location_text, c.woreda, c.tabia,
+            c.phone_number, c.email, z.zone_name AS candidate_location, c.woreda, c.tabia,
             e.level AS education_label, f.field AS field_label,
             c.gpa, c.qualification_skills, c.graduated_year, c.experience,
             c.resume, c.created_at,
@@ -634,6 +634,7 @@ class Admin_dashboard extends CI_Controller {
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('educational_level e', 'e.id = c.education_level', 'left');
         $this->db->join('field_of_study f', 'f.id = c.field_of_study', 'left');
+        $this->db->join('zone z', 'z.id = c.location', 'left');
         $this->db->join('company co', 'co.id = cr.company_id', 'left');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
         $this->db->where('cr.status', $statusCode);
@@ -673,7 +674,7 @@ class Admin_dashboard extends CI_Controller {
                 $c['total_family_size'] ?? '', $c['hh_male'] ?? '', $c['hh_female'] ?? '',
                 $c['household_type'] ?? '', $c['disability_status'] ?? '',
                 $c['disability_male'] ?? '', $c['disability_female'] ?? '',
-                $c['phone_number'], $c['email'] ?? '', $c['location_text'] ?? '',
+                $c['phone_number'], $c['email'] ?? '', $c['candidate_location'] ?? '',
                 $c['woreda'] ?? '', $c['tabia'] ?? '',
                 $c['education_label'] ?? '', $c['field_label'] ?? '',
                 $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
