@@ -1,4 +1,27 @@
 <!-- Admin Home Start -->
+<style>
+/* Equal height cards in the stats row */
+.stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+.stats-row > div {
+    display: flex;
+    flex-direction: column;
+}
+.stats-row > div .panel-bd {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.stats-row > div .panel-bd .panel-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+</style>
  <div class="content-wrapper">
     <!-- Content Header(Page header)-->
     <section class="content-header">
@@ -40,7 +63,7 @@
             }
         ?>
         <!-- First Counter -->
-        <div class="row">
+        <div class="row stats-row">
 
            <?php
             if($this->permission1->method('manage_employer','read')->access()){ ?>
