@@ -107,6 +107,31 @@ class Candidate_model extends CI_Model {
         }
         return $result;
     }
+
+    public function count_candidate_online_offline()
+    {
+        $query = $this->db->query("
+            SELECT 
+                CASE WHEN (assigned_to IS NULL OR assigned_to = '' OR assigned_to = '0') THEN 'offline' ELSE 'online' END AS reg_type,
+                sex,
+                COUNT(*) as count
+            FROM candidates
+            WHERE sex IN ('Male', 'Female')
+            GROUP BY reg_type, sex
+        ");
+        $result = [
+            'online'  => ['Male' => 0, 'Female' => 0],
+            'offline' => ['Male' => 0, 'Female' => 0],
+        ];
+        foreach ($query->result_array() as $row) {
+            $sex  = ucfirst(strtolower($row['sex']));
+            $type = $row['reg_type'];
+            if (isset($result[$type][$sex])) {
+                $result[$type][$sex] = (int)$row['count'];
+            }
+        }
+        return $result;
+    }
     
     /**
      * Get candidates with pagination (server-side)

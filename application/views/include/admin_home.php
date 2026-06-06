@@ -71,6 +71,11 @@
                               <div class="text-center" style="font-size:12px; line-height:18px;">
                                   Male : <strong><?php echo $total_candidate_male; ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_candidate_female; ?></strong>
                               </div>
+                              <div class="text-center" style="font-size:11px; line-height:18px; margin-top:4px; color:#555;">
+                                  <span title="Online (self-registered)">🌐 M:<?php echo $online_male; ?> F:<?php echo $online_female; ?></span>
+                                  &nbsp;|&nbsp;
+                                  <span title="Offline (staff-registered)">📋 M:<?php echo $offline_male; ?> F:<?php echo $offline_female; ?></span>
+                              </div>
                          </div>
                      </div>
                   </div>

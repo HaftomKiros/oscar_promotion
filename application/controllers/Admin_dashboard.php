@@ -34,6 +34,7 @@ class Admin_dashboard extends CI_Controller {
     $total_employer = $CI->Company_model->count_employer();
     $total_candidate = $CI->Candidate_model->count_candidate();
     $total_candidate_gender = $CI->Candidate_model->count_candidate_gender();
+    $candidate_online_offline = $CI->Candidate_model->count_candidate_online_offline();
     //$total_employers      = $CI->Customers->count_customer();
     $total_product       = $CI->Products->count_product();
     // report
@@ -78,6 +79,10 @@ class Admin_dashboard extends CI_Controller {
         'total_candidate'       => $total_candidate,
         'total_candidate_male'  => $total_candidate_gender['Male'],
         'total_candidate_female'=> $total_candidate_gender['Female'],
+        'online_male'           => $candidate_online_offline['online']['Male'],
+        'online_female'         => $candidate_online_offline['online']['Female'],
+        'offline_male'          => $candidate_online_offline['offline']['Male'],
+        'offline_female'        => $candidate_online_offline['offline']['Female'],
         'total_employer'           => $total_employer,
         'total_purchase'        => $total_purchase,
         'stockout'              => (!empty($out_of_stock) ? $out_of_stock : 0),
