@@ -1813,9 +1813,14 @@ public function get_rejected_products_report() {
     }
 }
 public function total_short_list() {
-        $this->db->where('status', 3);
-        $query = $this->db->get('candidate_report');
-        return $query->num_rows();
+        $this->db->select('COUNT(*) as count');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
+        $this->db->where('cr.status', 3);
+        $this->db->where_in('c.sex', ['Male', 'Female']);
+        $query = $this->db->get();
+        $row = $query->row_array();
+        return (int)$row['count'];
     }
 
     public function total_short_list_gender() {
@@ -1836,9 +1841,14 @@ public function total_short_list() {
     }
 
     public function total_interview_list() {
-        $this->db->where('status', 4);
-        $query = $this->db->get('candidate_report');
-        return $query->num_rows();
+        $this->db->select('COUNT(*) as count');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
+        $this->db->where('cr.status', 4);
+        $this->db->where_in('c.sex', ['Male', 'Female']);
+        $query = $this->db->get();
+        $row = $query->row_array();
+        return (int)$row['count'];
     }
 
     public function total_interview_list_gender() {
@@ -1859,9 +1869,14 @@ public function total_short_list() {
     }
 
     public function total_hired_list() {
-        $this->db->where('status', 5);
-        $query = $this->db->get('candidate_report');
-        return $query->num_rows();
+        $this->db->select('COUNT(*) as count');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
+        $this->db->where('cr.status', 5);
+        $this->db->where_in('c.sex', ['Male', 'Female']);
+        $query = $this->db->get();
+        $row = $query->row_array();
+        return (int)$row['count'];
     }
 
     public function total_hired_list_gender() {
@@ -1882,9 +1897,14 @@ public function total_short_list() {
     }
 
     public function total_rejected_list() {
-        $this->db->where('status', 6);
-        $query = $this->db->get('candidate_report');
-        return $query->num_rows();
+        $this->db->select('COUNT(*) as count');
+        $this->db->from('candidate_report cr');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
+        $this->db->where('cr.status', 6);
+        $this->db->where_in('c.sex', ['Male', 'Female']);
+        $query = $this->db->get();
+        $row = $query->row_array();
+        return (int)$row['count'];
     }
 
     public function total_rejected_list_gender() {
