@@ -641,6 +641,7 @@ class Admin_dashboard extends CI_Controller {
         $candidates = $this->db->get()->result_array();
 
         // Resolve job location JSON IDs to zone names
+        $this->db->reset_query();
         $zoneMap = array_column($this->db->get('zone')->result_array(), 'zone_name', 'id');
         foreach ($candidates as &$row) {
             $locIds = json_decode($row['job_location'] ?? '', true);
