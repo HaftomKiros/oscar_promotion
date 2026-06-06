@@ -92,9 +92,7 @@ class Candidate_model extends CI_Model {
     
     public function count_candidate()
     {
-        $query = $this->db->query("SELECT COUNT(*) as count FROM candidates WHERE sex IN ('Male', 'Female')");
-        $row = $query->row_array();
-        return (int)$row['count'];
+        return $this->db->count_all('candidates');
     }
 
     public function count_candidate_gender()
