@@ -1915,12 +1915,14 @@ public function total_short_list() {
 
     // Get shortlisted candidates by company and optionally by job
     public function get_shortlisted_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_level, fs.field AS field_of_study, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
-        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
+        $this->db->join('educational_level el', 'el.id = c.education_level', 'left');
+        $this->db->join('field_of_study fs', 'fs.id = c.field_of_study', 'left');
         $this->db->where('cr.company_id', $company_id);
-        $this->db->where('cr.status', 3); // Shortlisted
+        $this->db->where('cr.status', 3);
         if ($job_id) {
             $this->db->where('cr.job_id', $job_id);
         }
@@ -1930,12 +1932,14 @@ public function total_short_list() {
 
     // Get interviewed candidates by company and optionally by job
     public function get_interviewed_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_level, fs.field AS field_of_study, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
-        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
+        $this->db->join('educational_level el', 'el.id = c.education_level', 'left');
+        $this->db->join('field_of_study fs', 'fs.id = c.field_of_study', 'left');
         $this->db->where('cr.company_id', $company_id);
-        $this->db->where('cr.status', 4); // Interviewed
+        $this->db->where('cr.status', 4);
         if ($job_id) {
             $this->db->where('cr.job_id', $job_id);
         }
@@ -1945,12 +1949,14 @@ public function total_short_list() {
 
     // Get hired candidates by company and optionally by job
     public function get_hired_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_level, fs.field AS field_of_study, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
-        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
+        $this->db->join('educational_level el', 'el.id = c.education_level', 'left');
+        $this->db->join('field_of_study fs', 'fs.id = c.field_of_study', 'left');
         $this->db->where('cr.company_id', $company_id);
-        $this->db->where('cr.status', 5); // Hired
+        $this->db->where('cr.status', 5);
         if ($job_id) {
             $this->db->where('cr.job_id', $job_id);
         }
@@ -1960,12 +1966,14 @@ public function total_short_list() {
 
     // Get rejected candidates by company and optionally by job
     public function get_rejected_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_level, fs.field AS field_of_study, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
-        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
+        $this->db->join('educational_level el', 'el.id = c.education_level', 'left');
+        $this->db->join('field_of_study fs', 'fs.id = c.field_of_study', 'left');
         $this->db->where('cr.company_id', $company_id);
-        $this->db->where('cr.status', 6); // Rejected
+        $this->db->where('cr.status', 6);
         if ($job_id) {
             $this->db->where('cr.job_id', $job_id);
         }
@@ -1993,12 +2001,14 @@ public function total_short_list() {
 
     // Get applied candidates by company and optionally by job
     public function get_applied_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_level, fs.field AS field_of_study, cr.status as application_status, j.job_title');
         $this->db->from('candidate_report cr');
-        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
+        $this->db->join('educational_level el', 'el.id = c.education_level', 'left');
+        $this->db->join('field_of_study fs', 'fs.id = c.field_of_study', 'left');
         $this->db->where('cr.company_id', $company_id);
-        $this->db->where_in('cr.status', [1, 2]); // Applied (pending or screening)
+        $this->db->where_in('cr.status', [1, 2]);
         if ($job_id) {
             $this->db->where('cr.job_id', $job_id);
         }

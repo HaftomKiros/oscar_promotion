@@ -631,7 +631,7 @@ class Admin_dashboard extends CI_Controller {
             co.company_name, j.job_title, cr.status
         ');
         $this->db->from('candidate_report cr');
-        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'left');
+        $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('educational_level e', 'e.id = c.education_level', 'left');
         $this->db->join('field_of_study f', 'f.id = c.field_of_study', 'left');
         $this->db->join('company co', 'co.id = cr.company_id', 'left');
