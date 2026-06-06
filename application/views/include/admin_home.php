@@ -118,6 +118,11 @@
                             <div class="text-center" style="font-size:12px; line-height:18px;">
                                 Male : <strong><?php echo $total_short_list_male ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_short_list_female ?></strong>
                             </div>
+                            <div class="text-center" style="font-size:11px; line-height:18px; margin-top:4px; color:#555;">
+                                <span title="Online">🌐 M:<?php echo $short_list_online_male ?> F:<?php echo $short_list_online_female ?></span>
+                                &nbsp;|&nbsp;
+                                <span title="Offline">📋 M:<?php echo $short_list_offline_male ?> F:<?php echo $short_list_offline_female ?></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -139,6 +144,11 @@
                             <div class="text-center" style="font-size:12px; line-height:18px;">
                                 Male : <strong><?php echo $total_interview_list_male ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_interview_list_female ?></strong>
                             </div>
+                            <div class="text-center" style="font-size:11px; line-height:18px; margin-top:4px; color:#555;">
+                                <span title="Online">🌐 M:<?php echo $interview_list_online_male ?> F:<?php echo $interview_list_online_female ?></span>
+                                &nbsp;|&nbsp;
+                                <span title="Offline">📋 M:<?php echo $interview_list_offline_male ?> F:<?php echo $interview_list_offline_female ?></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,6 +167,11 @@
                             <div class="text-center" style="font-size:12px; line-height:18px;">
                                 Male : <strong><?php echo $total_hired_list_male ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_hired_list_female ?></strong>
                             </div>
+                            <div class="text-center" style="font-size:11px; line-height:18px; margin-top:4px; color:#555;">
+                                <span title="Online">🌐 M:<?php echo $hired_list_online_male ?> F:<?php echo $hired_list_online_female ?></span>
+                                &nbsp;|&nbsp;
+                                <span title="Offline">📋 M:<?php echo $hired_list_offline_male ?> F:<?php echo $hired_list_offline_female ?></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -174,6 +189,11 @@
                             <div class="sparkline4 text-center"></div>
                             <div class="text-center" style="font-size:12px; line-height:18px;">
                                 Male : <strong><?php echo $total_rejected_list_male ?></strong> &nbsp;|&nbsp; Female : <strong><?php echo $total_rejected_list_female ?></strong>
+                            </div>
+                            <div class="text-center" style="font-size:11px; line-height:18px; margin-top:4px; color:#555;">
+                                <span title="Online">🌐 M:<?php echo $rejected_list_online_male ?> F:<?php echo $rejected_list_online_female ?></span>
+                                &nbsp;|&nbsp;
+                                <span title="Offline">📋 M:<?php echo $rejected_list_offline_male ?> F:<?php echo $rejected_list_offline_female ?></span>
                             </div>
                         </div>
                     </div>

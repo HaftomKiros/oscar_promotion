@@ -1835,6 +1835,31 @@ public function total_short_list() {
         return $result;
     }
 
+    public function report_online_offline_gender($status) {
+        $query = $this->db->query("
+            SELECT
+                CASE WHEN (c.assigned_to IS NULL OR c.assigned_to = '' OR c.assigned_to = '0') THEN 'offline' ELSE 'online' END AS reg_type,
+                c.sex,
+                COUNT(*) as count
+            FROM candidate_report cr
+            INNER JOIN candidates c ON c.id = cr.candidate_id
+            WHERE cr.status = ? AND c.sex IN ('Male','Female')
+            GROUP BY reg_type, c.sex
+        ", [(int)$status]);
+        $result = [
+            'online'  => ['Male' => 0, 'Female' => 0],
+            'offline' => ['Male' => 0, 'Female' => 0],
+        ];
+        foreach ($query->result_array() as $row) {
+            $sex  = ucfirst(strtolower($row['sex']));
+            $type = $row['reg_type'];
+            if (isset($result[$type][$sex])) {
+                $result[$type][$sex] = (int)$row['count'];
+            }
+        }
+        return $result;
+    }
+
     public function total_interview_list() {
         $this->db->where('status', 4);
         $query = $this->db->get('candidate_report');
