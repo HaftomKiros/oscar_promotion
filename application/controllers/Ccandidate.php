@@ -249,7 +249,8 @@ public function get_candidates_datatable()
             $row['experience'] ?? '',
             !empty($row['resume']) ? 'Yes' : 'No',
             $row['created_at'],
-            $row['status']
+            $row['status'],
+            $row['assigned_to'] ?? ''
         ];
     }
     
@@ -335,7 +336,7 @@ public function export_candidates_excel()
         'Family Size','HH Male','HH Female','Household Type','Disability Status',
         'Disability Male','Disability Female','Phone','Email','Location',
         'Woreda','Tabia','Education Level','Field of Study','GPA','Qualification/Skills',
-        'Graduated Year','Experience','Resume','Created At','Status'
+        'Graduated Year','Experience','Resume','Created At','Status','Online'
     ]];
     $sl = 1;
     foreach ($candidates as $c) {
@@ -351,7 +352,8 @@ public function export_candidates_excel()
             $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
             $c['graduated_year'] ?? '', $c['experience'] ?? '',
             !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
-            $statusLabels[$c['status']] ?? 'Unknown'
+            $statusLabels[$c['status']] ?? 'Unknown',
+            (!empty($c['assigned_to']) && $c['assigned_to'] != '0') ? 'Yes' : 'No'
         ];
     }
 
@@ -409,7 +411,7 @@ public function export_candidates_by_woreda()
         'Family Size','HH Male','HH Female','Household Type','Disability Status',
         'Disability Male','Disability Female','Phone','Email','Location',
         'Woreda','Tabia','Education Level','Field of Study','GPA','Qualification/Skills',
-        'Graduated Year','Experience','Resume','Created At','Status'
+        'Graduated Year','Experience','Resume','Created At','Status','Online'
     ]];
     $sl = 1;
     foreach ($candidates as $c) {
@@ -426,7 +428,8 @@ public function export_candidates_by_woreda()
             $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
             $c['graduated_year'] ?? '', $c['experience'] ?? '',
             !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
-            $statusLabels[$c['status']] ?? 'Unknown'
+            $statusLabels[$c['status']] ?? 'Unknown',
+            (!empty($c['assigned_to']) && $c['assigned_to'] != '0') ? 'Yes' : 'No'
         ];
     }
 

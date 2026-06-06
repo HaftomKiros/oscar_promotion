@@ -126,6 +126,7 @@
                                     <th>Woreda</th>
                                     <th>Job Title</th>
                                     <th>Status</th>
+                                    <th>Online</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -158,6 +159,7 @@
             <td><?php echo html_escape($data['woreda'] ?? ''); ?></td>
             <td><?php echo html_escape($data['job_title']); ?></td>
             <td><?php echo isset($status_labels[$data['application_status']]) ? $status_labels[$data['application_status']] : 'Unknown'; ?></td>
+            <td><?php $is_online = !empty($data['assigned_to']) && $data['assigned_to'] != '0'; echo $is_online ? '<span class="label label-success">Yes</span>' : '<span class="label label-default">No</span>'; ?></td>
             <td>
                 <a href="<?php echo base_url('candidate_report/delete/' . html_escape($data['seeker_id']) . '/' . html_escape($report_type)); ?>"
                    class="delete-btn"

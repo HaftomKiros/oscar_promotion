@@ -652,7 +652,7 @@ class Admin_dashboard extends CI_Controller {
             c.phone_number, c.email, z.zone_name AS candidate_location, c.woreda, c.tabia,
             e.level AS education_label, f.field AS field_label,
             c.gpa, c.qualification_skills, c.graduated_year, c.experience,
-            c.resume, c.created_at,
+            c.resume, c.created_at, c.assigned_to,
             co.company_name, j.job_title, j.location AS job_location, cr.status
         ');
         $this->db->from('candidate_report cr');
@@ -689,7 +689,7 @@ class Admin_dashboard extends CI_Controller {
             'Family Size', 'HH Male', 'HH Female', 'Household Type', 'Disability Status',
             'Disability Male', 'Disability Female', 'Phone', 'Email', 'Location',
             'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
-            'Graduated Year', 'Experience', 'Resume', 'Created At', 'Company', 'Job Title', 'Job Location', 'Status'
+            'Graduated Year', 'Experience', 'Resume', 'Created At', 'Company', 'Job Title', 'Job Location', 'Status', 'Online'
         ]];
         $sl = 1;
         foreach ($candidates as $c) {
@@ -705,7 +705,8 @@ class Admin_dashboard extends CI_Controller {
                 $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
                 $c['graduated_year'] ?? '', $c['experience'] ?? '',
                 !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
-                $c['company_name'] ?? '', $c['job_title'] ?? '', $c['job_location_name'] ?? '', $label
+                $c['company_name'] ?? '', $c['job_title'] ?? '', $c['job_location_name'] ?? '', $label,
+                (!empty($c['assigned_to']) && $c['assigned_to'] != '0') ? 'Yes' : 'No'
             ];
         }
 

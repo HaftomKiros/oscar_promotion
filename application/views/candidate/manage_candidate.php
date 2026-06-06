@@ -250,6 +250,7 @@
                                         <th>Resume</th>
                                         <th>Created At</th>
                                         <th>Status</th>
+                                        <th>Online</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -326,6 +327,15 @@ $(document).ready(function() {
                     var statusText = statusLabels[data] || 'Unknown';
                     var label = labelClass[data] || 'label-default';
                     return '<span class="label ' + label + '">' + statusText + '</span>';
+                }
+            },
+            {
+                data: 28,
+                render: function(data, type, row) {
+                    if (data && data != '0') {
+                        return '<span class="label label-success">Yes</span>';
+                    }
+                    return '<span class="label label-default">No</span>';
                 }
             },
             { 
