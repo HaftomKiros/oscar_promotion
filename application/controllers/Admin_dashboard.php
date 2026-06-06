@@ -625,7 +625,7 @@ class Admin_dashboard extends CI_Controller {
             c.total_family_size, c.hh_male, c.hh_female, c.household_type,
             c.disability_status, c.disability_male, c.disability_female,
             c.phone_number, c.email, c.location_text, c.woreda, c.tabia,
-            e.level AS education_level, f.field AS field_of_study,
+            e.level AS education_label, f.field AS field_label,
             c.gpa, c.qualification_skills, c.graduated_year, c.experience,
             c.resume, c.created_at,
             co.company_name, j.job_title, cr.status
@@ -658,7 +658,7 @@ class Admin_dashboard extends CI_Controller {
                 $c['disability_male'] ?? '', $c['disability_female'] ?? '',
                 $c['phone_number'], $c['email'] ?? '', $c['location_text'] ?? '',
                 $c['woreda'] ?? '', $c['tabia'] ?? '',
-                $c['education_level'] ?? '', $c['field_of_study'] ?? '',
+                $c['education_label'] ?? '', $c['field_label'] ?? '',
                 $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
                 $c['graduated_year'] ?? '', $c['experience'] ?? '',
                 !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],

@@ -151,7 +151,7 @@
             <td><?php echo html_escape($data['age'] ?? ''); ?></td>
             <td><?php echo html_escape($data['phone_number']); ?></td>
             <td><?php echo html_escape($data['email']); ?></td>
-            <td><?php echo html_escape($data['education_level'] ?? ''); ?></td>
+            <td><?php echo html_escape($data['education_label'] ?? ''); ?></td>
             <td><?php echo html_escape($data['experience'] ?? ''); ?></td>
             <td><?php echo html_escape($data['qualification_skills'] ?? ''); ?></td>
             <td><?php echo html_escape($data['location_text'] ?? ''); ?></td>
