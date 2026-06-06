@@ -1915,7 +1915,7 @@ public function total_short_list() {
 
     // Get shortlisted candidates by company and optionally by job
     public function get_shortlisted_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, el.level AS education_label, fs.field AS field_label, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_label, fs.field AS field_label, cr.status as application_status, j.job_title, j.location AS job_location');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1927,12 +1927,12 @@ public function total_short_list() {
             $this->db->where('cr.job_id', $job_id);
         }
         $query = $this->db->get();
-        return $query->result_array();
+        return $this->_resolve_job_locations($query->result_array());
     }
 
     // Get interviewed candidates by company and optionally by job
     public function get_interviewed_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, el.level AS education_label, fs.field AS field_label, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_label, fs.field AS field_label, cr.status as application_status, j.job_title, j.location AS job_location');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1944,12 +1944,12 @@ public function total_short_list() {
             $this->db->where('cr.job_id', $job_id);
         }
         $query = $this->db->get();
-        return $query->result_array();
+        return $this->_resolve_job_locations($query->result_array());
     }
 
     // Get hired candidates by company and optionally by job
     public function get_hired_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, el.level AS education_label, fs.field AS field_label, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_label, fs.field AS field_label, cr.status as application_status, j.job_title, j.location AS job_location');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1961,12 +1961,12 @@ public function total_short_list() {
             $this->db->where('cr.job_id', $job_id);
         }
         $query = $this->db->get();
-        return $query->result_array();
+        return $this->_resolve_job_locations($query->result_array());
     }
 
     // Get rejected candidates by company and optionally by job
     public function get_rejected_by_company($company_id, $job_id = null) {
-        $this->db->select('c.*, el.level AS education_label, fs.field AS field_label, cr.status as application_status, j.job_title');
+        $this->db->select('c.*, el.level AS education_label, fs.field AS field_label, cr.status as application_status, j.job_title, j.location AS job_location');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
         $this->db->join('jobs j', 'j.id = cr.job_id', 'left');
@@ -1978,7 +1978,25 @@ public function total_short_list() {
             $this->db->where('cr.job_id', $job_id);
         }
         $query = $this->db->get();
-        return $query->result_array();
+        return $this->_resolve_job_locations($query->result_array());
+    }
+
+    // Resolve job location JSON IDs to zone names
+    private function _resolve_job_locations($rows) {
+        $zoneMap = array_column($this->db->get('zone')->result_array(), 'zone_name', 'id');
+        foreach ($rows as &$row) {
+            $locIds = json_decode($row['job_location'] ?? '', true);
+            if (is_array($locIds)) {
+                $names = [];
+                foreach ($locIds as $id) {
+                    if (isset($zoneMap[$id])) $names[] = $zoneMap[$id];
+                }
+                $row['job_location_name'] = implode(', ', $names);
+            } else {
+                $row['job_location_name'] = '';
+            }
+        }
+        return $rows;
     }
 
     // Get applied candidates (all candidates who applied, status = 1 or 2)

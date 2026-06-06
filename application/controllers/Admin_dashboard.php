@@ -628,7 +628,7 @@ class Admin_dashboard extends CI_Controller {
             e.level AS education_label, f.field AS field_label,
             c.gpa, c.qualification_skills, c.graduated_year, c.experience,
             c.resume, c.created_at,
-            co.company_name, j.job_title, cr.status
+            co.company_name, j.job_title, j.location AS job_location, cr.status
         ');
         $this->db->from('candidate_report cr');
         $this->db->join('candidates c', 'c.id = cr.candidate_id', 'inner');
@@ -640,13 +640,29 @@ class Admin_dashboard extends CI_Controller {
         $this->db->order_by('co.company_name', 'ASC');
         $candidates = $this->db->get()->result_array();
 
+        // Resolve job location JSON IDs to zone names
+        $zoneMap = array_column($this->db->get('zone')->result_array(), 'zone_name', 'id');
+        foreach ($candidates as &$row) {
+            $locIds = json_decode($row['job_location'] ?? '', true);
+            if (is_array($locIds)) {
+                $names = [];
+                foreach ($locIds as $id) {
+                    if (isset($zoneMap[$id])) $names[] = $zoneMap[$id];
+                }
+                $row['job_location_name'] = implode(', ', $names);
+            } else {
+                $row['job_location_name'] = '';
+            }
+        }
+        unset($row);
+
         // Build xlsx with ALL candidate fields
         $rows = [[
             'SL', 'Seeker ID', 'Full Name', 'Sex', 'Martial Status', 'DOB (Ethiopian)', 'Age',
             'Family Size', 'HH Male', 'HH Female', 'Household Type', 'Disability Status',
             'Disability Male', 'Disability Female', 'Phone', 'Email', 'Location',
             'Woreda', 'Tabia', 'Education Level', 'Field of Study', 'GPA', 'Qualification/Skills',
-            'Graduated Year', 'Experience', 'Resume', 'Created At', 'Company', 'Job Title', 'Status'
+            'Graduated Year', 'Experience', 'Resume', 'Created At', 'Company', 'Job Title', 'Job Location', 'Status'
         ]];
         $sl = 1;
         foreach ($candidates as $c) {
@@ -662,7 +678,7 @@ class Admin_dashboard extends CI_Controller {
                 $c['gpa'] ?? '', $c['qualification_skills'] ?? '',
                 $c['graduated_year'] ?? '', $c['experience'] ?? '',
                 !empty($c['resume']) ? 'Yes' : 'No', $c['created_at'],
-                $c['company_name'] ?? '', $c['job_title'] ?? '', $label
+                $c['company_name'] ?? '', $c['job_title'] ?? '', $c['job_location_name'] ?? '', $label
             ];
         }
 

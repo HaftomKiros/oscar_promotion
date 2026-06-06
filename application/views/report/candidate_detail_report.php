@@ -154,7 +154,7 @@
             <td><?php echo html_escape($data['education_label'] ?? ''); ?></td>
             <td><?php echo html_escape($data['experience'] ?? ''); ?></td>
             <td><?php echo html_escape($data['qualification_skills'] ?? ''); ?></td>
-            <td><?php echo html_escape($data['location_text'] ?? ''); ?></td>
+            <td><?php echo html_escape($data['job_location_name'] ?? ''); ?></td>
             <td><?php echo html_escape($data['woreda'] ?? ''); ?></td>
             <td><?php echo html_escape($data['job_title']); ?></td>
             <td><?php echo isset($status_labels[$data['application_status']]) ? $status_labels[$data['application_status']] : 'Unknown'; ?></td>
