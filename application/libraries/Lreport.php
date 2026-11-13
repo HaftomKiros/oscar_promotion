@@ -876,13 +876,23 @@ public function hired_report(){
     $CI->load->model('Web_settings');
     $CI->load->library('occational');
 
-    // Get hired products report
-    $hired_report = $CI->Reports->get_hired_products_report(); // Fixed variable name
+    // Month/year filter inputs (submitted via GET from the report page form)
+    $month = $CI->input->get('month');
+    $year  = $CI->input->get('year');
+
+    // Get hired products report, optionally filtered by month/year
+    $hired_report = $CI->Reports->get_hired_products_report($month, $year); // Fixed variable name
+
+    // Distinct years that have hired candidates, for the year filter dropdown
+    $years = $CI->Reports->get_hired_report_years();
 
     // Prepare data for view
     $data = array(
         'title'         => display('hired_report'),
         'hired_report'  => $hired_report, // Passing the correct report data
+        'sel_month'     => (int)$month,
+        'sel_year'      => (int)$year,
+        'years'         => $years,
     );
 
     // Return rendered view

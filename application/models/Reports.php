@@ -1745,7 +1745,7 @@ public function get_interviwed_products_report() {
 }
 
 //
-public function get_hired_products_report() {
+public function get_hired_products_report($month = null, $year = null) {
     // Query to get the company details, count of hired candidates (status = 5),
     // and the total number of jobs posted by each company
     $this->db->select('company.id, company.company_name, 
@@ -1762,6 +1762,14 @@ public function get_hired_products_report() {
     // Filter for hired candidates (status = 5)
     $this->db->where('candidate_report.status', 5); // Filter for hired candidates
 
+    // Optional month/year filter on the hiring date (candidate_report.created_at)
+    if (!empty($month)) {
+        $this->db->where('MONTH(candidate_report.created_at)', (int)$month);
+    }
+    if (!empty($year)) {
+        $this->db->where('YEAR(candidate_report.created_at)', (int)$year);
+    }
+
     // Group by company to get the count per company
     $this->db->group_by('company.id'); 
 
@@ -1776,6 +1784,32 @@ public function get_hired_products_report() {
         // Return an empty array if no results
         return [];
     }
+}
+
+// Distinct years in which candidates were hired (status = 5),
+// used to populate the year filter dropdown on the hired report page.
+public function get_hired_report_years() {
+    $this->db->distinct();
+    $this->db->select('YEAR(candidate_report.created_at) AS yr');
+    $this->db->from('candidate_report');
+    $this->db->where('candidate_report.status', 5);
+    $this->db->order_by('yr', 'DESC');
+    $query = $this->db->get();
+
+    $years = array();
+    foreach ($query->result_array() as $row) {
+        if (!empty($row['yr'])) {
+            $years[] = (int)$row['yr'];
+        }
+    }
+
+    // Always make the current year selectable even if no hires exist yet
+    $current = (int)date('Y');
+    if (!in_array($current, $years)) {
+        array_unshift($years, $current);
+    }
+
+    return $years;
 }
 
 //rejected
