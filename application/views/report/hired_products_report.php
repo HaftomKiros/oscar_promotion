@@ -41,6 +41,40 @@
                         </div>
                     </div>
                     <div class="panel-body panel-body-scroll">
+                        <!-- Month / Year Filter -->
+                        <form method="get" action="<?php echo base_url('Admin_dashboard/hired_report'); ?>" style="margin-bottom:15px;">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label>Month</label>
+                                    <select name="month" class="form-control">
+                                        <option value="">All Months</option>
+                                        <?php for ($m = 1; $m <= 12; $m++): ?>
+                                            <option value="<?php echo $m; ?>" <?php echo ($sel_month == $m) ? 'selected' : ''; ?>>
+                                                <?php echo date('F', mktime(0, 0, 0, $m, 1)); ?>
+                                            </option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label>Year</label>
+                                    <select name="year" class="form-control">
+                                        <option value="">All Years</option>
+                                        <?php if (!empty($years)) { foreach ($years as $yr) { ?>
+                                            <option value="<?php echo $yr; ?>" <?php echo ($sel_year == $yr) ? 'selected' : ''; ?>>
+                                                <?php echo $yr; ?>
+                                            </option>
+                                        <?php } } ?>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3" style="margin-top:24px;">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-filter"></i> Filter
+                                    </button>
+                                    <a href="<?php echo base_url('Admin_dashboard/hired_report'); ?>" class="btn btn-default btn-sm">Reset</a>
+                                </div>
+                            </div>
+                        </form>
+
                         <table id="hiredList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
