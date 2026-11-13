@@ -644,6 +644,13 @@ class Admin_dashboard extends CI_Controller {
         if (!isset($statusMap[$type])) { show_404(); return; }
         list($statusCode, $label) = $statusMap[$type];
 
+        // Optional month/year filter (forwarded from the report page filter form)
+        $month = $this->input->get('month');
+        $year  = $this->input->get('year');
+        $range = '';
+        if (!empty($month)) { $this->db->where('MONTH(cr.created_at)', (int)$month); $range .= '_m' . (int)$month; }
+        if (!empty($year))  { $this->db->where('YEAR(cr.created_at)', (int)$year);  $range .= '_y' . (int)$year; }
+
         // Get all candidates with this status across all companies - ALL FIELDS
         $this->db->select('
             c.seeker_id, c.full_name, c.sex, c.martial_status, c.dob_ethiopian, c.age,
@@ -712,7 +719,7 @@ class Admin_dashboard extends CI_Controller {
 
         $tmp = $this->_build_xlsx($rows);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename=' . $type . '_report_all_' . date('Y-m-d') . '.xlsx');
+        header('Content-Disposition: attachment; filename=' . $type . '_report_all' . $range . '_' . date('Y-m-d') . '.xlsx');
         header('Content-Length: ' . filesize($tmp));
         header('Cache-Control: max-age=0');
         readfile($tmp);

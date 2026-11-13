@@ -35,7 +35,14 @@
                     <div class="panel-heading">
                         <div class="panel-title">
                             <h4><?php echo display('hired_report'); ?></h4>
-                            <a href="<?php echo base_url('Admin_dashboard/export_report_all/hired'); ?>" class="btn btn-success btn-sm" style="margin-top:8px;">
+                            <?php
+                                // Forward the active month/year filter to the export endpoint
+                                $export_qs = array();
+                                if (!empty($sel_month)) { $export_qs['month'] = $sel_month; }
+                                if (!empty($sel_year))  { $export_qs['year']  = $sel_year; }
+                                $export_url = base_url('Admin_dashboard/export_report_all/hired') . (!empty($export_qs) ? '?' . http_build_query($export_qs) : '');
+                            ?>
+                            <a href="<?php echo $export_url; ?>" class="btn btn-success btn-sm" style="margin-top:8px;">
                                 <i class="fa fa-download"></i> Export All Candidates (xlsx)
                             </a>
                         </div>
