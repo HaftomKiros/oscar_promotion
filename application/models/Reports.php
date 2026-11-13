@@ -1762,9 +1762,19 @@ public function get_hired_products_report($month = null, $year = null) {
     // Filter for hired candidates (status = 5)
     $this->db->where('candidate_report.status', 5); // Filter for hired candidates
 
-    // Optional month/year filter on the hiring date (candidate_report.created_at)
+    // Optional month(s)/year filter on the hiring date (candidate_report.created_at).
+    // $month may be a single int or an array of ints (multi-select).
     if (!empty($month)) {
-        $this->db->where('MONTH(candidate_report.created_at)', (int)$month);
+        if (is_array($month)) {
+            $months = array_values(array_filter(array_map('intval', $month), function ($v) {
+                return $v >= 1 && $v <= 12;
+            }));
+            if (!empty($months)) {
+                $this->db->where_in('MONTH(candidate_report.created_at)', $months);
+            }
+        } else {
+            $this->db->where('MONTH(candidate_report.created_at)', (int)$month);
+        }
     }
     if (!empty($year)) {
         $this->db->where('YEAR(candidate_report.created_at)', (int)$year);

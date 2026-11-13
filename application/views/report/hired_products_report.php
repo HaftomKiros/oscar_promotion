@@ -36,10 +36,11 @@
                         <div class="panel-title">
                             <h4><?php echo display('hired_report'); ?></h4>
                             <?php
-                                // Forward the active month/year filter to the export endpoint
+                                // Forward the active month(s)/year filter to the export endpoint.
+                                // Month is a multi-select, so it is forwarded as an array.
                                 $export_qs = array();
-                                if (!empty($sel_month)) { $export_qs['month'] = $sel_month; }
-                                if (!empty($sel_year))  { $export_qs['year']  = $sel_year; }
+                                if (!empty($sel_months)) { $export_qs['month'] = array_values($sel_months); }
+                                if (!empty($sel_year))    { $export_qs['year']  = $sel_year; }
                                 $export_url = base_url('Admin_dashboard/export_report_all/hired') . (!empty($export_qs) ? '?' . http_build_query($export_qs) : '');
                             ?>
                             <a href="<?php echo $export_url; ?>" class="btn btn-success btn-sm" style="margin-top:8px;">
@@ -51,12 +52,11 @@
                         <!-- Month / Year Filter -->
                         <form method="get" action="<?php echo base_url('Admin_dashboard/hired_report'); ?>" style="margin-bottom:15px;">
                             <div class="row">
-                                <div class="col-sm-3">
-                                    <label>Month</label>
-                                    <select name="month" class="form-control">
-                                        <option value="">All Months</option>
+                                <div class="col-sm-4">
+                                    <label>Month <small class="text-muted">(multi-select)</small></label>
+                                    <select name="month[]" id="monthFilter" class="form-control dont-select-me" multiple style="width:100%;">
                                         <?php for ($m = 1; $m <= 12; $m++): ?>
-                                            <option value="<?php echo $m; ?>" <?php echo ($sel_month == $m) ? 'selected' : ''; ?>>
+                                            <option value="<?php echo $m; ?>" <?php echo (in_array($m, $sel_months)) ? 'selected' : ''; ?>>
                                                 <?php echo date('F', mktime(0, 0, 0, $m, 1)); ?>
                                             </option>
                                         <?php endfor; ?>
@@ -121,6 +121,15 @@ $(document).ready(function() {
                   {extend: 'print', title: 'Hired Report', exportOptions: {columns: [0,1,2,3,4]}}],
         pageLength: 10, lengthMenu: [5,10,25,50,100], ordering: true, searching: true,
         language: { emptyTable: "No hired candidates found" }
+    });
+
+    // Multi-select month filter using Select2.
+    // Uses .dont-select-me on the element so the global Select2 init in the
+    // template (which sets a generic placeholder) does not also bind to it.
+    $('#monthFilter').select2({
+        placeholder: "All Months (select one or more to filter)",
+        allowClear: true,
+        width: '100%'
     });
 });
 </script>

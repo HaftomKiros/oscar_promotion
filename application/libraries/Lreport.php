@@ -876,12 +876,26 @@ public function hired_report(){
     $CI->load->model('Web_settings');
     $CI->load->library('occational');
 
-    // Month/year filter inputs (submitted via GET from the report page form)
+    // Month/year filter inputs (submitted via GET from the report page form).
+    // Month is a multi-select, so it arrives as an array (month[]). Normalize it
+    // into an array of valid 1-12 integers (empty array means "all months").
     $month = $CI->input->get('month');
     $year  = $CI->input->get('year');
 
-    // Get hired products report, optionally filtered by month/year
-    $hired_report = $CI->Reports->get_hired_products_report($month, $year); // Fixed variable name
+    $sel_months = array();
+    if (is_array($month)) {
+        foreach ($month as $m) {
+            $mi = (int)$m;
+            if ($mi >= 1 && $mi <= 12) { $sel_months[] = $mi; }
+        }
+    } elseif ($month !== null && $month !== '') {
+        $mi = (int)$month;
+        if ($mi >= 1 && $mi <= 12) { $sel_months[] = $mi; }
+    }
+    $sel_months = array_values(array_unique($sel_months));
+
+    // Get hired products report, optionally filtered by month(s)/year
+    $hired_report = $CI->Reports->get_hired_products_report($sel_months, $year);
 
     // Distinct years that have hired candidates, for the year filter dropdown
     $years = $CI->Reports->get_hired_report_years();
@@ -889,8 +903,8 @@ public function hired_report(){
     // Prepare data for view
     $data = array(
         'title'         => display('hired_report'),
-        'hired_report'  => $hired_report, // Passing the correct report data
-        'sel_month'     => (int)$month,
+        'hired_report'  => $hired_report,
+        'sel_months'    => $sel_months, // array of selected month numbers (empty = all)
         'sel_year'      => (int)$year,
         'years'         => $years,
     );

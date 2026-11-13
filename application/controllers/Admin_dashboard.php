@@ -644,11 +644,21 @@ class Admin_dashboard extends CI_Controller {
         if (!isset($statusMap[$type])) { show_404(); return; }
         list($statusCode, $label) = $statusMap[$type];
 
-        // Optional month/year filter (forwarded from the report page filter form)
+        // Optional month(s)/year filter (forwarded from the report page filter form).
+        // Month is forwarded as an array when the report page multi-select is used.
         $month = $this->input->get('month');
         $year  = $this->input->get('year');
         $range = '';
-        if (!empty($month)) { $this->db->where('MONTH(cr.created_at)', (int)$month); $range .= '_m' . (int)$month; }
+        if (!empty($month)) {
+            $months = is_array($month) ? array_map('intval', $month) : array((int)$month);
+            $months = array_values(array_filter($months, function ($v) {
+                return $v >= 1 && $v <= 12;
+            }));
+            if (!empty($months)) {
+                $this->db->where_in('MONTH(cr.created_at)', $months);
+                $range .= '_m' . implode('-', $months);
+            }
+        }
         if (!empty($year))  { $this->db->where('YEAR(cr.created_at)', (int)$year);  $range .= '_y' . (int)$year; }
 
         // Get all candidates with this status across all companies - ALL FIELDS
